@@ -1,0 +1,30 @@
+---
+- hosts: localhost
+  gather_facts: no
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
+  vars_prompt:
+    - name: cluster_name
+      prompt: Enter Cluster name
+      private: no
+  tasks:
+  - name: template
+    template:
+      src: templates/rolebindings.j2
+      dest: "$HOME/rolebinding-template-{{ item.adgroups }}.yaml"
+    with_items:
+      - "{{ lookup('vars',cluster_name).onboarding }}"
+
+  - name: assing role
+    k8s:
+      state: present
+      src: $HOME/rolebinding-template-{{ item.adgroups }}.yaml
+      verify_ssl: no
+    with_items:
+      - "{{ lookup('vars',cluster_name).onboarding }}"
+  - name: remove file
+    file:
+      state: absent
+      path: "$HOME/rolebinding-template-{{ item.adgroups }}.yaml"
+    with_items:
+      - "{{ lookup('vars',cluster_name).onboarding }}"

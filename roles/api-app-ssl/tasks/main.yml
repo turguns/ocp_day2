@@ -1,0 +1,71 @@
+---
+# tasks file for api-app-ssl
+- name: Create backup folder
+  file:
+    path: /$HOME/apps-api-backup
+    state: directory
+
+- name: Backup Current state of apps and api
+  shell: oc get apiserver cluster -o yaml > /$HOME/apps-api-backup/apiserver-$(date "+%Y.%m.%d-%H.%M.%S").yaml; oc get proxy/cluster -o yaml > /$HOME/apps-api-backup/proxy-cluster-$(date "+%Y.%m.%d-%H.%M.%S").yaml; oc get ingresscontroller.operator default -n openshift-ingress-operator -o yaml > /$HOME/apps-api-backup/apps-ingress-$(date "+%Y.%m.%d-%H.%M.%S").yaml
+
+#
+- name: Copy and merge certs to file
+  template:
+    src: "{{ item.templates }}"
+    dest: "{{ item.dest}}"
+  with_items:
+    - {templates: 'tls-root.j2', dest: '/$HOME/tls-root.yaml'}
+    - {templates: 'merged-api-certs.j2', dest: '/$HOME/merged-api.yaml'}
+    - {templates: 'tls-api-key.j2', dest: '/$HOME/api-key.yaml'}
+    - {templates: 'merged-apps-certs.j2', dest: '/$HOME/merged-apps.yaml'}
+    - {templates: 'tls-apps-key.j2', dest: '/$HOME/apps-key.yaml'}
+- name: Convert merged api to base64
+  shell: base64 -w0  "{{ item.source_path }}"  > "{{ item.dest_path }}"
+  with_items:
+    - { source_path: '/$HOME/merged-api.yaml', dest_path: '/$HOME/merged-api-64.yaml' }
+    - { source_path: '/$HOME/api-key.yaml', dest_path: '/$HOME/api-64-key.yaml' }
+    - { source_path: '/$HOME/merged-apps.yaml', dest_path: '/$HOME/merged-apps-64.yaml' }
+    - { source_path: '/$HOME/apps-key.yaml', dest_path: '/$HOME/apps-64-key.yaml' }
+- name:
+  set_fact:
+    merged_api_64: "{{ lookup('file', '/$HOME/merged-api-64.yaml') }}"
+    api_64_key: "{{ lookup('file', '/$HOME/api-64-key.yaml') }}"
+    merged_apps_64: "{{ lookup('file', '/$HOME/merged-apps-64.yaml') }}"
+    apps_64_key: "{{ lookup('file', '/$HOME/apps-64-key.yaml') }}"
+#
+- name: Copy apps cert config-map
+  template:
+    src: tls-apps.j2
+    dest: /$HOME/tls-apps.yaml
+- name: Copy api cert config-map
+  template:
+    src: tls-api.j2
+    dest: /$HOME/tls-api.yaml
+
+
+#Apply Manifests
+- name: Apply manifests
+  shell: oc apply -f "{{ item }}"
+  with_items:
+    - /$HOME/tls-root.yaml
+    - /$HOME/tls-apps.yaml
+    - /$HOME/tls-api.yaml
+
+# apply certificates
+- name: Cluster wide proxy cert
+  shell:  oc patch proxy/cluster --type=merge --patch='{"spec"{{':'}}{"trustedCA"{{':'}}{"name"{{':'}}"tls-root"}}}'
+- name: Update ingress controller with  Wildcard certificate
+  shell:  oc patch ingresscontroller.operator default --type=merge -p '{"spec"{{':'}}{"defaultCertificate"{{':'}} {"name"{{':'}} "tls-apps"}}}' -n openshift-ingress-operator
+- name: Update API with new certs
+  shell:  oc patch apiserver cluster --type=merge -p '{"spec":{"servingCerts"{{':'}} {"namedCertificates"{{':'}} [{"names"{{':'}} ["api.{{ cluster_name }}.{{ domain_name }}"], "servingCertificate"{{':'}} {"name"{{':'}} "tls-api"}}]}}}'
+#Remove files
+- name: Remove the files
+  file:
+    path: "{{ item }}"
+    state: absent
+  with_items:
+    - /$HOME/tls-root.yaml
+    - /$HOME/tls-apps.yam
+    - /$HOME/merged-apps.yaml
+    - /$HOME/tls-api.yaml
+    - /$HOME/merged-api.yaml

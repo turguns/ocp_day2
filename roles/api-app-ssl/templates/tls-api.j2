@@ -1,0 +1,12 @@
+#jinja2: trim_blocks:False
+apiVersion: v1
+data:
+  tls.crt: |
+{{ merged_api_64 | indent( width=4, indentfirst=True) }}
+  tls.key: |
+{{ api_64_key | indent( width=4, indentfirst=True) }}
+kind: Secret
+metadata:
+  name: tls-api
+  namespace: openshift-config
+type: Opaque

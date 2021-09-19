@@ -1,0 +1,54 @@
+test-cluster:
+  projects:
+    - project_name: payment_core
+      adgroups:
+        admin: finance_admin
+        edit: finance_edit
+        view: finance_view
+      quota_cpu: "5"
+      quota_memory: 50Gi
+      quota_pods: "300"
+      quota_configmaps: "300"
+      quota_persistentvolumeclaims: "20"
+      quota_replicationcontrollers: "80"
+      quota_requests_storage: 50Gi
+      quota_services: "200"
+      container_max_memory: 2Gi
+      container_min_memory: 128Mi
+      container_max_cpu: 4Gi
+      container_min_cpu: 100m
+      container_default_cpu: 200m
+      container_default_memory: 512Mi
+      container_defaultRequest_cpu: 1m
+      container_defaultRequest_memory: 256Mi
+      pod_max_memory: 8Gi
+      pod_min_memory: 6Mi
+      pod_max_cpu: 2000m
+      pod_min_cpu: 1m
+
+prod-cluster:
+    - project_name: payment_audit
+      adgroups:
+        admin: audit_admin
+        edit: audit_edit
+        view: audit_view
+      quota_cpu: "5"
+      quota_memory: 50Gi
+      quota_pods: "300"
+      quota_configmaps: "300"
+      quota_persistentvolumeclaims: "0"
+      quota_replicationcontrollers: "80"
+      quota_requests_storage: 50Gi
+      quota_services: "200"
+      container_max_memory: 2Gi
+      container_min_memory: 128Mi
+      container_max_cpu: 4Gi
+      container_min_cpu: 100m
+      container_default_cpu: 200m
+      container_default_memory: 512Mi
+      container_defaultRequest_cpu: 1m
+      container_defaultRequest_memory: 256Mi
+      pod_max_memory: 8Gi
+      pod_min_memory: 6Mi
+      pod_max_cpu: 2000m
+      pod_min_cpu: 1m

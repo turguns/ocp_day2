@@ -1,0 +1,11 @@
+apiVersion: v1
+data:
+  tls.crt: |
+{{ merged_apps_64 | indent( width=4, indentfirst=True) }}
+  tls.key: |
+{{ apps_64_key | indent( width=4, indentfirst=True) }}
+kind: Secret
+metadata:
+  name: tls-apps
+  namespace: openshift-ingress
+type: Opaque
