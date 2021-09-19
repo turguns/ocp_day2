@@ -8,23 +8,79 @@
       prompt: Enter Cluster name
       private: no
   tasks:
-  - name: template
+  - name: template for admin
     template:
       src: templates/rolebindings.j2
-      dest: "$HOME/rolebinding-template-{{ item.adgroups }}.yaml"
+      dest: "$HOME/rolebinding-template-{{ item.adgroups.admin }}.yaml"
+    vars:
+      rolebindings: admin
+      group_name: "{{ item.adgroups.admin }}"
     with_items:
-      - "{{ lookup('vars',cluster_name).onboarding }}"
+      - "{{ lookup('vars',cluster_name).projects }}"
 
-  - name: assing role
+
+  - name: template for edit
+    template:
+      src: templates/rolebindings.j2
+      dest: "$HOME/rolebinding-template-{{ item.adgroups.edit }}.yaml"
+    vars:
+      rolebindings: edit
+      group_name: "{{ item.adgroups.edit }}"
+    with_items:
+      - "{{ lookup('vars',cluster_name).projects }}"
+
+  - name: template for view
+    template:
+      src: templates/rolebindings.j2
+      dest: "$HOME/rolebinding-template-{{ item.adgroups.view }}.yaml"
+    vars:
+      rolebindings: view
+      group_name: "{{ item.adgroups.view }}"
+    with_items:
+      - "{{ lookup('vars',cluster_name).projects }}"
+
+
+  - name: assigning ADMIN role
     k8s:
       state: present
-      src: $HOME/rolebinding-template-{{ item.adgroups }}.yaml
+      src: "$HOME/rolebinding-template-{{ item.adgroups.admin }}.yaml"
       verify_ssl: no
     with_items:
-      - "{{ lookup('vars',cluster_name).onboarding }}"
-  - name: remove file
+      - "{{ lookup('vars',cluster_name).projects }}"
+
+  - name: remove ADMIN file
     file:
       state: absent
-      path: "$HOME/rolebinding-template-{{ item.adgroups }}.yaml"
+      path: "$HOME/rolebinding-template-{{ item.adgroups.admin }}.yaml"
     with_items:
-      - "{{ lookup('vars',cluster_name).onboarding }}"
+      - "{{ lookup('vars',cluster_name).projects }}"
+
+  - name: assigning EDIT role
+    k8s:
+      state: present
+      src: "$HOME/rolebinding-template-{{ item.adgroups.edit }}.yaml"
+      verify_ssl: no
+    with_items:
+      - "{{ lookup('vars',cluster_name).projects }}"
+
+  - name: remove EDIT file
+    file:
+      state: absent
+      path: "$HOME/rolebinding-template-{{ item.adgroups.edit }}.yaml"
+    with_items:
+      - "{{ lookup('vars',cluster_name).projects }}"
+
+  - name: assigning VIEW role
+    k8s:
+      state: present
+      src: "$HOME/rolebinding-template-{{ item.adgroups.view }}.yaml"
+      verify_ssl: no
+    with_items:
+      - "{{ lookup('vars',cluster_name).projects }}"
+
+  - name: remove VIEW file
+    file:
+      state: absent
+      path: "$HOME/rolebinding-template-{{ item.adgroups.view }}.yaml"
+    with_items:
+      - "{{ lookup('vars',cluster_name).projects }}"
