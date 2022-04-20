@@ -1,0 +1,20 @@
+- name: Delete project and project quota
+  template:
+    src: templates/project-quota-template.j2
+    dest: $HOME/project_onboarding-{{ item.project_name }}.json
+  loop: "{{ env.projects}}"
+
+- name: Apply manifests
+  k8s:
+    state: absent
+    definition: "{{ lookup('file', item) | from_json }}"
+    verify_ssl: no
+  with_fileglob:
+   - "~/project_onboarding-*.json"
+
+- name: remove files
+  file:
+    state: absent
+    path: "{{ item }}"
+  with_fileglob:
+   - "~/project_onboarding-*.json"

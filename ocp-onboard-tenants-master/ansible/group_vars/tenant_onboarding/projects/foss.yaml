@@ -1,0 +1,115 @@
+ocpl1:
+  projects:
+    - project_name: d1-foss 
+      egress: no
+      adgroups:
+        admin: GFE_OCP_D1_FOSS_ADMIN
+        edit: GFE_OCP_D1_FOSS_EDIT 
+        view: GFE_OCP_D1_FOSS_VIEW
+      quota_cpu: "1"
+      quota_memory: 2Gi
+      quota_pods: "10"
+      quota_configmaps: "10"
+      quota_persistentvolumeclaims: "2"
+      quota_replicationcontrollers: "10"
+      quota_requests_storage: 2Gi
+      quota_services: "5"
+      container_max_memory: 8Gi
+      container_min_memory: 128Mi
+      container_max_cpu: 2Gi
+      container_min_cpu: 100m
+      container_default_cpu: 200m
+      container_default_memory: 512Mi
+      container_defaultRequest_cpu: 1m
+      container_defaultRequest_memory: 256Mi
+      pod_max_memory: 8Gi
+      pod_min_memory: 6Mi
+      pod_max_cpu: 2000m
+      pod_min_cpu: 1m
+
+ocpd1:
+  projects:
+    - project_name: d1-foss
+      egress: no
+      adgroups:
+        admin: GFE_OCP_D1_FOSS_ADMIN
+        edit: GFE_OCP_D1_FOSS_EDIT
+        view: GFE_OCP_D1_FOSS_VIEW
+      quota_cpu: "1"
+      quota_memory: 2Gi
+      quota_pods: "10"
+      quota_configmaps: "10"
+      quota_persistentvolumeclaims: "2"
+      quota_replicationcontrollers: "10"
+      quota_requests_storage: 2Gi
+      quota_services: "5"
+      container_max_memory: 8Gi
+      container_min_memory: 128Mi
+      container_max_cpu: 2Gi
+      container_min_cpu: 100m
+      container_default_cpu: 200m
+      container_default_memory: 512Mi
+      container_defaultRequest_cpu: 1m
+      container_defaultRequest_memory: 256Mi
+      pod_max_memory: 8Gi
+      pod_min_memory: 6Mi
+      pod_max_cpu: 2000m
+      pod_min_cpu: 1m
+
+ocpa1:
+  projects:
+    - project_name: a1-foss
+      egress: no
+      adgroups:
+        admin: GFE_OCP_A1_FOSS_ADMIN
+        edit: GFE_OCP_A1_FOSS_EDIT
+        view: GFE_OCP_A1_FOSS_VIEW
+      quota_cpu: "1"
+      quota_memory: 2Gi
+      quota_pods: "10"
+      quota_configmaps: "10"
+      quota_persistentvolumeclaims: "2"
+      quota_replicationcontrollers: "10"
+      quota_requests_storage: 2Gi
+      quota_services: "5"
+      container_max_memory: 8Gi
+      container_min_memory: 128Mi
+      container_max_cpu: 2Gi
+      container_min_cpu: 100m
+      container_default_cpu: 200m
+      container_default_memory: 512Mi
+      container_defaultRequest_cpu: 1m
+      container_defaultRequest_memory: 256Mi
+      pod_max_memory: 8Gi
+      pod_min_memory: 6Mi
+      pod_max_cpu: 2000m
+      pod_min_cpu: 1m
+
+ocpp1:
+  projects:
+    - project_name: p1-foss
+      egress: no
+      adgroups:
+        admin: GFE_OCP_P1_FOSS_ADMIN
+        edit: GFE_OCP_P1_FOSS_EDIT
+        view: GFE_OCP_P1_FOSS_VIEW
+      quota_cpu: "1"
+      quota_memory: 2Gi
+      quota_pods: "10"
+      quota_configmaps: "10"
+      quota_persistentvolumeclaims: "2"
+      quota_replicationcontrollers: "10"
+      quota_requests_storage: 2Gi
+      quota_services: "5"
+      container_max_memory: 8Gi
+      container_min_memory: 128Mi
+      container_max_cpu: 2Gi
+      container_min_cpu: 100m
+      container_default_cpu: 200m
+      container_default_memory: 512Mi
+      container_defaultRequest_cpu: 1m
+      container_defaultRequest_memory: 256Mi
+      pod_max_memory: 8Gi
+      pod_min_memory: 6Mi
+      pod_max_cpu: 2000m
+      pod_min_cpu: 1m

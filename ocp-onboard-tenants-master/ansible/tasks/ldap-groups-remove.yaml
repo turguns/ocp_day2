@@ -1,0 +1,34 @@
+- name: Remove files
+  file:
+    state: absent
+    path: "{{ item }}"
+  with_items:
+    - $HOME/groups
+    - $HOME/whitelist_groups
+
+- name: Fetch whitelisting groups from variables
+  shell: |-
+     {% for value in _values %}
+     echo "{{ value }}" >> $HOME/groups
+     {% endfor %}
+     cat $HOME/groups |sort -u |uniq > $HOME/whitelist_groups
+  loop: "{{ env.projects }}"
+  vars:
+    _values: "{{ item.adgroups.values()|list }}"
+
+- name: Remove LDAP Groups
+  k8s:
+    state: absent
+    api_version: v1
+    kind: Group
+    verify_ssl: no
+    name: "{{ item }}"
+  loop: "{{ lookup('file', '~/whitelist_groups').splitlines() }}"
+
+- name: Remove files
+  file:
+    state: absent
+    path: "{{ item }}"
+  with_items:
+    - $HOME/groups
+    - $HOME/whitelist_groups

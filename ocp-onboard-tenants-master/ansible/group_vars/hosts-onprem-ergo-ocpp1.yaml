@@ -1,0 +1,7 @@
+domain_name: services.ergo
+cluster_name: ocpp1
+api_url: "https://api.{{ cluster_name }}.{{ domain_name }}:6443"
+raw_proxy_url: https://nexus.services.ergo/repository/raw-proxy
+technical_user: 'secrets/ergo_prod/LC_OCP_OPS_P1.yaml'
+installer_artifacts_url: '{{ raw_proxy_url }}/pub/openshift-v4/clients/ocp'
+nexus_cred_path: 'secrets/ergo_prod/LC_NXRM_OSCP_P_001.yaml'

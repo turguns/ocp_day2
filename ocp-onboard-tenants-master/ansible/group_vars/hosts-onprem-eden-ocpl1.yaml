@@ -1,0 +1,7 @@
+cluster_name: ocpl1
+domain_name: services.eden
+api_url: "https://api.{{ cluster_name }}.{{ domain_name }}:6443"
+technical_user: 'secrets/eden_lab/LC_OCP_OPS_D1.yaml'
+nexus_cred_path: 'secrets/eden_prod/LC_NXRM_OSCP_D_001.yaml'
+installer_artifacts_url: '{{ raw_proxy_url }}/pub/openshift-v4/clients/ocp'
+raw_proxy_url: https://nexus.services.eden/repository/raw-proxy

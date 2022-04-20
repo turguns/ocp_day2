@@ -1,0 +1,58 @@
+ocpl2:
+  projects:
+    - project_name: d2-apifactory
+      egress: no
+      adgroups:
+        admin: GFE_OCP_D2_APIFACTORY_ADMIN
+        edit: GFE_OCP_D2_APIFACTORY_EDIT
+        view: GFE_OCP_D2_APIFACTORY_VIEW
+      quota_cpu: "3"
+      quota_memory: 60Gi
+      quota_pods: "150"
+      quota_configmaps: "200"
+      quota_persistentvolumeclaims: "20"
+      quota_replicationcontrollers: "300"
+      quota_requests_storage: 50Gi
+      quota_services: "150"
+      container_max_memory: 2Gi
+      container_min_memory: 128Mi
+      container_max_cpu: 4Gi
+      container_min_cpu: 100m
+      container_default_cpu: 200m
+      container_default_memory: 512Mi
+      container_defaultRequest_cpu: 1m
+      container_defaultRequest_memory: 256Mi
+      pod_max_memory: 8Gi
+      pod_min_memory: 6Mi
+      pod_max_cpu: 2000m
+      pod_min_cpu: 1m
+
+ocpd2:
+  projects:
+    - project_name: d2-apifactory
+      egress: no
+      adgroups:
+        admin: GFE_OCP_D2_APIFACTORY_ADMIN
+        edit: GFE_OCP_D2_APIFACTORY_EDIT
+        view: GFE_OCP_D2_APIFACTORY_VIEW
+      quota_cpu: "3"
+      quota_memory: 60Gi
+      quota_pods: "150"
+      quota_configmaps: "200"
+      quota_persistentvolumeclaims: "20"
+      quota_replicationcontrollers: "300"
+      quota_requests_storage: 50Gi
+      quota_services: "150"
+      container_max_memory: 2Gi
+      container_min_memory: 128Mi
+      container_max_cpu: 4Gi
+      container_min_cpu: 100m
+      container_default_cpu: 200m
+      container_default_memory: 512Mi
+      container_defaultRequest_cpu: 1m
+      container_defaultRequest_memory: 256Mi
+      pod_max_memory: 8Gi
+      pod_min_memory: 6Mi
+      pod_max_cpu: 2000m
+      pod_min_cpu: 1m
+

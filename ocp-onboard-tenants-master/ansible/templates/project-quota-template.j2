@@ -1,0 +1,170 @@
+{
+        "kind": "List",
+        "apiVersion": "v1",
+        "metadata": {
+                "namespace": "{{ item.project_name  }}"
+        },
+        "items": [{
+                                "apiVersion": "project.openshift.io/v1",
+                                "kind": "Project",
+                                "metadata": {
+                                        "annotations": {
+                                                "openshift.io/description": "",
+                                                "openshift.io/display-name": "",
+                                                "openshift.io/node-selector": "node-role.kubernetes.io/worker=",
+                                                "openshift.io/requester": ""
+                                        },
+                                        "name": "{{ item.project_name  }}"
+                                },
+                                "spec": {},
+                                "status": {}
+                        },
+                        {
+                                "apiVersion": "rbac.authorization.k8s.io/v1",
+                                "kind": "RoleBinding",
+                                "metadata": {
+                                        "name": "admin",
+                                        "namespace": "{{ item.project_name  }}"
+                                },
+                                "roleRef": {
+                                        "apiGroup": "rbac.authorization.k8s.io",
+                                        "kind": "ClusterRole",
+                                        "name": "admin"
+                                }
+                        },
+                        {
+                                "apiVersion": "v1",
+                                "kind": "ResourceQuota",
+                                "metadata": {
+                                        "name": "{{ item.project_name  }}-quota",
+                                        "namespace": "{{ item.project_name  }}"
+                                },
+                                "spec": {
+                                        "hard": {
+                                                "configmaps": "{{ item.quota_configmaps }}",
+                                                "cpu": "{{ item.quota_cpu }}",
+                                                "memory": "{{ item.quota_memory }}",
+                                                "persistentvolumeclaims": "{{ item.quota_persistentvolumeclaims }}",
+                                                "pods": "{{ item.quota_pods}}",
+                                                "replicationcontrollers": "{{ item.quota_replicationcontrollers }}",
+                                                "requests.storage": "{{ item.quota_requests_storage }}",
+                                                "services": "{{ item.quota_services }}"
+                                        }
+                                }
+                        },
+                        {
+                                "apiVersion": "v1",
+                                "kind": "LimitRange",
+                                "metadata": {
+                                        "name": "{{ item.project_name  }}-limits",
+                                        "namespace": "{{ item.project_name  }}"
+                                },
+                                "spec": {
+                                        "limits": [{
+                                                        "default": {
+                                                                "cpu": "{{ item.container_default_cpu }}",
+                                                                "memory": "{{ item.container_default_memory }}"
+                                                        },
+                                                        "defaultRequest": {
+                                                                "cpu": "{{ item.container_defaultRequest_cpu }}",
+                                                                "memory": "{{ item.container_defaultRequest_memory }}"
+                                                        },
+                                                        "max": {
+                                                                "memory": "{{ item.container_max_memory }}"
+                                                        },
+                                                        "min": {
+                                                                "memory": "{{ item.container_min_memory }}"
+                                                        },
+                                                        "type": "Container"
+                                                },
+                                                {
+                                                        "max": {
+                                                                "cpu": "{{ item.pod_max_cpu }}",
+                                                                "memory": "{{ item.pod_max_memory }}"
+                                                        },
+                                                        "min": {
+                                                                "cpu": "{{ item.pod_min_cpu }}",
+                                                                "memory": "{{ item.pod_min_memory }}"
+                                                        },
+                                                        "type": "Pod"
+                                                }
+                                        ]
+                                }
+                        },
+                        {
+                                "apiVersion": "networking.k8s.io/v1",
+                                "kind": "NetworkPolicy",
+                                "metadata": {
+                                        "name": "allow-same-namespace",
+                                        "namespace": "{{ item.project_name  }}"
+                                },
+                                "spec": {
+                                        "ingress": [{
+                                                "from": [{
+                                                        "podSelector": {}
+                                                }]
+                                        }],
+                                        "podSelector": null
+                                }
+                        },
+                        {
+                                "apiVersion": "networking.k8s.io/v1",
+                                "kind": "NetworkPolicy",
+                                "metadata": {
+                                        "name": "allow-from-openshift-ingress",
+                                        "namespace": "{{ item.project_name  }}"
+                                },
+                                "spec": {
+                                        "ingress": [{
+                                                "from": [{
+                                                        "namespaceSelector": {
+                                                                "matchLabels": {
+                                                                        "network.openshift.io/policy-group": "ingress"
+                                                                }
+                                                        }
+                                                }]
+                                        }],
+                                        "podSelector": {},
+                                        "policyTypes": [
+                                                "Ingress"
+                                        ]
+                                }
+                        },
+                        {
+                                "apiVersion": "networking.k8s.io/v1",
+                                "kind": "NetworkPolicy",
+                                "metadata": {
+                                        "name": "allow-from-openshift-monitoring",
+                                        "namespace": "{{ item.project_name  }}"
+                                },
+                                "spec": {
+                                        "ingress": [{
+                                                "from": [{
+                                                        "namespaceSelector": {
+                                                                "matchLabels": {
+                                                                        "network.openshift.io/policy-group": "monitoring"
+                                                                }
+                                                        }
+                                                }]
+                                        }],
+                                        "podSelector": {},
+                                        "policyTypes": [
+                                                "Ingress"
+                                        ]
+                                }
+                        },
+                        {
+                                "apiVersion": "networking.k8s.io/v1",
+                                "kind": "NetworkPolicy",
+                                "metadata": {
+                                        "name": "deny-by-default",
+                                        "namespace": "{{ item.project_name  }}"
+                                },
+                                "spec": {
+                                        "ingress": [],
+                                        "podSelector": null
+                                }
+                        }
+        ]
+}
+

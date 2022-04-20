@@ -1,0 +1,31 @@
+---
+- hosts: localhost
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
+    env: "{{ lookup('vars', cluster) }}"
+  vars_files:
+    - "{{ technical_user }}"
+    - "{{ nexus_cred_path }}"
+  tasks:
+  - name: ansible ver
+    shell: ansible --version
+    register: ver
+  - debug:
+      msg: "{{ ver.stdout }}"
+  - name: oc client tools downloading
+    include: tasks/oc-client.yaml
+
+  - name: login to ocp cluster
+    shell: oc login -u "{{ technical_username }}" -p "{{ technical_password }}" "{{ api_url }}"  --insecure-skip-tls-verify=true
+
+  - name: Create Project
+    include: tasks/project-create-onboarding.yaml
+
+  - name: Whitelising
+    include: tasks/update-whitelist.yaml
+
+  - name: rolebinding
+    include: tasks/rolebindings.yaml
+  - name: Egress Network policy
+    include: tasks/egress-networkpolicy.yaml
+

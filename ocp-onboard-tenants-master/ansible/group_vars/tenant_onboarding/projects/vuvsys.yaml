@@ -1,0 +1,415 @@
+ocpl2:
+  projects:
+    - project_name: d2-vuvsys-authorization
+      egress: no
+      adgroups:
+        admin: GFE_OCP_D2_VUVSYS_AUTHORIZATION_ADMIN 
+        edit: GFE_OCP_D2_VUVSYS_AUTHORIZATION_EDIT
+        view: GFE_OCP_D2_VUVSYS_AUTHORIZATION_VIEW
+      quota_cpu: "1"
+      quota_memory: 8Gi
+      quota_pods: "20"
+      quota_configmaps: "30"
+      quota_persistentvolumeclaims: "0"
+      quota_replicationcontrollers: "80"
+      quota_requests_storage: 0Gi
+      quota_services: "20"
+      container_max_memory: 2Gi
+      container_min_memory: 128Mi
+      container_max_cpu: 4Gi
+      container_min_cpu: 100m
+      container_default_cpu: 200m
+      container_default_memory: 512Mi
+      container_defaultRequest_cpu: 1m
+      container_defaultRequest_memory: 256Mi
+      pod_max_memory: 8Gi
+      pod_min_memory: 6Mi
+      pod_max_cpu: 2000m
+      pod_min_cpu: 1m
+
+    - project_name: d2-vuvsys-contractmgt
+      egress: no
+      adgroups:
+        admin: GFE_OCP_D2_VUVSYS_CONTRACTMGT_ADMIN
+        edit: GFE_OCP_D2_VUVSYS_CONTRACTMGT_EDIT
+        view: GFE_OCP_D2_VUVSYS_CONTRACTMGT_VIEW
+      quota_cpu: "1"
+      quota_memory: 8Gi
+      quota_pods: "20"
+      quota_configmaps: "30"
+      quota_persistentvolumeclaims: "0"
+      quota_replicationcontrollers: "80"
+      quota_requests_storage: 0Gi
+      quota_services: "20"
+      container_max_memory: 2Gi
+      container_min_memory: 128Mi
+      container_max_cpu: 4Gi
+      container_min_cpu: 100m
+      container_default_cpu: 200m
+      container_default_memory: 512Mi
+      container_defaultRequest_cpu: 1m
+      container_defaultRequest_memory: 256Mi
+      pod_max_memory: 8Gi
+      pod_min_memory: 6Mi
+      pod_max_cpu: 2000m
+      pod_min_cpu: 1m
+
+    - project_name: d2-vuvsys-ecs
+      egress: no
+      adgroups:
+        admin: GFE_OCP_D2_VUVSYS_ECS_ADMIN
+        edit: GFE_OCP_D2_VUVSYS_ECS_EDIT
+        view: GFE_OCP_D2_VUVSYS_ECS_VIEW
+      quota_cpu: "1"
+      quota_memory: 8Gi
+      quota_pods: "20"
+      quota_configmaps: "30"
+      quota_persistentvolumeclaims: "0"
+      quota_replicationcontrollers: "80"
+      quota_requests_storage: 0Gi
+      quota_services: "20"
+      container_max_memory: 2Gi
+      container_min_memory: 128Mi
+      container_max_cpu: 4Gi
+      container_min_cpu: 100m
+      container_default_cpu: 200m
+      container_default_memory: 512Mi
+      container_defaultRequest_cpu: 1m
+      container_defaultRequest_memory: 256Mi
+      pod_max_memory: 8Gi
+      pod_min_memory: 6Mi
+      pod_max_cpu: 2000m
+      pod_min_cpu: 1m
+
+ocpd2:
+  projects:
+    - project_name: d2-vuvsys-authorization
+      egress: no
+      adgroups:
+        admin: GFE_OCP_D2_VUVSYS_AUTHORIZATION_ADMIN
+        edit: GFE_OCP_D2_VUVSYS_AUTHORIZATION_EDIT
+        view: GFE_OCP_D2_VUVSYS_AUTHORIZATION_VIEW
+      quota_cpu: "1"
+      quota_memory: 8Gi
+      quota_pods: "20"
+      quota_configmaps: "30"
+      quota_persistentvolumeclaims: "0"
+      quota_replicationcontrollers: "80"
+      quota_requests_storage: 0Gi
+      quota_services: "20"
+      container_max_memory: 2Gi
+      container_min_memory: 128Mi
+      container_max_cpu: 4Gi
+      container_min_cpu: 100m
+      container_default_cpu: 200m
+      container_default_memory: 512Mi
+      container_defaultRequest_cpu: 1m
+      container_defaultRequest_memory: 256Mi
+      pod_max_memory: 8Gi
+      pod_min_memory: 6Mi
+      pod_max_cpu: 2000m
+      pod_min_cpu: 1m
+
+    - project_name: d2-vuvsys-contractmgt
+      egress: no
+      adgroups:
+        admin: GFE_OCP_D2_VUVSYS_CONTRACTMGT_ADMIN
+        edit: GFE_OCP_D2_VUVSYS_CONTRACTMGT_EDIT
+        view: GFE_OCP_D2_VUVSYS_CONTRACTMGT_VIEW
+      quota_cpu: "1"
+      quota_memory: 8Gi
+      quota_pods: "20"
+      quota_configmaps: "30"
+      quota_persistentvolumeclaims: "0"
+      quota_replicationcontrollers: "80"
+      quota_requests_storage: 0Gi
+      quota_services: "20"
+      container_max_memory: 2Gi
+      container_min_memory: 128Mi
+      container_max_cpu: 4Gi
+      container_min_cpu: 100m
+      container_default_cpu: 200m
+      container_default_memory: 512Mi
+      container_defaultRequest_cpu: 1m
+      container_defaultRequest_memory: 256Mi
+      pod_max_memory: 8Gi
+      pod_min_memory: 6Mi
+      pod_max_cpu: 2000m
+      pod_min_cpu: 1m
+
+    - project_name: d2-vuvsys-ecs
+      egress: no
+      adgroups:
+        admin: GFE_OCP_D2_VUVSYS_ECS_ADMIN
+        edit: GFE_OCP_D2_VUVSYS_ECS_EDIT
+        view: GFE_OCP_D2_VUVSYS_ECS_VIEW
+      quota_cpu: "1"
+      quota_memory: 8Gi
+      quota_pods: "20"
+      quota_configmaps: "30"
+      quota_persistentvolumeclaims: "0"
+      quota_replicationcontrollers: "80"
+      quota_requests_storage: 0Gi
+      quota_services: "20"
+      container_max_memory: 2Gi
+      container_min_memory: 128Mi
+      container_max_cpu: 4Gi
+      container_min_cpu: 100m
+      container_default_cpu: 200m
+      container_default_memory: 512Mi
+      container_defaultRequest_cpu: 1m
+      container_defaultRequest_memory: 256Mi
+      pod_max_memory: 8Gi
+      pod_min_memory: 6Mi
+      pod_max_cpu: 2000m
+      pod_min_cpu: 1m
+
+ocpf2:
+  projects:
+    - project_name: f2-vuvsys-authorization
+      egress: no
+      adgroups:
+        admin: GFE_OCP_F2_VUVSYS_AUTHORIZATION_ADMIN
+        edit: GFE_OCP_F2_VUVSYS_AUTHORIZATION_EDIT
+        view: GFE_OCP_F2_VUVSYS_AUTHORIZATION_VIEW
+      quota_cpu: "1"
+      quota_memory: 8Gi
+      quota_pods: "20"
+      quota_configmaps: "30"
+      quota_persistentvolumeclaims: "0"
+      quota_replicationcontrollers: "80"
+      quota_requests_storage: 0Gi
+      quota_services: "20"
+      container_max_memory: 2Gi
+      container_min_memory: 128Mi
+      container_max_cpu: 4Gi
+      container_min_cpu: 100m
+      container_default_cpu: 200m
+      container_default_memory: 512Mi
+      container_defaultRequest_cpu: 1m
+      container_defaultRequest_memory: 256Mi
+      pod_max_memory: 8Gi
+      pod_min_memory: 6Mi
+      pod_max_cpu: 2000m
+      pod_min_cpu: 1m
+
+    - project_name: f2-vuvsys-contractmgt
+      egress: no
+      adgroups:
+        admin: GFE_OCP_F2_VUVSYS_CONTRACTMGT_ADMIN
+        edit: GFE_OCP_F2_VUVSYS_CONTRACTMGT_EDIT
+        view: GFE_OCP_F2_VUVSYS_CONTRACTMGT_VIEW
+      quota_cpu: "1"
+      quota_memory: 8Gi
+      quota_pods: "20"
+      quota_configmaps: "30"
+      quota_persistentvolumeclaims: "0"
+      quota_replicationcontrollers: "80"
+      quota_requests_storage: 0Gi
+      quota_services: "20"
+      container_max_memory: 2Gi
+      container_min_memory: 128Mi
+      container_max_cpu: 4Gi
+      container_min_cpu: 100m
+      container_default_cpu: 200m
+      container_default_memory: 512Mi
+      container_defaultRequest_cpu: 1m
+      container_defaultRequest_memory: 256Mi
+      pod_max_memory: 8Gi
+      pod_min_memory: 6Mi
+      pod_max_cpu: 2000m
+      pod_min_cpu: 1m
+
+    - project_name: f2-vuvsys-ecs
+      egress: no
+      adgroups:
+        admin: GFE_OCP_F2_VUVSYS_ECS_ADMIN
+        edit: GFE_OCP_F2_VUVSYS_ECS_EDIT
+        view: GFE_OCP_F2_VUVSYS_ECS_VIEW
+      quota_cpu: "1"
+      quota_memory: 8Gi
+      quota_pods: "20"
+      quota_configmaps: "30"
+      quota_persistentvolumeclaims: "0"
+      quota_replicationcontrollers: "80"
+      quota_requests_storage: 0Gi
+      quota_services: "20"
+      container_max_memory: 2Gi
+      container_min_memory: 128Mi
+      container_max_cpu: 4Gi
+      container_min_cpu: 100m
+      container_default_cpu: 200m
+      container_default_memory: 512Mi
+      container_defaultRequest_cpu: 1m
+      container_defaultRequest_memory: 256Mi
+      pod_max_memory: 8Gi
+      pod_min_memory: 6Mi
+      pod_max_cpu: 2000m
+      pod_min_cpu: 1m
+
+
+ocpa2:
+  projects:
+    - project_name: a2-vuvsys-authorization
+      egress: no
+      adgroups:
+        admin: GFE_OCP_A2_VUVSYS_AUTHORIZATION_ADMIN
+        edit: GFE_OCP_A2_VUVSYS_AUTHORIZATION_EDIT
+        view: GFE_OCP_A2_VUVSYS_AUTHORIZATION_VIEW
+      quota_cpu: "1"
+      quota_memory: 8Gi
+      quota_pods: "20"
+      quota_configmaps: "30"
+      quota_persistentvolumeclaims: "0"
+      quota_replicationcontrollers: "80"
+      quota_requests_storage: 0Gi
+      quota_services: "20"
+      container_max_memory: 2Gi
+      container_min_memory: 128Mi
+      container_max_cpu: 4Gi
+      container_min_cpu: 100m
+      container_default_cpu: 200m
+      container_default_memory: 512Mi
+      container_defaultRequest_cpu: 1m
+      container_defaultRequest_memory: 256Mi
+      pod_max_memory: 8Gi
+      pod_min_memory: 6Mi
+      pod_max_cpu: 2000m
+      pod_min_cpu: 1m
+
+    - project_name: a2-vuvsys-contractmgt
+      egress: no
+      adgroups:
+        admin: GFE_OCP_A2_VUVSYS_CONTRACTMGT_ADMIN
+        edit: GFE_OCP_A2_VUVSYS_CONTRACTMGT_EDIT
+        view: GFE_OCP_A2_VUVSYS_CONTRACTMGT_VIEW
+      quota_cpu: "1"
+      quota_memory: 8Gi
+      quota_pods: "20"
+      quota_configmaps: "30"
+      quota_persistentvolumeclaims: "0"
+      quota_replicationcontrollers: "80"
+      quota_requests_storage: 0Gi
+      quota_services: "20"
+      container_max_memory: 2Gi
+      container_min_memory: 128Mi
+      container_max_cpu: 4Gi
+      container_min_cpu: 100m
+      container_default_cpu: 200m
+      container_default_memory: 512Mi
+      container_defaultRequest_cpu: 1m
+      container_defaultRequest_memory: 256Mi
+      pod_max_memory: 8Gi
+      pod_min_memory: 6Mi
+      pod_max_cpu: 2000m
+      pod_min_cpu: 1m
+
+    - project_name: a2-vuvsys-ecs
+      egress: no
+      adgroups:
+        admin: GFE_OCP_A2_VUVSYS_ECS_ADMIN
+        edit: GFE_OCP_A2_VUVSYS_ECS_EDIT
+        view: GFE_OCP_A2_VUVSYS_ECS_VIEW
+      quota_cpu: "1"
+      quota_memory: 8Gi
+      quota_pods: "20"
+      quota_configmaps: "30"
+      quota_persistentvolumeclaims: "0"
+      quota_replicationcontrollers: "80"
+      quota_requests_storage: 0Gi
+      quota_services: "20"
+      container_max_memory: 2Gi
+      container_min_memory: 128Mi
+      container_max_cpu: 4Gi
+      container_min_cpu: 100m
+      container_default_cpu: 200m
+      container_default_memory: 512Mi
+      container_defaultRequest_cpu: 1m
+      container_defaultRequest_memory: 256Mi
+      pod_max_memory: 8Gi
+      pod_min_memory: 6Mi
+      pod_max_cpu: 2000m
+      pod_min_cpu: 1m
+
+ocpp2:
+  projects:
+    - project_name: p2-vuvsys-authorization
+      egress: no
+      adgroups:
+        admin: GFE_OCP_P2_VUVSYS_AUTHORIZATION_ADMIN
+        edit: GFE_OCP_P2_VUVSYS_AUTHORIZATION_EDIT
+        view: GFE_OCP_P2_VUVSYS_AUTHORIZATION_VIEW
+      quota_cpu: "2"
+      quota_memory: 12Gi
+      quota_pods: "20"
+      quota_configmaps: "30"
+      quota_persistentvolumeclaims: "0"
+      quota_replicationcontrollers: "80"
+      quota_requests_storage: 0Gi
+      quota_services: "20"
+      container_max_memory: 2Gi
+      container_min_memory: 128Mi
+      container_max_cpu: 4Gi
+      container_min_cpu: 100m
+      container_default_cpu: 200m
+      container_default_memory: 512Mi
+      container_defaultRequest_cpu: 1m
+      container_defaultRequest_memory: 256Mi
+      pod_max_memory: 8Gi
+      pod_min_memory: 6Mi
+      pod_max_cpu: 2000m
+      pod_min_cpu: 1m
+
+    - project_name: p2-vuvsys-contractmgt
+      egress: no
+      adgroups:
+        admin: GFE_OCP_P2_VUVSYS_CONTRACTMGT_ADMIN
+        edit: GFE_OCP_P2_VUVSYS_CONTRACTMGT_EDIT
+        view: GFE_OCP_P2_VUVSYS_CONTRACTMGT_VIEW
+      quota_cpu: "2"
+      quota_memory: 12Gi
+      quota_pods: "20"
+      quota_configmaps: "30"
+      quota_persistentvolumeclaims: "0"
+      quota_replicationcontrollers: "80"
+      quota_requests_storage: 0Gi
+      quota_services: "20"
+      container_max_memory: 2Gi
+      container_min_memory: 128Mi
+      container_max_cpu: 4Gi
+      container_min_cpu: 100m
+      container_default_cpu: 200m
+      container_default_memory: 512Mi
+      container_defaultRequest_cpu: 1m
+      container_defaultRequest_memory: 256Mi
+      pod_max_memory: 8Gi
+      pod_min_memory: 6Mi
+      pod_max_cpu: 2000m
+      pod_min_cpu: 1m
+
+    - project_name: p2-vuvsys-ecs
+      egress: no
+      adgroups:
+        admin: GFE_OCP_P2_VUVSYS_ECS_ADMIN
+        edit: GFE_OCP_P2_VUVSYS_ECS_EDIT
+        view: GFE_OCP_P2_VUVSYS_ECS_VIEW
+      quota_cpu: "2"
+      quota_memory: 12Gi
+      quota_pods: "20"
+      quota_configmaps: "30"
+      quota_persistentvolumeclaims: "0"
+      quota_replicationcontrollers: "80"
+      quota_requests_storage: 0Gi
+      quota_services: "20"
+      container_max_memory: 2Gi
+      container_min_memory: 128Mi
+      container_max_cpu: 4Gi
+      container_min_cpu: 100m
+      container_default_cpu: 200m
+      container_default_memory: 512Mi
+      container_defaultRequest_cpu: 1m
+      container_defaultRequest_memory: 256Mi
+      pod_max_memory: 8Gi
+      pod_min_memory: 6Mi
+      pod_max_cpu: 2000m
+      pod_min_cpu: 1m

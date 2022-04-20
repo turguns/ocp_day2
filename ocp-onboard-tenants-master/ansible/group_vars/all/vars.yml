@@ -1,0 +1,66 @@
+
+satellite:
+  repositories:
+#  - ITERGO_prd-epel_repo-epel-latest-el-7-x86_64
+  - ITERGO_prd-itergo_3rd_party_repo-itergo_standard_3rd_party-latest-el-7-x86_64
+  - ITERGO_prd-itergo_3rd_party_repo-itergo_standard_3rd_party-latest-rhel-7-x86_64
+  - rhel-7-server-extras-rpms
+  - rhel-7-server-optional-rpms
+  - rhel-7-server-rpms
+  - rhel-7-server-satellite-tools-*-rpms
+  - rhel-7-server-supplementary-rpms
+  - rhel-server-rhscl-7-rpms
+#Openshift Cluster details
+ocp:
+  openshift_major_version: 4.8
+  openshift_minor_version: 26
+  architecture: x86_64
+  raw_proxy_url: https://nexus.services.eden/repository/raw-proxy
+  installer_file: openshift-install-linux-4.7.32.tar.gz
+  oc_client_file: openshift-client-linux-4.7.32.tar.gz
+  #installer_file_location: "http://10.2.27.43/download/openshift-install-linux-4.7.32.tar.gz"
+  #oc_client_file_location: "http://10.2.27.43/download/openshift-client-linux-4.7.32.tar.gz"
+  oc_client_file_location: "https://nexus.services.eden/repository/raw-proxy/pub/openshift-v4/clients/ocp/4.7.32/openshift-client-linux-4.7.32.tar.gz"
+  installer_file_location: "https://nexus.services.eden/repository/raw-proxy/pub/openshift-v4/clients/ocp/4.7.32/openshift-install-linux-4.7.32.tar.gz"
+  
+  ###### NETWORK UTILITY
+  httpd_port: 8080
+  console_timeout: 21600
+  operators:
+    - name: cluster-logging
+      channel: stable-5.2
+      namespace: openshift-logging
+    - name: compliance-operator
+      channel: release-0.1
+      namespace: openshift-compliance
+
+#CRIO-Logs configuration
+  containerlogmaxfiles: 5
+  containerlogmaxsize: "100Mi"
+
+#CLM configuration vars
+  clm:
+    endpoint: 10.6.113.134
+    port: 20444
+
+# Fluentd configurations for log rotation 
+  fluentD: 
+    ResourceMemory: 1500Mi
+    RequestMemory: 736Mi
+    RequestCPU: 200m 
+ 
+ # Service account for OMI user for scraping
+  omi:
+    service_account: lc-ocp-omi 
+
+#HaProxy and KeepAlived configuration variables
+haproxy:
+  ports:
+    - 22623
+    - 6443
+    - 443
+    - 80
+  services: 
+    - http
+    - https
+

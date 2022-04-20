@@ -1,0 +1,50 @@
+- name: Create project and project quota
+  template:
+    src: templates/project-quota-template.j2
+    dest: $HOME/project_onboarding-{{ item.project_name }}.json
+  loop: "{{ env.projects}}"
+
+- name: Apply manifests
+  k8s:
+    state: present
+    definition: "{{ lookup('file', item) | from_json }}"
+    verify_ssl: no
+  with_fileglob:
+   - "~/project_onboarding-*.json"
+
+- name: remove files
+  file:
+    state: absent
+    path: "{{ item }}"
+  with_fileglob:
+   - "~/project_onboarding-*.json"
+
+#  - name: deploy a web server
+#    k8s:
+#      api_version: v1
+#      verify_ssl: no
+#      namespace: "{{ item.project_name }}"
+#      definition:
+#        kind: Deployment
+#        metadata:
+#          labels:
+#            app: test-httpd
+#          name: test-httpd
+#        spec:
+#          replicas: 1
+#          selector:
+#            matchLabels:
+#              app: test-httpd
+#          template:
+#            metadata:
+#              labels:
+#                app: test-httpd
+#            spec:
+#              containers:
+#                - name: test-httpd
+#                  image: container-proxy.services.eden/turguns/httpd-24:latest
+#                  ports:
+#                    - containerPort: 80
+#                      protocol: TCP
+#    loop: "{{ env.projects}}"
+

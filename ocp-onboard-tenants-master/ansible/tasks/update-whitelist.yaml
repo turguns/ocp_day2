@@ -1,0 +1,38 @@
+- name: Fetch existing LDAP whitelisting groups
+  shell: "oc describe cm/ldap-group-sync-whitelist -n openshift-authentication | grep 'CN=' |sed -r 's/\\s+//g' > $HOME/groups && awk -F= '{print $NF}' $HOME/groups |uniq"
+  register: domain_name_internal
+- name: Fetch whitelisting groups from variables
+  shell: |-
+     {% for value in _values %}
+     echo "CN={{ value }},OU=Groups,OU=.Common,OU=IR,DC=corp,DC=domain_value" >> $HOME/groups
+     {% endfor %}
+     cat $HOME/groups |sort -u |uniq > $HOME/whitelist_groups
+  loop: "{{ env.projects }}"
+  vars:
+    _values: "{{ item.adgroups.values()|list }}"
+- name: Update domain and create variable for whitelisting groups
+  shell: sed -i "s/domain_value/{{ domain_name_internal.stdout }}/g" $HOME/whitelist_groups && cat $HOME/whitelist_groups
+  register: whitelist_groups
+#- debug:
+#    msg: "{{ whitelist_groups.stdout }}"
+- name: Update LDAP whitelisting configmap
+  k8s:
+    state: present
+    verify_ssl: no
+    definition:
+       kind: ConfigMap
+       apiVersion: v1
+       metadata:
+         name: ldap-group-sync-whitelist
+         namespace: openshift-authentication
+       data:
+         ldap-group-sync-whitelist.txt: |
+            {{ whitelist_groups.stdout }}
+- name: remove files
+  file:
+    state: absent
+    path: "{{ item }}"
+  with_items:
+    - $HOME/groups
+    - $HOME/whitelist_groups
+

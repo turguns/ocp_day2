@@ -1,0 +1,345 @@
+ocpl1:
+  projects:
+    - project_name: d1-zav-integration
+      egress: no
+      adgroups:
+        admin: GFE_OCP_D1_ZAV_INT_ADMIN
+        edit: GFE_OCP_D1_ZAV_INT_EDIT
+        view: GFE_OCP_D1_ZAV_INT_VIEW
+      quota_cpu: "5"
+      quota_memory: 50Gi
+      quota_pods: "300"
+      quota_configmaps: "600"
+      quota_persistentvolumeclaims: "20"
+      quota_replicationcontrollers: "80"
+      quota_requests_storage: 50Gi
+      quota_services: "200"
+      container_max_memory: 2Gi
+      container_min_memory: 128Mi
+      container_max_cpu: 4Gi
+      container_min_cpu: 100m
+      container_default_cpu: 200m
+      container_default_memory: 512Mi
+      container_defaultRequest_cpu: 1m
+      container_defaultRequest_memory: 256Mi
+      pod_max_memory: 8Gi
+      pod_min_memory: 6Mi
+      pod_max_cpu: 2000m
+      pod_min_cpu: 1m
+
+ocpd1:
+  projects:
+    - project_name: d1-zav-integration
+      egress: no
+      adgroups:
+        admin: GFE_OCP_D1_ZAV_INT_ADMIN
+        edit: GFE_OCP_D1_ZAV_INT_EDIT
+        view: GFE_OCP_D1_ZAV_INT_VIEW
+      quota_cpu: "5"
+      quota_memory: 50Gi
+      quota_pods: "300"
+      quota_configmaps: "600"
+      quota_persistentvolumeclaims: "20"
+      quota_replicationcontrollers: "80"
+      quota_requests_storage: 50Gi
+      quota_services: "200"
+      container_max_memory: 2Gi
+      container_min_memory: 128Mi
+      container_max_cpu: 4Gi
+      container_min_cpu: 100m
+      container_default_cpu: 200m
+      container_default_memory: 512Mi
+      container_defaultRequest_cpu: 1m
+      container_defaultRequest_memory: 256Mi
+      pod_max_memory: 8Gi
+      pod_min_memory: 6Mi
+      pod_max_cpu: 2000m
+      pod_min_cpu: 1m
+
+ocpf1:
+  projects:
+    - project_name: f1-zav-integration
+      egress: no
+      adgroups:
+        admin: GFE_OCP_F1_ZAV_INT_ADMIN
+        edit: GFE_OCP_F1_ZAV_INT_EDIT
+        view: GFE_OCP_F1_ZAV_INT_VIEW
+      quota_cpu: "5"
+      quota_memory: 50Gi
+      quota_pods: "300"
+      quota_configmaps: "600"
+      quota_persistentvolumeclaims: "0"
+      quota_replicationcontrollers: "80"
+      quota_requests_storage: 50Gi
+      quota_services: "200"
+      container_max_memory: 2Gi
+      container_min_memory: 128Mi
+      container_max_cpu: 4Gi
+      container_min_cpu: 100m
+      container_default_cpu: 200m
+      container_default_memory: 512Mi
+      container_defaultRequest_cpu: 1m
+      container_defaultRequest_memory: 256Mi
+      pod_max_memory: 8Gi
+      pod_min_memory: 6Mi
+      pod_max_cpu: 2000m
+      pod_min_cpu: 1m
+
+    - project_name: f1-zav-integration-b
+      egress: no
+      adgroups:
+        admin: GFE_OCP_F1_ZAV_INT_B_ADMIN
+        edit: GFE_OCP_F1_ZAV_INT_B_EDIT
+        view: GFE_OCP_F1_ZAV_INT_B_VIEW
+      quota_cpu: "5"
+      quota_memory: 50Gi
+      quota_pods: "300"
+      quota_configmaps: "600"
+      quota_persistentvolumeclaims: "0"
+      quota_replicationcontrollers: "80"
+      quota_requests_storage: 50Gi
+      quota_services: "200"
+      container_max_memory: 2Gi
+      container_min_memory: 128Mi
+      container_max_cpu: 4Gi
+      container_min_cpu: 100m
+      container_default_cpu: 200m
+      container_default_memory: 512Mi
+      container_defaultRequest_cpu: 1m
+      container_defaultRequest_memory: 256Mi
+      pod_max_memory: 8Gi
+      pod_min_memory: 6Mi
+      pod_max_cpu: 2000m
+      pod_min_cpu: 1m
+
+
+ocpa1:
+  projects:
+    - project_name: a1-zav-integration
+      egress: no
+      adgroups:
+        admin: GFE_OCP_A1_ZAV_INT_ADMIN
+        edit: GFE_OCP_A1_ZAV_INT_EDIT
+        view: GFE_OCP_A1_ZAV_INT_VIEW
+      quota_cpu: "15"
+      quota_memory: 150Gi
+      quota_pods: "900"
+      quota_configmaps: "600"
+      quota_persistentvolumeclaims: "0"
+      quota_replicationcontrollers: "80"
+      quota_requests_storage: 50Gi
+      quota_services: "200"
+      container_max_memory: 2Gi
+      container_min_memory: 128Mi
+      container_max_cpu: 4Gi
+      container_min_cpu: 100m
+      container_default_cpu: 200m
+      container_default_memory: 512Mi
+      container_defaultRequest_cpu: 1m
+      container_defaultRequest_memory: 256Mi
+      pod_max_memory: 8Gi
+      pod_min_memory: 6Mi
+      pod_max_cpu: 2000m
+      pod_min_cpu: 1m
+
+
+ocpp1:
+  projects:
+    - project_name: p1-zav-integration
+      egress: no
+      adgroups:
+        admin: GFE_OCP_P1_ZAV_INT_ADMIN
+        edit: GFE_OCP_P1_ZAV_INT_EDIT
+        view: GFE_OCP_P1_ZAV_INT_VIEW
+      quota_cpu: "15"
+      quota_memory: 150Gi
+      quota_pods: "900"
+      quota_configmaps: "600"
+      quota_persistentvolumeclaims: "0"
+      quota_replicationcontrollers: "80"
+      quota_requests_storage: 50Gi
+      quota_services: "200"
+      container_max_memory: 2Gi
+      container_min_memory: 128Mi
+      container_max_cpu: 4Gi
+      container_min_cpu: 100m
+      container_default_cpu: 200m
+      container_default_memory: 512Mi
+      container_defaultRequest_cpu: 1m
+      container_defaultRequest_memory: 256Mi
+      pod_max_memory: 8Gi
+      pod_min_memory: 6Mi
+      pod_max_cpu: 2000m
+      pod_min_cpu: 1m
+
+ocpl2:
+  projects:
+    - project_name: d2-zav-integration
+      egress: no
+      adgroups:
+        admin: GFE_OCP_D2_ZAV_INT_ADMIN
+        edit: GFE_OCP_D2_ZAV_INT_EDIT
+        view: GFE_OCP_D2_ZAV_INT_VIEW
+      quota_cpu: "2"
+      quota_memory: 10Gi
+      quota_pods: "50"
+      quota_configmaps: "50"
+      quota_persistentvolumeclaims: "0"
+      quota_replicationcontrollers: "0"
+      quota_requests_storage: 0
+      quota_services: "50"
+      container_max_memory: 2Gi
+      container_min_memory: 128Mi
+      container_max_cpu: 4Gi
+      container_min_cpu: 100m
+      container_default_cpu: 200m
+      container_default_memory: 512Mi
+      container_defaultRequest_cpu: 1m
+      container_defaultRequest_memory: 256Mi
+      pod_max_memory: 8Gi
+      pod_min_memory: 6Mi
+      pod_max_cpu: 2000m
+      pod_min_cpu: 1m
+
+ocpd2:
+  projects:
+    - project_name: d2-zav-integration
+      egress: no
+      adgroups:
+        admin: GFE_OCP_D2_ZAV_INT_ADMIN
+        edit: GFE_OCP_D2_ZAV_INT_EDIT
+        view: GFE_OCP_D2_ZAV_INT_VIEW
+      quota_cpu: "2"
+      quota_memory: 10Gi
+      quota_pods: "50"
+      quota_configmaps: "50"
+      quota_persistentvolumeclaims: "0"
+      quota_replicationcontrollers: "0"
+      quota_requests_storage: 0
+      quota_services: "50"
+      container_max_memory: 2Gi
+      container_min_memory: 128Mi
+      container_max_cpu: 4Gi
+      container_min_cpu: 100m
+      container_default_cpu: 200m
+      container_default_memory: 512Mi
+      container_defaultRequest_cpu: 1m
+      container_defaultRequest_memory: 256Mi
+      pod_max_memory: 8Gi
+      pod_min_memory: 6Mi
+      pod_max_cpu: 2000m
+      pod_min_cpu: 1m
+
+ocpf2:
+  projects:
+    - project_name: f2-zav-integration
+      egress: no
+      adgroups:
+        admin: GFE_OCP_F2_ZAV_INT_ADMIN
+        edit: GFE_OCP_F2_ZAV_INT_EDIT
+        view: GFE_OCP_F2_ZAV_INT_VIEW
+      quota_cpu: "2"
+      quota_memory: 10Gi
+      quota_pods: "50"
+      quota_configmaps: "50"
+      quota_persistentvolumeclaims: "0"
+      quota_replicationcontrollers: "0"
+      quota_requests_storage: 0
+      quota_services: "50"
+      container_max_memory: 2Gi
+      container_min_memory: 128Mi
+      container_max_cpu: 4Gi
+      container_min_cpu: 100m
+      container_default_cpu: 200m
+      container_default_memory: 512Mi
+      container_defaultRequest_cpu: 1m
+      container_defaultRequest_memory: 256Mi
+      pod_max_memory: 8Gi
+      pod_min_memory: 6Mi
+      pod_max_cpu: 2000m
+      pod_min_cpu: 1m
+
+    - project_name: f2-zav-integration-b
+      egress: no
+      adgroups:
+        admin: GFE_OCP_F2_ZAV_INT_B_ADMIN
+        edit: GFE_OCP_F2_ZAV_INT_B_EDIT
+        view: GFE_OCP_F2_ZAV_INT_B_VIEW
+      quota_cpu: "2"
+      quota_memory: 10Gi
+      quota_pods: "50"
+      quota_configmaps: "50"
+      quota_persistentvolumeclaims: "0"
+      quota_replicationcontrollers: "0"
+      quota_requests_storage: 0
+      quota_services: "50"
+      container_max_memory: 2Gi
+      container_min_memory: 128Mi
+      container_max_cpu: 4Gi
+      container_min_cpu: 100m
+      container_default_cpu: 200m
+      container_default_memory: 512Mi
+      container_defaultRequest_cpu: 1m
+      container_defaultRequest_memory: 256Mi
+      pod_max_memory: 8Gi
+      pod_min_memory: 6Mi
+      pod_max_cpu: 2000m
+      pod_min_cpu: 1m
+
+ocpa2:
+  projects:
+    - project_name: a2-zav-integration
+      egress: no
+      adgroups:
+        admin: GFE_OCP_A2_ZAV_INT_ADMIN
+        edit: GFE_OCP_A2_ZAV_INT_EDIT
+        view: GFE_OCP_A2_ZAV_INT_VIEW
+      quota_cpu: "3"
+      quota_memory: 15Gi
+      quota_pods: "100"
+      quota_configmaps: "50"
+      quota_persistentvolumeclaims: "0"
+      quota_replicationcontrollers: "0"
+      quota_requests_storage: 0
+      quota_services: "50"
+      container_max_memory: 2Gi
+      container_min_memory: 128Mi
+      container_max_cpu: 4Gi
+      container_min_cpu: 100m
+      container_default_cpu: 200m
+      container_default_memory: 512Mi
+      container_defaultRequest_cpu: 1m
+      container_defaultRequest_memory: 256Mi
+      pod_max_memory: 8Gi
+      pod_min_memory: 6Mi
+      pod_max_cpu: 2000m
+      pod_min_cpu: 1m
+
+ocpp2:
+  projects:
+    - project_name: p2-zav-integration
+      egress: no
+      adgroups:
+        admin: GFE_OCP_P2_ZAV_INT_ADMIN
+        edit: GFE_OCP_P2_ZAV_INT_EDIT
+        view: GFE_OCP_P2_ZAV_INT_VIEW
+      quota_cpu: "15"
+      quota_memory: 150Gi
+      quota_pods: "900"
+      quota_configmaps: "300"
+      quota_persistentvolumeclaims: "0"
+      quota_replicationcontrollers: "80"
+      quota_requests_storage: 0
+      quota_services: "200"
+      container_max_memory: 2Gi
+      container_min_memory: 128Mi
+      container_max_cpu: 4Gi
+      container_min_cpu: 100m
+      container_default_cpu: 200m
+      container_default_memory: 512Mi
+      container_defaultRequest_cpu: 1m
+      container_defaultRequest_memory: 256Mi
+      pod_max_memory: 8Gi
+      pod_min_memory: 6Mi
+      pod_max_cpu: 2000m
+      pod_min_cpu: 1m

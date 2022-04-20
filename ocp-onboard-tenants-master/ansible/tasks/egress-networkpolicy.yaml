@@ -1,0 +1,32 @@
+- name: template for network policy
+  debug:
+    msg: "{{  item.egress }}"
+  with_items:
+    - "{{ lookup('vars',cluster).projects }}"
+
+- name: template for network policy
+  template:
+    src: templates/networkpolicy.j2
+    dest: "$HOME/network-policy-egress-{{ item.project_name }}.yaml"
+  vars:
+    egress_namespace_name: ocp-egress
+    tenant_namespace_name: "{{ item.project_name }}"
+    tenant_egress_name: "egress-{{ item.project_name }}"
+  with_items:
+    - "{{ lookup('vars',cluster).projects }}"
+  when: item.egress 
+
+- name: create network policy
+  k8s:
+    state: present
+    definition: "{{ lookup('file', item) | from_yaml }}"
+    verify_ssl: no
+  with_fileglob:
+   - "~/network-policy-egress-*.yaml"
+
+- name: remove files
+  file:
+    state: absent
+    path: "{{ item }}"
+  with_fileglob:
+   - "~/network-policy-egress-*.yaml"

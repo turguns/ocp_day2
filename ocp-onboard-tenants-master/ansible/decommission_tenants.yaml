@@ -1,0 +1,12 @@
+- hosts: localhost
+  gather_facts: yes
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
+    env: "{{ lookup('vars', cluster) }}"
+  tasks:
+  - name: Remove rolebinding
+    include: tasks/rolebindings-remove.yaml
+  - name: Remove Ldap Groups
+    include: tasks/ldap-groups-remove.yaml
+  - name: Delete Project
+    include: tasks/project-decommissioning.yaml

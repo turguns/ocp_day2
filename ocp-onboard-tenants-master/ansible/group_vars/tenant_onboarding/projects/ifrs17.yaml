@@ -1,0 +1,146 @@
+ocpl1:
+  projects:
+    - project_name: d1-ifrs17-itbb
+      egress: no
+      adgroups:
+        admin: GFE_OCP_D1_IFRS17_ITBB_ADMIN
+        edit: GFE_OCP_D1_IFRS17_ITBB_EDIT
+        view: GFE_OCP_D1_IFRS17_ITBB_VIEW
+      quota_cpu: "16"
+      quota_memory: 120Gi
+      quota_pods: "600"
+      quota_configmaps: "600"
+      quota_persistentvolumeclaims: "20"
+      quota_replicationcontrollers: "96"
+      quota_requests_storage: 50Gi
+      quota_services: "600"
+      container_max_memory: 2Gi
+      container_min_memory: 128Mi
+      container_max_cpu: 4Gi
+      container_min_cpu: 100m
+      container_default_cpu: 200m
+      container_default_memory: 512Mi
+      container_defaultRequest_cpu: 1m
+      container_defaultRequest_memory: 256Mi
+      pod_max_memory: 8Gi
+      pod_min_memory: 6Mi
+      pod_max_cpu: 2000m
+      pod_min_cpu: 1m
+
+ocpd1:
+  projects:
+    - project_name: d1-ifrs17-itbb
+      egress: no
+      adgroups:
+        admin: GFE_OCP_D1_IFRS17_ITBB_ADMIN
+        edit: GFE_OCP_D1_IFRS17_ITBB_EDIT
+        view: GFE_OCP_D1_IFRS17_ITBB_VIEW
+      quota_cpu: "16"
+      quota_memory: 120Gi
+      quota_pods: "600"
+      quota_configmaps: "600"
+      quota_persistentvolumeclaims: "20"
+      quota_replicationcontrollers: "96"
+      quota_requests_storage: 50Gi
+      quota_services: "600"
+      container_max_memory: 2Gi
+      container_min_memory: 128Mi
+      container_max_cpu: 4Gi
+      container_min_cpu: 100m
+      container_default_cpu: 200m
+      container_default_memory: 512Mi
+      container_defaultRequest_cpu: 1m
+      container_defaultRequest_memory: 256Mi
+      pod_max_memory: 8Gi
+      pod_min_memory: 6Mi
+      pod_max_cpu: 2000m
+      pod_min_cpu: 1m
+
+
+ocpf1:
+  projects:
+    - project_name: f1-ifrs17-itbb
+      egress: no
+      adgroups:
+        admin: GFE_OCP_F1_IFRS17_ITBB_ADMIN
+        edit: GFE_OCP_F1_IFRS17_ITBB_EDIT
+        view: GFE_OCP_F1_IFRS17_ITBB_VIEW
+      quota_cpu: "16"
+      quota_memory: 120Gi
+      quota_pods: "600"
+      quota_configmaps: "600"
+      quota_persistentvolumeclaims: "20"
+      quota_replicationcontrollers: "96"
+      quota_requests_storage: 50Gi
+      quota_services: "600"
+      container_max_memory: 2Gi
+      container_min_memory: 128Mi
+      container_max_cpu: 4Gi
+      container_min_cpu: 100m
+      container_default_cpu: 200m
+      container_default_memory: 512Mi
+      container_defaultRequest_cpu: 1m
+      container_defaultRequest_memory: 256Mi
+      pod_max_memory: 8Gi
+      pod_min_memory: 6Mi
+      pod_max_cpu: 2000m
+      pod_min_cpu: 1m
+
+
+ocpa1:
+  projects:
+    - project_name: a1-ifrs17-itbb
+      egress: no
+      adgroups:
+        admin: GFE_OCP_A1_IFRS17_ITBB_ADMIN
+        edit: GFE_OCP_A1_IFRS17_ITBB_EDIT
+        view: GFE_OCP_A1_IFRS17_ITBB_VIEW
+      quota_cpu: "20"
+      quota_memory: 150Gi
+      quota_pods: "600"
+      quota_configmaps: "600"
+      quota_persistentvolumeclaims: "20"
+      quota_replicationcontrollers: "96"
+      quota_requests_storage: 50Gi
+      quota_services: "600"
+      container_max_memory: 2Gi
+      container_min_memory: 128Mi
+      container_max_cpu: 4Gi
+      container_min_cpu: 100m
+      container_default_cpu: 200m
+      container_default_memory: 512Mi
+      container_defaultRequest_cpu: 1m
+      container_defaultRequest_memory: 256Mi
+      pod_max_memory: 8Gi
+      pod_min_memory: 6Mi
+      pod_max_cpu: 2000m
+      pod_min_cpu: 1m
+
+ocpp1:
+  projects:
+    - project_name: p1-ifrs17-itbb
+      egress: no
+      adgroups:
+        admin: GFE_OCP_P1_IFRS17_ITBB_ADMIN
+        edit: GFE_OCP_P1_IFRS17_ITBB_EDIT
+        view: GFE_OCP_P1_IFRS17_ITBB_VIEW
+      quota_cpu: "20"
+      quota_memory: 150Gi
+      quota_pods: "600"
+      quota_configmaps: "600"
+      quota_persistentvolumeclaims: "20"
+      quota_replicationcontrollers: "96"
+      quota_requests_storage: 50Gi
+      quota_services: "600"
+      container_max_memory: 2Gi
+      container_min_memory: 128Mi
+      container_max_cpu: 4Gi
+      container_min_cpu: 100m
+      container_default_cpu: 200m
+      container_default_memory: 512Mi
+      container_defaultRequest_cpu: 1m
+      container_defaultRequest_memory: 256Mi
+      pod_max_memory: 8Gi
+      pod_min_memory: 6Mi
+      pod_max_cpu: 2000m
+      pod_min_cpu: 1m

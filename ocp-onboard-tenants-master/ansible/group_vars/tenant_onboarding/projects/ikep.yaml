@@ -1,0 +1,1007 @@
+ocpl1:
+  projects:
+    - project_name: d1-ikc-ifrs17
+      egress: no
+      adgroups:
+        admin: GFE_OCP_D1_IKC_IFRS17_ADMIN
+        edit: GFE_OCP_D1_IKC_IFRS17_EDIT
+      quota_cpu: "12"
+      quota_memory: 25Gi
+      quota_pods: "80"
+      quota_configmaps: "200"
+      quota_persistentvolumeclaims: "20"
+      quota_replicationcontrollers: "80"
+      quota_requests_storage: 20Gi
+      quota_services: "100"
+      container_max_memory: 2Gi
+      container_min_memory: 128Mi
+      container_max_cpu: 4Gi
+      container_min_cpu: 100m
+      container_default_cpu: 200m
+      container_default_memory: 512Mi
+      container_defaultRequest_cpu: 1m
+      container_defaultRequest_memory: 256Mi
+      pod_max_memory: 8Gi
+      pod_min_memory: 6Mi
+      pod_max_cpu: 2000m
+      pod_min_cpu: 1m
+
+    - project_name: d1-ikc-ikep
+      egress: no
+      adgroups:
+        admin: GFE_OCP_D1_IKC_IKEP_ADMIN
+        edit: GFE_OCP_D1_IKC_IKEP_EDIT
+      quota_cpu: "3"
+      quota_memory: 10Gi
+      quota_pods: "50"
+      quota_configmaps: "20"
+      quota_persistentvolumeclaims: "20"
+      quota_replicationcontrollers: "80"
+      quota_requests_storage: 0Gi
+      quota_services: "100"
+      container_max_memory: 2Gi
+      container_min_memory: 128Mi
+      container_max_cpu: 4Gi
+      container_min_cpu: 100m
+      container_default_cpu: 200m
+      container_default_memory: 512Mi
+      container_defaultRequest_cpu: 1m
+      container_defaultRequest_memory: 256Mi
+      pod_max_memory: 8Gi
+      pod_min_memory: 6Mi
+      pod_max_cpu: 2000m
+      pod_min_cpu: 1m
+
+    - project_name: d1-ikc-zav
+      egress: no
+      adgroups:
+        admin: GFE_OCP_D1_IKC_ZAV_ADMIN
+        edit: GFE_OCP_D1_IKC_ZAV_EDIT
+      quota_cpu: "10"
+      quota_memory: 24Gi
+      quota_pods: "50"
+      quota_configmaps: "50"
+      quota_persistentvolumeclaims: "20"
+      quota_replicationcontrollers: "80"
+      quota_requests_storage: 20Gi
+      quota_services: "50"
+      container_max_memory: 2Gi
+      container_min_memory: 128Mi
+      container_max_cpu: 4Gi
+      container_min_cpu: 100m
+      container_default_cpu: 200m
+      container_default_memory: 512Mi
+      container_defaultRequest_cpu: 1m
+      container_defaultRequest_memory: 256Mi
+      pod_max_memory: 8Gi
+      pod_min_memory: 6Mi
+      pod_max_cpu: 2000m
+      pod_min_cpu: 1m
+
+    - project_name: d1-ikc-mlk
+      egress: no
+      adgroups:
+        admin: GFE_OCP_D1_IKC_MLK_ADMIN
+        edit: GFE_OCP_D1_IKC_MLK_EDIT
+      quota_cpu: "3"
+      quota_memory: 5Gi
+      quota_pods: "15"
+      quota_configmaps: "40"
+      quota_persistentvolumeclaims: "20"
+      quota_replicationcontrollers: "80"
+      quota_requests_storage: 20Gi
+      quota_services: "14"
+      container_max_memory: 2Gi
+      container_min_memory: 128Mi
+      container_max_cpu: 4Gi
+      container_min_cpu: 100m
+      container_default_cpu: 200m
+      container_default_memory: 512Mi
+      container_defaultRequest_cpu: 1m
+      container_defaultRequest_memory: 256Mi
+      pod_max_memory: 8Gi
+      pod_min_memory: 6Mi
+      pod_max_cpu: 2000m
+      pod_min_cpu: 1m
+
+    - project_name: d1-ikep-lab
+      egress: no
+      adgroups:
+        admin: GFE_OCP_D1_IKEP_LAB_ADMIN
+      quota_cpu: "3"
+      quota_memory: 15Gi
+      quota_pods: "50"
+      quota_configmaps: "50"
+      quota_persistentvolumeclaims: "20"
+      quota_replicationcontrollers: "80"
+      quota_requests_storage: 20Gi
+      quota_services: "30"
+      container_max_memory: 2Gi
+      container_min_memory: 128Mi
+      container_max_cpu: 4Gi
+      container_min_cpu: 100m
+      container_default_cpu: 200m
+      container_default_memory: 512Mi
+      container_defaultRequest_cpu: 1m
+      container_defaultRequest_memory: 256Mi
+      pod_max_memory: 8Gi
+      pod_min_memory: 6Mi
+      pod_max_cpu: 2000m
+      pod_min_cpu: 1m
+
+    - project_name: d1-ikep-reg
+      egress: no
+      adgroups:
+        admin: GFE_OCP_D1_IKEP_REG_ADMIN
+      quota_cpu: "3"
+      quota_memory: 15Gi
+      quota_pods: "50"
+      quota_configmaps: "50"
+      quota_persistentvolumeclaims: "50"
+      quota_replicationcontrollers: "80"
+      quota_requests_storage: 50Gi
+      quota_services: "30"
+      container_max_memory: 2Gi
+      container_min_memory: 128Mi
+      container_max_cpu: 4Gi
+      container_min_cpu: 100m
+      container_default_cpu: 200m
+      container_default_memory: 512Mi
+      container_defaultRequest_cpu: 1m
+      container_defaultRequest_memory: 256Mi
+      pod_max_memory: 8Gi
+      pod_min_memory: 6Mi
+      pod_max_cpu: 2000m
+      pod_min_cpu: 1m
+
+    - project_name: d1-ikep-kc
+      egress: no
+      adgroups:
+        admin: GFE_OCP_D1_IKEP_KC_ADMIN
+        edit: GFE_OCP_D1_IKEP_KC_EDIT
+        view: GFE_OCP_D1_IKEP_KC_VIEW
+      quota_cpu: "30"
+      quota_memory: 60Gi
+      quota_pods: "120"
+      quota_configmaps: "180"
+      quota_persistentvolumeclaims: "20"
+      quota_replicationcontrollers: "80"
+      quota_requests_storage: 20Gi
+      quota_services: "120"
+      container_max_memory: 2Gi
+      container_min_memory: 128Mi
+      container_max_cpu: 4Gi
+      container_min_cpu: 100m
+      container_default_cpu: 200m
+      container_default_memory: 512Mi
+      container_defaultRequest_cpu: 1m
+      container_defaultRequest_memory: 256Mi
+      pod_max_memory: 8Gi
+      pod_min_memory: 6Mi
+      pod_max_cpu: 2000m
+      pod_min_cpu: 1m
+
+    - project_name: d1-ikep
+      egress: no
+      adgroups:
+        admin: GFE_OCP_D1_IKEP_ADMIN
+        edit: GFE_OCP_D1_IKEP_EDIT
+        view: GFE_OCP_D1_IKEP_VIEW
+      quota_cpu: "5"
+      quota_memory: 30Gi
+      quota_pods: "100"
+      quota_configmaps: "100"
+      quota_persistentvolumeclaims: "50"
+      quota_replicationcontrollers: "80"
+      quota_requests_storage: 50Gi
+      quota_services: "30"
+      container_max_memory: 2Gi
+      container_min_memory: 128Mi
+      container_max_cpu: 4Gi
+      container_min_cpu: 100m
+      container_default_cpu: 200m
+      container_default_memory: 512Mi
+      container_defaultRequest_cpu: 1m
+      container_defaultRequest_memory: 256Mi
+      pod_max_memory: 8Gi
+      pod_min_memory: 6Mi
+      pod_max_cpu: 2000m
+      pod_min_cpu: 1m
+
+    - project_name: d1-ikc-sales
+      egress: no
+      adgroups:
+        admin: GFE_OCP_D1_IKC_SALES_ADMIN
+        edit: GFE_OCP_D1_IKC_SALES_EDIT
+      quota_cpu: "10"
+      quota_memory: 24Gi
+      quota_pods: "70"
+      quota_configmaps: "100"
+      quota_persistentvolumeclaims: "50"
+      quota_replicationcontrollers: "80"
+      quota_requests_storage: 0Gi
+      quota_services: "50"
+      container_max_memory: 2Gi
+      container_min_memory: 128Mi
+      container_max_cpu: 4Gi
+      container_min_cpu: 100m
+      container_default_cpu: 200m
+      container_default_memory: 512Mi
+      container_defaultRequest_cpu: 1m
+      container_defaultRequest_memory: 256Mi
+      pod_max_memory: 8Gi
+      pod_min_memory: 6Mi
+      pod_max_cpu: 2000m
+      pod_min_cpu: 1m
+
+ocpd1:
+  projects:
+    - project_name: d1-ikc-ifrs17
+      egress: no
+      adgroups:
+        admin: GFE_OCP_D1_IKC_IFRS17_ADMIN
+        edit: GFE_OCP_D1_IKC_IFRS17_EDIT
+      quota_cpu: "12"
+      quota_memory: 25Gi
+      quota_pods: "80"
+      quota_configmaps: "200"
+      quota_persistentvolumeclaims: "20"
+      quota_replicationcontrollers: "80"
+      quota_requests_storage: 20Gi
+      quota_services: "100"
+      container_max_memory: 2Gi
+      container_min_memory: 128Mi
+      container_max_cpu: 4Gi
+      container_min_cpu: 100m
+      container_default_cpu: 200m
+      container_default_memory: 512Mi
+      container_defaultRequest_cpu: 1m
+      container_defaultRequest_memory: 256Mi
+      pod_max_memory: 8Gi
+      pod_min_memory: 6Mi
+      pod_max_cpu: 2000m
+      pod_min_cpu: 1m
+
+    - project_name: d1-ikc-ikep
+      egress: no
+      adgroups:
+        admin: GFE_OCP_D1_IKC_IKEP_ADMIN
+        edit: GFE_OCP_D1_IKC_IKEP_EDIT
+      quota_cpu: "3"
+      quota_memory: 10Gi
+      quota_pods: "50"
+      quota_configmaps: "20"
+      quota_persistentvolumeclaims: "20"
+      quota_replicationcontrollers: "80"
+      quota_requests_storage: 0Gi
+      quota_services: "100"
+      container_max_memory: 2Gi
+      container_min_memory: 128Mi
+      container_max_cpu: 4Gi
+      container_min_cpu: 100m
+      container_default_cpu: 200m
+      container_default_memory: 512Mi
+      container_defaultRequest_cpu: 1m
+      container_defaultRequest_memory: 256Mi
+      pod_max_memory: 8Gi
+      pod_min_memory: 6Mi
+      pod_max_cpu: 2000m
+      pod_min_cpu: 1m
+
+    - project_name: d1-ikc-zav
+      egress: no
+      adgroups:
+        admin: GFE_OCP_D1_IKC_ZAV_ADMIN
+        edit: GFE_OCP_D1_IKC_ZAV_EDIT
+      quota_cpu: "10"
+      quota_memory: 24Gi
+      quota_pods: "50"
+      quota_configmaps: "50"
+      quota_persistentvolumeclaims: "20"
+      quota_replicationcontrollers: "80"
+      quota_requests_storage: 20Gi
+      quota_services: "50"
+      container_max_memory: 2Gi
+      container_min_memory: 128Mi
+      container_max_cpu: 4Gi
+      container_min_cpu: 100m
+      container_default_cpu: 200m
+      container_default_memory: 512Mi
+      container_defaultRequest_cpu: 1m
+      container_defaultRequest_memory: 256Mi
+      pod_max_memory: 8Gi
+      pod_min_memory: 6Mi
+      pod_max_cpu: 2000m
+      pod_min_cpu: 1m
+
+    - project_name: d1-ikc-mlk
+      egress: no
+      adgroups:
+        admin: GFE_OCP_D1_IKC_MLK_ADMIN
+        edit: GFE_OCP_D1_IKC_MLK_EDIT
+      quota_cpu: "3"
+      quota_memory: 5Gi
+      quota_pods: "15"
+      quota_configmaps: "40"
+      quota_persistentvolumeclaims: "20"
+      quota_replicationcontrollers: "80"
+      quota_requests_storage: 20Gi
+      quota_services: "14"
+      container_max_memory: 2Gi
+      container_min_memory: 128Mi
+      container_max_cpu: 4Gi
+      container_min_cpu: 100m
+      container_default_cpu: 200m
+      container_default_memory: 512Mi
+      container_defaultRequest_cpu: 1m
+      container_defaultRequest_memory: 256Mi
+      pod_max_memory: 8Gi
+      pod_min_memory: 6Mi
+      pod_max_cpu: 2000m
+      pod_min_cpu: 1m
+
+    - project_name: d1-ikep-lab
+      egress: no
+      adgroups:
+        admin: GFE_OCP_D1_IKEP_LAB_ADMIN
+      quota_cpu: "3"
+      quota_memory: 15Gi
+      quota_pods: "50"
+      quota_configmaps: "50"
+      quota_persistentvolumeclaims: "20"
+      quota_replicationcontrollers: "80"
+      quota_requests_storage: 20Gi
+      quota_services: "30"
+      container_max_memory: 2Gi
+      container_min_memory: 128Mi
+      container_max_cpu: 4Gi
+      container_min_cpu: 100m
+      container_default_cpu: 200m
+      container_default_memory: 512Mi
+      container_defaultRequest_cpu: 1m
+      container_defaultRequest_memory: 256Mi
+      pod_max_memory: 8Gi
+      pod_min_memory: 6Mi
+      pod_max_cpu: 2000m
+      pod_min_cpu: 1m
+
+    - project_name: d1-ikep-reg
+      egress: no
+      adgroups:
+        admin: GFE_OCP_D1_IKEP_REG_ADMIN 
+      quota_cpu: "3"
+      quota_memory: 15Gi
+      quota_pods: "50"
+      quota_configmaps: "50"
+      quota_persistentvolumeclaims: "50"
+      quota_replicationcontrollers: "80"
+      quota_requests_storage: 50Gi
+      quota_services: "30"
+      container_max_memory: 2Gi
+      container_min_memory: 128Mi
+      container_max_cpu: 4Gi
+      container_min_cpu: 100m
+      container_default_cpu: 200m
+      container_default_memory: 512Mi
+      container_defaultRequest_cpu: 1m
+      container_defaultRequest_memory: 256Mi
+      pod_max_memory: 8Gi
+      pod_min_memory: 6Mi
+      pod_max_cpu: 2000m
+      pod_min_cpu: 1m
+
+    - project_name: d1-ikep-kc
+      egress: no
+      adgroups:
+        admin: GFE_OCP_D1_IKEP_KC_ADMIN
+        edit: GFE_OCP_D1_IKEP_KC_EDIT
+        view: GFE_OCP_D1_IKEP_KC_VIEW
+      quota_cpu: "30"
+      quota_memory: 60Gi
+      quota_pods: "120"
+      quota_configmaps: "180"
+      quota_persistentvolumeclaims: "20"
+      quota_replicationcontrollers: "80"
+      quota_requests_storage: 20Gi
+      quota_services: "120"
+      container_max_memory: 2Gi
+      container_min_memory: 128Mi
+      container_max_cpu: 4Gi
+      container_min_cpu: 100m
+      container_default_cpu: 200m
+      container_default_memory: 512Mi
+      container_defaultRequest_cpu: 1m
+      container_defaultRequest_memory: 256Mi
+      pod_max_memory: 8Gi
+      pod_min_memory: 6Mi
+      pod_max_cpu: 2000m
+      pod_min_cpu: 1m
+
+    - project_name: d1-ikep
+      egress: no
+      adgroups:
+        admin: GFE_OCP_D1_IKEP_ADMIN
+        edit: GFE_OCP_D1_IKEP_EDIT
+        view: GFE_OCP_D1_IKEP_VIEW
+      quota_cpu: "5"
+      quota_memory: 30Gi
+      quota_pods: "100"
+      quota_configmaps: "100"
+      quota_persistentvolumeclaims: "50"
+      quota_replicationcontrollers: "80"
+      quota_requests_storage: 50Gi
+      quota_services: "30"
+      container_max_memory: 2Gi
+      container_min_memory: 128Mi
+      container_max_cpu: 4Gi
+      container_min_cpu: 100m
+      container_default_cpu: 200m
+      container_default_memory: 512Mi
+      container_defaultRequest_cpu: 1m
+      container_defaultRequest_memory: 256Mi
+      pod_max_memory: 8Gi
+      pod_min_memory: 6Mi
+      pod_max_cpu: 2000m
+      pod_min_cpu: 1m
+
+    - project_name: d1-ikc-sales
+      egress: no
+      adgroups:
+        admin: GFE_OCP_D1_IKC_SALES_ADMIN
+        edit: GFE_OCP_D1_IKC_SALES_EDIT
+      quota_cpu: "10"
+      quota_memory: 24Gi
+      quota_pods: "70"
+      quota_configmaps: "100"
+      quota_persistentvolumeclaims: "50"
+      quota_replicationcontrollers: "80"
+      quota_requests_storage: 0Gi
+      quota_services: "50"
+      container_max_memory: 2Gi
+      container_min_memory: 128Mi
+      container_max_cpu: 4Gi
+      container_min_cpu: 100m
+      container_default_cpu: 200m
+      container_default_memory: 512Mi
+      container_defaultRequest_cpu: 1m
+      container_defaultRequest_memory: 256Mi
+      pod_max_memory: 8Gi
+      pod_min_memory: 6Mi
+      pod_max_cpu: 2000m
+      pod_min_cpu: 1m
+
+ocpf1:
+  projects:
+    - project_name: f1-ikep
+      egress: no
+      adgroups:
+        admin: GFE_OCP_F1_IKEP_ADMIN
+        edit: GFE_OCP_F1_IKEP_EDIT
+        view: GFE_OCP_F1_IKEP_VIEW
+      quota_cpu: "5"
+      quota_memory: 30Gi
+      quota_pods: "100"
+      quota_configmaps: "100"
+      quota_persistentvolumeclaims: "50"
+      quota_replicationcontrollers: "80"
+      quota_requests_storage: 50Gi
+      quota_services: "30"
+      container_max_memory: 2Gi
+      container_min_memory: 128Mi
+      container_max_cpu: 4Gi
+      container_min_cpu: 100m
+      container_default_cpu: 200m
+      container_default_memory: 512Mi
+      container_defaultRequest_cpu: 1m
+      container_defaultRequest_memory: 256Mi
+      pod_max_memory: 8Gi
+      pod_min_memory: 6Mi
+      pod_max_cpu: 2000m
+      pod_min_cpu: 1m
+
+    - project_name: f1-ikep-kc
+      egress: no
+      adgroups:
+        admin: GFE_OCP_F1_IKEP_KC_ADMIN
+        edit: GFE_OCP_F1_IKEP_KC_EDIT
+        view: GFE_OCP_F1_IKEP_KC_VIEW
+      quota_cpu: "40"
+      quota_memory: 90Gi
+      quota_pods: "160"
+      quota_configmaps: "300"
+      quota_persistentvolumeclaims: "20"
+      quota_replicationcontrollers: "80"
+      quota_requests_storage: 20Gi
+      quota_services: "150"
+      container_max_memory: 2Gi
+      container_min_memory: 128Mi
+      container_max_cpu: 4Gi
+      container_min_cpu: 100m
+      container_default_cpu: 200m
+      container_default_memory: 512Mi
+      container_defaultRequest_cpu: 1m
+      container_defaultRequest_memory: 256Mi
+      pod_max_memory: 8Gi
+      pod_min_memory: 6Mi
+      pod_max_cpu: 2000m
+      pod_min_cpu: 1m
+
+    - project_name: f1-ikep-kc-b
+      egress: no
+      adgroups:
+        admin: GFE_OCP_F1_IKEP_KC_B_ADMIN
+        edit: GFE_OCP_F1_IKEP_KC_B_EDIT
+        view: GFE_OCP_F1_IKEP_KC_B_VIEW
+      quota_cpu: "5"
+      quota_memory: 25Gi
+      quota_pods: "35"
+      quota_configmaps: "75"
+      quota_persistentvolumeclaims: "20"
+      quota_replicationcontrollers: "80"
+      quota_requests_storage: 20Gi
+      quota_services: "50"
+      container_max_memory: 2Gi
+      container_min_memory: 128Mi
+      container_max_cpu: 4Gi
+      container_min_cpu: 100m
+      container_default_cpu: 200m
+      container_default_memory: 512Mi
+      container_defaultRequest_cpu: 1m
+      container_defaultRequest_memory: 256Mi
+      pod_max_memory: 8Gi
+      pod_min_memory: 6Mi
+      pod_max_cpu: 2000m
+      pod_min_cpu: 1m
+
+    - project_name: f1-ikc-sales-b
+      egress: no
+      adgroups:
+        admin: GFE_OCP_F1_IKC_SALES_B_ADMIN
+        edit: GFE_OCP_F1_IKC_SALES_B_EDIT
+        view: GFE_OCP_F1_IKC_SALES_B_VIEW
+      quota_cpu: "5"
+      quota_memory: 25Gi
+      quota_pods: "70"
+      quota_configmaps: "75"
+      quota_persistentvolumeclaims: "20"
+      quota_replicationcontrollers: "80"
+      quota_requests_storage: 0Gi
+      quota_services: "50"
+      container_max_memory: 2Gi
+      container_min_memory: 128Mi
+      container_max_cpu: 4Gi
+      container_min_cpu: 100m
+      container_default_cpu: 200m
+      container_default_memory: 512Mi
+      container_defaultRequest_cpu: 1m
+      container_defaultRequest_memory: 256Mi
+      pod_max_memory: 8Gi
+      pod_min_memory: 6Mi
+      pod_max_cpu: 2000m
+      pod_min_cpu: 1m
+
+    - project_name: f1-ikc-ifrs17
+      egress: no
+      adgroups:
+        admin: GFE_OCP_F1_IKC_IFRS17_ADMIN
+        edit: GFE_OCP_F1_IKC_IFRS17_EDIT
+        view: GFE_OCP_F1_IKC_IFRS17_VIEW
+      quota_cpu: "20"
+      quota_memory: 40Gi
+      quota_pods: "60"
+      quota_configmaps: "100"
+      quota_persistentvolumeclaims: "20"
+      quota_replicationcontrollers: "80"
+      quota_requests_storage: 0Gi
+      quota_services: "60"
+      container_max_memory: 2Gi
+      container_min_memory: 128Mi
+      container_max_cpu: 4Gi
+      container_min_cpu: 100m
+      container_default_cpu: 200m
+      container_default_memory: 512Mi
+      container_defaultRequest_cpu: 1m
+      container_defaultRequest_memory: 256Mi
+      pod_max_memory: 8Gi
+      pod_min_memory: 6Mi
+      pod_max_cpu: 2000m
+      pod_min_cpu: 1m
+
+    - project_name: f1-ikc-ikep
+      egress: no
+      adgroups:
+        admin: GFE_OCP_F1_IKC_IKEP_ADMIN
+      quota_cpu: "5"
+      quota_memory: 6Gi
+      quota_pods: "20"
+      quota_configmaps: "60"
+      quota_persistentvolumeclaims: "20"
+      quota_replicationcontrollers: "80"
+      quota_requests_storage: 0Gi
+      quota_services: "15"
+      container_max_memory: 2Gi
+      container_min_memory: 128Mi
+      container_max_cpu: 4Gi
+      container_min_cpu: 100m
+      container_default_cpu: 200m
+      container_default_memory: 512Mi
+      container_defaultRequest_cpu: 1m
+      container_defaultRequest_memory: 256Mi
+      pod_max_memory: 8Gi
+      pod_min_memory: 6Mi
+      pod_max_cpu: 2000m
+      pod_min_cpu: 1m
+
+    - project_name: f1-ikc-mlk
+      egress: no
+      adgroups:
+        admin: GFE_OCP_F1_IKC_MLK_ADMIN
+        edit: GFE_OCP_F1_IKC_MLK_EDIT
+        view: GFE_OCP_F1_IKC_MLK_VIEW
+      quota_cpu: "5"
+      quota_memory: 4Gi
+      quota_pods: "20"
+      quota_configmaps: "40"
+      quota_persistentvolumeclaims: "20"
+      quota_replicationcontrollers: "80"
+      quota_requests_storage: 0Gi
+      quota_services: "15"
+      container_max_memory: 2Gi
+      container_min_memory: 128Mi
+      container_max_cpu: 4Gi
+      container_min_cpu: 100m
+      container_default_cpu: 200m
+      container_default_memory: 512Mi
+      container_defaultRequest_cpu: 1m
+      container_defaultRequest_memory: 256Mi
+      pod_max_memory: 8Gi
+      pod_min_memory: 6Mi
+      pod_max_cpu: 2000m
+      pod_min_cpu: 1m
+
+    - project_name: f1-ikc-sales
+      egress: no
+      adgroups:
+        admin: GFE_OCP_F1_IKC_SALES_ADMIN
+        edit: GFE_OCP_F1_IKC_SALES_EDIT
+        view: GFE_OCP_F1_IKC_SALES_VIEW
+      quota_cpu: "10"
+      quota_memory: 40Gi
+      quota_pods: "60"
+      quota_configmaps: "100"
+      quota_persistentvolumeclaims: "20"
+      quota_replicationcontrollers: "80"
+      quota_requests_storage: 0Gi
+      quota_services: "60"
+      container_max_memory: 2Gi
+      container_min_memory: 128Mi
+      container_max_cpu: 4Gi
+      container_min_cpu: 100m
+      container_default_cpu: 200m
+      container_default_memory: 512Mi
+      container_defaultRequest_cpu: 1m
+      container_defaultRequest_memory: 256Mi
+      pod_max_memory: 8Gi
+      pod_min_memory: 6Mi
+      pod_max_cpu: 2000m
+      pod_min_cpu: 1m
+
+
+ocpa1:
+  projects:
+    - project_name: a1-ikep
+      egress: no
+      adgroups:
+        admin: GFE_OCP_A1_IKEP_ADMIN
+        edit: GFE_OCP_A1_IKEP_EDIT
+        view: GFE_OCP_A1_IKEP_VIEW
+      quota_cpu: "30"
+      quota_memory: 70Gi
+      quota_pods: "150"
+      quota_configmaps: "150"
+      quota_persistentvolumeclaims: "50"
+      quota_replicationcontrollers: "80"
+      quota_requests_storage: 50Gi
+      quota_services: "30"
+      container_max_memory: 2Gi
+      container_min_memory: 128Mi
+      container_max_cpu: 4Gi
+      container_min_cpu: 100m
+      container_default_cpu: 200m
+      container_default_memory: 512Mi
+      container_defaultRequest_cpu: 1m
+      container_defaultRequest_memory: 256Mi
+      pod_max_memory: 8Gi
+      pod_min_memory: 6Mi
+      pod_max_cpu: 2000m
+      pod_min_cpu: 1m
+
+    - project_name: a1-ikep-kc
+      egress: no
+      adgroups:
+        admin: GFE_OCP_A1_IKEP_KC_ADMIN
+        edit: GFE_OCP_A1_IKEP_KC_EDIT
+        view: GFE_OCP_A1_IKEP_KC_VIEW
+      quota_cpu: "30"
+      quota_memory: 50Gi
+      quota_pods: "100"
+      quota_configmaps: "180"
+      quota_persistentvolumeclaims: "20"
+      quota_replicationcontrollers: "80"
+      quota_requests_storage: 20Gi
+      quota_services: "80"
+      container_max_memory: 2Gi
+      container_min_memory: 128Mi
+      container_max_cpu: 4Gi
+      container_min_cpu: 100m
+      container_default_cpu: 200m
+      container_default_memory: 512Mi
+      container_defaultRequest_cpu: 1m
+      container_defaultRequest_memory: 256Mi
+      pod_max_memory: 8Gi
+      pod_min_memory: 6Mi
+      pod_max_cpu: 2000m
+      pod_min_cpu: 1m
+
+    - project_name: a1-ikc-ifrs17
+      egress: no
+      adgroups:
+        admin: GFE_OCP_A1_IKC_IFRS17_ADMIN
+        view: GFE_OCP_A1_IKC_IFRS17_VIEW
+      quota_cpu: "13"
+      quota_memory: 20Gi
+      quota_pods: "35"
+      quota_configmaps: "60"
+      quota_persistentvolumeclaims: "20"
+      quota_replicationcontrollers: "80"
+      quota_requests_storage: 0Gi
+      quota_services: "25"
+      container_max_memory: 2Gi
+      container_min_memory: 128Mi
+      container_max_cpu: 4Gi
+      container_min_cpu: 100m
+      container_default_cpu: 200m
+      container_default_memory: 512Mi
+      container_defaultRequest_cpu: 1m
+      container_defaultRequest_memory: 256Mi
+      pod_max_memory: 8Gi
+      pod_min_memory: 6Mi
+      pod_max_cpu: 2000m
+      pod_min_cpu: 1m
+
+    - project_name: a1-ikc-ikep
+      egress: no
+      adgroups:
+        admin: GFE_OCP_A1_IKC_IKEP_ADMIN
+      quota_cpu: "3"
+      quota_memory: 6Gi
+      quota_pods: "15"
+      quota_configmaps: "30"
+      quota_persistentvolumeclaims: "20"
+      quota_replicationcontrollers: "80"
+      quota_requests_storage: 0Gi
+      quota_services: "6"
+      container_max_memory: 2Gi
+      container_min_memory: 128Mi
+      container_max_cpu: 4Gi
+      container_min_cpu: 100m
+      container_default_cpu: 200m
+      container_default_memory: 512Mi
+      container_defaultRequest_cpu: 1m
+      container_defaultRequest_memory: 256Mi
+      pod_max_memory: 8Gi
+      pod_min_memory: 6Mi
+      pod_max_cpu: 2000m
+      pod_min_cpu: 1m
+
+    - project_name: a1-ikc-mlk
+      egress: no
+      adgroups:
+        admin: GFE_OCP_A1_IKC_MLK_ADMIN
+        view: GFE_OCP_A1_IKC_MLK_VIEW
+      quota_cpu: "3"
+      quota_memory: 5Gi
+      quota_pods: "15"
+      quota_configmaps: "30"
+      quota_persistentvolumeclaims: "20"
+      quota_replicationcontrollers: "80"
+      quota_requests_storage: 0Gi
+      quota_services: "5"
+      container_max_memory: 2Gi
+      container_min_memory: 128Mi
+      container_max_cpu: 4Gi
+      container_min_cpu: 100m
+      container_default_cpu: 200m
+      container_default_memory: 512Mi
+      container_defaultRequest_cpu: 1m
+      container_defaultRequest_memory: 256Mi
+      pod_max_memory: 8Gi
+      pod_min_memory: 6Mi
+      pod_max_cpu: 2000m
+      pod_min_cpu: 1m
+
+    - project_name: a1-ikc-sales
+      egress: no
+      adgroups:
+        admin: GFE_OCP_A1_IKC_SALES_ADMIN
+        view: GFE_OCP_A1_IKC_SALES_VIEW
+      quota_cpu: "11"
+      quota_memory: 19Gi
+      quota_pods: "70"
+      quota_configmaps: "75"
+      quota_persistentvolumeclaims: "20"
+      quota_replicationcontrollers: "80"
+      quota_requests_storage: 0Gi
+      quota_services: "44"
+      container_max_memory: 2Gi
+      container_min_memory: 128Mi
+      container_max_cpu: 4Gi
+      container_min_cpu: 100m
+      container_default_cpu: 200m
+      container_default_memory: 512Mi
+      container_defaultRequest_cpu: 1m
+      container_defaultRequest_memory: 256Mi
+      pod_max_memory: 8Gi
+      pod_min_memory: 6Mi
+      pod_max_cpu: 2000m
+      pod_min_cpu: 1m
+
+ocpp1:
+  projects:
+    - project_name: p1-ikep
+      egress: no
+      adgroups:
+        admin: GFE_OCP_P1_IKEP_ADMIN
+        edit: GFE_OCP_P1_IKEP_EDIT
+        view: GFE_OCP_P1_IKEP_VIEW
+      quota_cpu: "10"
+      quota_memory: 300Gi
+      quota_pods: "100"
+      quota_configmaps: "100"
+      quota_persistentvolumeclaims: "50"
+      quota_replicationcontrollers: "80"
+      quota_requests_storage: 50Gi
+      quota_services: "30"
+      container_max_memory: 2Gi
+      container_min_memory: 128Mi
+      container_max_cpu: 4Gi
+      container_min_cpu: 100m
+      container_default_cpu: 200m
+      container_default_memory: 512Mi
+      container_defaultRequest_cpu: 1m
+      container_defaultRequest_memory: 256Mi
+      pod_max_memory: 8Gi
+      pod_min_memory: 6Mi
+      pod_max_cpu: 2000m
+      pod_min_cpu: 1m
+
+    - project_name: p1-ikep-kc
+      egress: no
+      adgroups:
+        admin: GFE_OCP_P1_IKEP_KC_ADMIN
+        edit: GFE_OCP_P1_IKEP_KC_EDIT
+        view: GFE_OCP_P1_IKEP_KC_VIEW
+      quota_cpu: "30"
+      quota_memory: 50Gi
+      quota_pods: "100"
+      quota_configmaps: "180"
+      quota_persistentvolumeclaims: "20"
+      quota_replicationcontrollers: "80"
+      quota_requests_storage: 20Gi
+      quota_services: "80"
+      container_max_memory: 2Gi
+      container_min_memory: 128Mi
+      container_max_cpu: 4Gi
+      container_min_cpu: 100m
+      container_default_cpu: 200m
+      container_default_memory: 512Mi
+      container_defaultRequest_cpu: 1m
+      container_defaultRequest_memory: 256Mi
+      pod_max_memory: 8Gi
+      pod_min_memory: 6Mi
+      pod_max_cpu: 2000m
+      pod_min_cpu: 1m
+
+    - project_name: p1-ikc-ifrs17
+      egress: no
+      adgroups:
+        admin: GFE_OCP_P1_IKC_IFRS17_ADMIN
+        view: GFE_OCP_P1_IKC_IFRS17_VIEW
+      quota_cpu: "13"
+      quota_memory: 20Gi
+      quota_pods: "35"
+      quota_configmaps: "60"
+      quota_persistentvolumeclaims: "20"
+      quota_replicationcontrollers: "80"
+      quota_requests_storage: 0Gi
+      quota_services: "25"
+      container_max_memory: 2Gi
+      container_min_memory: 128Mi
+      container_max_cpu: 4Gi
+      container_min_cpu: 100m
+      container_default_cpu: 200m
+      container_default_memory: 512Mi
+      container_defaultRequest_cpu: 1m
+      container_defaultRequest_memory: 256Mi
+      pod_max_memory: 8Gi
+      pod_min_memory: 6Mi
+      pod_max_cpu: 2000m
+      pod_min_cpu: 1m
+
+    - project_name: p1-ikc-ikep
+      egress: no
+      adgroups:
+        admin: GFE_OCP_P1_IKC_IKEP_ADMIN
+      quota_cpu: "3"
+      quota_memory: 6Gi
+      quota_pods: "15"
+      quota_configmaps: "30"
+      quota_persistentvolumeclaims: "20"
+      quota_replicationcontrollers: "80"
+      quota_requests_storage: 0Gi
+      quota_services: "6"
+      container_max_memory: 2Gi
+      container_min_memory: 128Mi
+      container_max_cpu: 4Gi
+      container_min_cpu: 100m
+      container_default_cpu: 200m
+      container_default_memory: 512Mi
+      container_defaultRequest_cpu: 1m
+      container_defaultRequest_memory: 256Mi
+      pod_max_memory: 8Gi
+      pod_min_memory: 6Mi
+      pod_max_cpu: 2000m
+      pod_min_cpu: 1m
+
+    - project_name: p1-ikc-mlk
+      egress: no
+      adgroups:
+        admin: GFE_OCP_P1_IKC_MLK_ADMIN
+        view: GFE_OCP_P1_IKC_MLK_VIEW
+      quota_cpu: "3"
+      quota_memory: 5Gi
+      quota_pods: "15"
+      quota_configmaps: "30"
+      quota_persistentvolumeclaims: "20"
+      quota_replicationcontrollers: "80"
+      quota_requests_storage: 0Gi
+      quota_services: "5"
+      container_max_memory: 2Gi
+      container_min_memory: 128Mi
+      container_max_cpu: 4Gi
+      container_min_cpu: 100m
+      container_default_cpu: 200m
+      container_default_memory: 512Mi
+      container_defaultRequest_cpu: 1m
+      container_defaultRequest_memory: 256Mi
+      pod_max_memory: 8Gi
+      pod_min_memory: 6Mi
+      pod_max_cpu: 2000m
+      pod_min_cpu: 1m
+
+    - project_name: p1-ikc-sales
+      egress: no
+      adgroups:
+        admin: GFE_OCP_P1_IKC_SALES_ADMIN
+        view: GFE_OCP_P1_IKC_SALES_VIEW
+      quota_cpu: "11"
+      quota_memory: 19Gi
+      quota_pods: "70"
+      quota_configmaps: "75"
+      quota_persistentvolumeclaims: "20"
+      quota_replicationcontrollers: "80"
+      quota_requests_storage: 0Gi
+      quota_services: "44"
+      container_max_memory: 2Gi
+      container_min_memory: 128Mi
+      container_max_cpu: 4Gi
+      container_min_cpu: 100m
+      container_default_cpu: 200m
+      container_default_memory: 512Mi
+      container_defaultRequest_cpu: 1m
+      container_defaultRequest_memory: 256Mi
+      pod_max_memory: 8Gi
+      pod_min_memory: 6Mi
+      pod_max_cpu: 2000m
+      pod_min_cpu: 1m
+

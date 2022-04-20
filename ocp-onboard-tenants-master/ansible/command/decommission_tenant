@@ -1,0 +1,1 @@
+ansible-playbook decommission_tenants.yaml -e cluster=<cluster_name> -e @group_vars/tenant_onboarding/projects/<project>.yaml
