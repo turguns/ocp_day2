@@ -1,0 +1,20 @@
+apiVersion: v1
+data:
+  config: |
+    [Global]
+    secret-name = "vsphere-creds"
+    secret-namespace = "kube-system"
+    insecure-flag = "1"
+
+    [Workspace]
+    server = "{{ VMWARE_HOST }}"
+    datacenter = "{{ datacenter }}"
+    default-datastore = "{{ datastore }}"
+    folder = "{{ parent_folder }}/{{ cluster_name }}"
+
+    [VirtualCenter "{{ VMWARE_HOST }}"]
+    datacenters = "{{ datacenter }}"
+kind: ConfigMap
+metadata:
+  name: cloud-provider-config
+  namespace: openshift-config

@@ -1,0 +1,159 @@
+### Os Patching ###
+- name: Pre-OS patching details
+  vars:
+    msg: |
+          Hostname "{{ ansible_fqdn }}"
+          Date "{{ ansible_date_time.date }}-{{ ansible_date_time.hour}}:{{ ansible_date_time.minute}}:{{ansible_date_time.second}}"
+          Kernel Version "{{ ansible_kernel }}"
+          OS Version "{{ ansible_distribution_version }}"
+  debug:
+     msg: "{{ msg.split('\n') }}"
+
+- name: Clear yum cache before patching
+  command: /usr/bin/yum --enablerepo=* clean all
+  become: yes
+
+- name: Set RHEL version to "{{rhel_version|default("none")}}"
+  shell: |
+    subscription-manager release --set="{{rhel_version}}"
+  register: release
+  until: release is not failed
+  retries: 3
+  delay: 5
+  when:
+    - patching == "os"
+    - rhel_version is defined
+  become: yes
+  
+- name: Waiting until RHEL version changes to "{{rhel_version|default("none")}}"
+  shell: |
+    subscription-manager release
+  register: result
+  until: result.stdout.find(rhel_version) != -1
+  retries: 60
+  delay: 5
+  when:
+    - patching == "os"
+    - rhel_version is defined
+  become: yes
+
+- name: Refresh Subscription Manager
+  shell: "subscription-manager refresh"
+  register: result
+  until: result is not failed
+  retries: 3
+  delay: 5
+  become: yes
+
+- name: Checking if haproxy is installed
+  package:
+   name: haproxy
+   state: present
+  check_mode: true
+  ignore_errors: true
+  register: check_pkg_haproxy
+  become: yes
+
+- name: Checking if keepalived is installed
+  package:
+   name: keepalived
+   state: present
+  check_mode: true
+  ignore_errors: true
+  register: check_pkg_keepalive
+  become: yes
+
+- name: Checking for YUM updates when patching == "os"
+  yum:
+    name: '*'
+    state: latest
+    download_only: true
+    disablerepo: "*"
+    enablerepo: "{{ satellite.repositories | reject ('search', reject_repo | default('-FALSE-')) | list }}"
+  register: result
+  until: result is not failed
+  retries: 3
+  delay: 5
+  when: patching == "os"
+  become: yes
+
+- name: Stop haproxy
+  service:
+    name: "{{haproxy.systemd.service_name}}"
+    state: stopped
+  ignore_errors: yes
+  when: check_pkg_haproxy is succeeded
+  become: yes
+
+- name: Stop keepalive
+  service:
+    name: "{{keepalive.systemd.service_name}}"
+    state: stopped
+  ignore_errors: yes
+  when: check_pkg_keepalive is succeeded
+  become: yes
+
+- meta: flush_handlers
+
+- name: YUM update when patching == "os"
+  yum:
+    name: '*'
+    state: latest
+    disablerepo: "*"
+    enablerepo: "{{ satellite.repositories | reject ('search', reject_repo | default('-FALSE-')) | list }}"
+  notify:
+    - Reboot host
+    - Waiting for host to reboot
+  register: result
+  until: result is not failed
+  retries: 3
+  delay: 5
+  when: patching == "os"
+  become: yes
+
+- meta: flush_handlers
+
+- name: Start haproxy
+  service:
+    name: "{{haproxy.systemd.service_name}}"
+    state: started
+  ignore_errors: yes
+  when: check_pkg_haproxy is succeeded
+  become: yes
+
+- name: Start keepalive
+  service:
+    name: "{{keepalive.systemd.service_name}}"
+    state: started
+  ignore_errors: yes
+  when: check_pkg_keepalive is succeeded
+  become: yes
+
+- name: Clear yum cache after patching
+  command: /usr/bin/yum --enablerepo=* clean all
+  become: yes
+
+# Disabling below services as per INC612169
+- name: Disable RHEL services
+  systemd:
+    name: "{{item}}"
+    enabled: "no"
+  with_items:
+    - rhel-autorelabel-mark
+    - rhel-autorelabel
+    - rhel-configure
+    - rhel-loadmodules
+  become: yes
+
+- name: do facts module to get latest information
+  setup:
+- name: Post-OS patching details
+  vars:
+    msg: |
+          Hostname "{{ ansible_fqdn }}"
+          Date "{{ ansible_date_time.date }}-{{ ansible_date_time.hour}}:{{ ansible_date_time.minute}}:{{ansible_date_time.second}}"
+          Kernel Version "{{ ansible_kernel }}"
+          OS Version "{{ ansible_distribution_version }}"
+  debug:
+     msg: "{{ msg.split('\n') }}"
+### End of Os Patching ###

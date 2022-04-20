@@ -1,0 +1,38 @@
+- name: Create egress namespace
+  shell: oc new-project ocp-egress && oc patch namespace ocp-egress -p   '{"metadata":{"annotations":{"node-role.kubernetes.io/infra":""}}}' && oc patch namespace ocp-egress -p   '{"metadata":{"annotations":{"openshift.io/node-selector":""}}}';
+  ignore_errors: yes
+
+- name: Create config map
+  k8s:
+    state: present
+    namespace: ocp-egress
+    definition: "{{ lookup('template', 'egress-route-config.j2') }}"
+    verify_ssl: no
+- name: Create service account
+  k8s:
+    state: present
+    namespace: ocp-egress
+    definition: "{{ lookup('template', 'egress-sa.j2') }}"
+    verify_ssl: no
+- name: Set Privileged role for service account
+  shell:  oc adm policy add-scc-to-user privileged -z egress
+
+- name: Create Egress priority
+  k8s:
+    state: present
+    namespace: ocp-egress
+    definition: "{{ lookup('template', 'egress-priority.j2') }}"
+    verify_ssl: no
+- name: Create Replication controller
+  k8s:
+    state: present
+    namespace: ocp-egress
+    definition: "{{ lookup('template', 'egress-replication_controller.j2') }}"
+    verify_ssl: no
+
+- name: Create Service
+  k8s:
+    state: present
+    namespace: ocp-egress
+    definition: "{{ lookup('template', 'egress-services.j2') }}"
+    verify_ssl: no

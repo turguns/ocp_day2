@@ -1,0 +1,47 @@
+{% if domain_name|string() == "services.ergo" %}
+[req]
+default_bits = 2048
+prompt = no
+default_md = sha256
+req_extensions = req_ext
+distinguished_name = req_distinguished_name
+
+[req_distinguished_name]
+C = DE
+ST = NRW
+L = Duesseldorf
+O = ERGO
+OU =ITERGO
+CN = api.{{ cluster_name }}.{{ domain_name }}
+
+[req_ext]
+extendedKeyUsage = serverAuth, clientAuth
+subjectAltName = @alt_names
+
+[alt_names]
+DNS.0 = api.{{ cluster_name }}.{{ domain_name }}
+
+{% else  %}
+[req]
+default_bits = 2048
+prompt = no
+default_md = sha256
+req_extensions = req_ext
+distinguished_name = req_distinguished_name
+
+[req_distinguished_name]
+C = DE
+ST = NRW
+L = No Liability accepted
+O = Usage in Production Environments prohibited.
+OU = For Testing/Evalualtion Purposes only.
+CN = api.{{ cluster_name }}.{{ domain_name }}
+
+[req_ext]
+extendedKeyUsage = serverAuth, clientAuth
+subjectAltName = @alt_names
+
+[alt_names]
+DNS.0 = api.{{ cluster_name }}.{{ domain_name }}
+
+{% endif %}

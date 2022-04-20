@@ -1,0 +1,43 @@
+127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4
+::1         localhost localhost.localdomain localhost6 localhost6.localdomain6
+#OCPL1 nodes:
+10.2.29.120 ocpie0l11011.ocpl1.services.eden 
+10.2.29.121 ocpie0l11022.ocpl1.services.eden
+10.2.29.122 ocpie0l11031.ocpl1.services.eden
+10.2.29.124 ocpie0l12011.ocpl1.services.eden
+#10.2.29.125 ocpie0l12022.ocpl1.services.eden
+10.2.29.123 ocpie0l16011.ocpl1.services.eden
+10.2.29.169 ocpie0l16022.ocpl1.services.eden
+10.2.29.176 ocpie0l16031.ocpl1.services.eden 
+10.2.29.125 new-worker.ocpl1.services.eden
+#OCPD1 nodes:
+10.2.29.109 ocpie0d11011.ocpd1.services.eden
+10.2.29.110 ocpie0d11022.ocpd1.services.eden
+10.2.29.111 ocpie0d11031.ocpd1.services.eden
+10.2.29.112 ocpie0d12011.ocpd1.services.eden
+10.2.29.113 ocpie0d12022.ocpd1.services.eden
+10.2.29.114 ocpie0d12031.ocpd1.services.eden
+10.2.29.115 ocpie0d12042.ocpd1.services.eden
+10.2.29.116 ocpie0d12051.ocpd1.services.eden
+10.2.29.117 ocpie0d12062.ocpd1.services.eden
+10.2.29.171 ocpie0d16011.ocpd1.services.eden
+10.2.29.172 ocpie0d16022.ocpd1.services.eden
+10.2.29.173 ocpie0d16031.ocpd1.services.eden
+#OCPF1 nodes
+10.2.27.164 OCPIE0F11011.ocpf1.services.eden
+10.2.27.186 OCPIE0F11022.ocpf1.services.eden
+10.2.27.191 OCPIE0F11031.ocpf1.services.eden
+10.2.27.199 OCPIE0F16011.ocpf1.services.eden
+10.2.27.203 OCPIE0F16022.ocpf1.services.eden
+10.2.27.229 OCPIE0F16031.ocpf1.services.eden
+10.2.27.240 OCPIE0F12011.ocpf1.services.eden
+10.2.27.241 OCPIE0F12022.ocpf1.services.eden
+10.2.27.250 OCPIE0F12031.ocpf1.services.eden
+10.2.27.251 OCPIE0F12042.ocpf1.services.eden
+10.2.27.252 OCPIE0F12051.ocpf1.services.eden
+10.2.27.253 OCPIE0F12062.ocpf1.services.eden
+#test
+10.2.19.108 api.ocpt1.services.eden
+10.2.19.108 oauth-openshift.apps.ocpt1.services.eden
+#
+

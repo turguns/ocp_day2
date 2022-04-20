@@ -1,0 +1,2 @@
+- name: enabling openshift-authentication pods log level debug mode
+  shell: oc patch authentications.operator.openshift.io/cluster --type merge -p '{"spec":{"logLevel":"Debug"}}'

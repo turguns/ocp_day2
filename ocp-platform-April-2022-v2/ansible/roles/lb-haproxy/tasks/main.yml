@@ -1,0 +1,80 @@
+---
+# tasks file for lb-haproxy
+- name: installing haproxy and keepalived packages
+  yum:
+   name: "{{ item }}"
+   state: latest
+  loop:
+    - "{{ packages }}"
+
+- name: starting firewalld service
+  service:
+   name: "{{ item }}" 
+   state: started
+   enabled: yes
+  with_items:
+   - "{{ firewall_services }}"
+
+- name: firewalld service enabled
+  firewalld: 
+   service: "{{ item }}"
+   permanent: yes
+   immediate: yes
+   state: enabled
+#  with_items:
+#   - "{{ haproxy_services }}"
+  loop: "{{ haproxy.services }}"
+    
+
+- name: firewalld port enabled
+  firewalld:
+   port: "{{ item }}/tcp"
+   permanent: yes
+   immediate: yes
+   state: enabled
+#  with_items:
+#   - "{{ haproxy_ports }}"
+  loop: "{{ haproxy.ports }}"
+
+- name: filewalld rich-rule adding
+  firewalld:
+   rich_rule: rule protocol value=vrrp accept
+   permanent: yes
+   immediate: yes
+   state: enabled
+
+- name: tunning sysctl profile for nonlocal ip bind  
+  sysctl:
+    name: net.ipv4.ip_nonlocal_bind
+    value: '1'
+    sysctl_set: yes
+    state: present
+    reload: yes
+
+- name: configuring  haproxy service
+  template:
+   src: lb-haproxy.j2
+   dest: /etc/haproxy/haproxy.cfg
+   backup: yes
+
+- name: configuring keepalived service for master haproxy node
+  template:
+   src: keepalived-master.j2
+   dest: /etc/keepalived/keepalived.conf
+   backup: yes
+  when: ( inventory_hostname in groups ['haproxy-master'] )
+
+- name: configuring keepalived service for backup haproxy node
+  template:
+   src: keepalived-slave.j2
+   dest: /etc/keepalived/keepalived.conf
+   backup: yes
+  when: ( inventory_hostname in groups ['haproxy-slave'] )
+
+- name: starting and enabling haproxy and keepalived services
+  service:
+   name: "{{ item }}"
+   state: restarted
+   enabled: yes
+  with_items:
+    - "{{ services }}"

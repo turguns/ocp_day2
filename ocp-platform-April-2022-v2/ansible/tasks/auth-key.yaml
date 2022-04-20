@@ -1,0 +1,9 @@
+- name: Create ssh directory
+  file:
+    path: $HOME/.ssh
+    state: directory
+- name: Copy SSH key 
+  template:
+    src: "id_rsa.j2"
+    dest: "$HOME/.ssh/id_rsa"
+    mode: '0600'

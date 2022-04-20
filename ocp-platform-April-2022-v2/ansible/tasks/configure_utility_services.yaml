@@ -1,0 +1,87 @@
+- name: Configure http proxy settings
+  block:
+  - name: Add http_proxy setting into /etc/profile
+    lineinfile:
+      dest: /etc/profile
+      line: export http_proxy={{ http_proxy }}
+      state: present
+  - name: Add https_proxy setting into /etc/profile
+    lineinfile:
+      dest: /etc/profile
+      line: export https_proxy={{ http_proxy }}
+      state: present
+  - name: Add no_proxy setting into /etc/profile
+    lineinfile:
+      dest: /etc/profile
+      line: export no_proxy=.{{ domain_name }},.{{ cluster_name }}.{{ domain_name }},{{ (ansible_default_ipv4.network + "/" + ansible_default_ipv4.netmask) | ipaddr('net') }},localhost,127.0.0.1
+      state: present
+  when: http_proxy is defined and http_proxy != ""
+- name: Configure the insecure registry
+  template:
+    src: registries.j2
+    dest: /etc/containers/registries.conf
+- name: Ensure podman restarted
+  service:
+    name: podman
+    state: restarted
+- name: Ensure container images of network services are pulled
+  command: podman pull "{{ item }}"
+  with_items:
+  - "{{ haproxy_image }}"
+  - "{{ httpd_image }}"
+  register: result
+  until: result is succeeded
+  retries: 2
+#- name: Copy ocp installer from bastion to utility
+#  copy:
+#    src: "{{ ocp.installer_file_location }}"
+#    dest: /tmp
+#    mode: 0755
+#- name: Extract Openshift installer
+#  unarchive:
+#    src: "/tmp/{{ ocp.installer_file }}"
+#    dest: /usr/local/bin
+#    creates: /usr/local/bin/openshift-installer
+#    remote_src: yes
+#
+#- name: Copy ocp installer from bastion to utility
+#  copy:
+#    src: "{{ ocp.installer_file_location }}"
+#    dest: /tmp
+#    mode: 0755
+
+- name: Download OpenShift installer
+  get_url:
+#    url: "{{ ocp.installer_file_location }}"
+    url: "{{ installer_artifacts_url }}/{{ ocp.openshift_major_version }}.{{ ocp.openshift_minor_version }}/openshift-install-linux-{{ ocp.openshift_major_version }}.{{ ocp.openshift_minor_version }}.tar.gz"
+    username: '{{ nexus_user }}'
+    password: '{{ nexus_password }}'
+    dest: $HOME
+    mode: 0755
+    validate_certs: no
+- name: Extract Openshift installer
+  unarchive:
+    src: "$HOME/openshift-install-linux-{{ ocp.openshift_major_version }}.{{ ocp.openshift_minor_version }}.tar.gz"
+    dest: /usr/local/bin
+    creates: /usr/local/bin/openshift-installer
+    remote_src: yes
+#- name: Copy oc client file from bastion to utility
+#  copy:
+#    src: "{{ ocp.oc_client_file_location }}"
+#    dest: /tmp
+#    mode: 0755
+- name: Download OpenShift client
+  get_url:
+    url: "{{ installer_artifacts_url }}/{{ ocp.openshift_major_version }}.{{ ocp.openshift_minor_version }}/openshift-client-linux-{{ ocp.openshift_major_version }}.{{ ocp.openshift_minor_version }}.tar.gz"
+    username: '{{ nexus_user }}'
+    password: '{{ nexus_password }}'
+    dest: $HOME
+    mode: 0755
+    validate_certs: no
+- name: Extract Openshift client
+  unarchive:
+    src: "$HOME/openshift-client-linux-{{ ocp.openshift_major_version }}.{{ ocp.openshift_minor_version }}.tar.gz"
+    dest: /usr/local/bin
+    creates: /usr/local/bin/oc
+    remote_src: yes
+

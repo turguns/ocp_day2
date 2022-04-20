@@ -1,0 +1,86 @@
+---
+- hosts: localhost
+  gather_facts: no
+  vars:
+    ssh_private_key:  "{{ lookup('file', '{{ auth_private_key_path }}') }}"
+  tasks:
+  - include: tasks/auth-key.yaml
+
+- hosts: ocp[0] 
+  remote_user: core
+  become: yes
+  tasks:
+  - name: Ensure the directory is not present
+    file:
+      path: /root/emergency
+      state: absent
+
+  - name: Create directories for emergency access
+    file:
+      path: /root/emergency/secret
+      state: directory
+
+  - name: Create temporary kubeconfig file for controller-manager
+    shell: oc adm create-kubeconfig --kubeconfig temp-kubeconfig --master=https://localhost:6443 --client-certificate /etc/kubernetes/static-pod-resources/kube-controller-manager-certs/secrets/kube-controller-manager-client-cert-key/tls.crt --client-key /etc/kubernetes/static-pod-resources/kube-controller-manager-certs/secrets/kube-controller-manager-client-cert-key/tls.key --certificate-authority /etc/kubernetes/static-pod-resources/kube-apiserver-certs/secrets/localhost-serving-cert-certkey/tls.crt
+    args:
+     chdir: /root/emergency
+
+  - name: Verify if the temporary kubeconfig file working
+    shell: oc whoami; oc get nodes
+    environment:
+      KUBECONFIG: /root/emergency/temp-kubeconfig
+    register: verify
+  - debug:
+      msg: "{{ verify.stdout }}"
+
+  - name: Extract control plane secret
+    shell: 'oc -n openshift-kube-apiserver-operator extract secret/kube-control-plane-signer --to=/root/emergency/secret/'
+    environment:
+      KUBECONFIG: /root/emergency/temp-kubeconfig
+
+  - name: Generate a Self Signed OpenSSL certificate
+    shell: openssl genrsa -out system:admin.key 4096
+    args:
+     chdir: /root/emergency
+
+  - name: Generate CSR
+    shell: openssl req -new -sha256 -key '/root/emergency/system:admin.key' -subj "/O=system:cluster-admins/CN=system:admin" -out '/root/emergency/system:admin.csr'
+
+  - name: Create X509 certificate
+    shell: openssl x509 -req -in '/root/emergency/system:admin.csr' -CA /root/emergency/secret/tls.crt -CAkey /root/emergency/secret/tls.key -CAcreateserial -out '/root/emergency/system:admin.crt' -days "{{ days }}" -sha256
+
+  - name: Create local-system-admin kubeconfig
+    shell: oc adm create-kubeconfig --kubeconfig /root/emergency/localhost-system-admin.kubeconfig --master=https://localhost:6443 --client-certificate '/root/emergency/system:admin.crt' --client-key '/root/emergency/system:admin.key' --certificate-authority /etc/kubernetes/static-pod-resources/kube-apiserver-certs/secrets/localhost-serving-cert-certkey/tls.crt
+
+  - name: Fetch API URL
+    shell: oc get infrastructure/cluster -o 'template=\{\{.status.apiServerInternalURI\}\}'
+    register: API_URL
+    environment:
+      KUBECONFIG: /root/emergency/localhost-system-admin.kubeconfig
+
+  - name: Remove internal-system-admin kubeconfig file if present already
+    file: 
+      path: /var/home/core/internal-system-admin.kubeconfig
+      state: absent
+      
+  - name: Create internal-system-admin kubeconfig
+    shell: oc adm create-kubeconfig --kubeconfig /var/home/core/internal-system-admin.kubeconfig --master=$(oc describe infrastructure cluster |grep "API Server Internal URI"  |awk '{print $NF}') --client-certificate '/root/emergency/system:admin.crt' --client-key '/root/emergency/system:admin.key' --certificate-authority /etc/kubernetes/static-pod-resources/kube-apiserver-certs/secrets/internal-loadbalancer-serving-certkey/tls.crt
+    environment:
+      KUBECONFIG: /root/emergency/localhost-system-admin.kubeconfig
+
+  - name: Change ownership of kubeconfig to core user
+    file:
+      path: /var/home/core/internal-system-admin.kubeconfig
+      owner: core
+      group: core
+      mode: '755'
+
+  - debug:
+      msg: "The kubeconfig file is available in /var/home/core/internal-system-admin.kubeconfig and can be used for the maximum of {{ days }} days"
+
+- hosts: localhost 
+  tasks:
+  - name: Remove SSH keys
+    file:
+     path: $HOME/.ssh/id_rsa
+     state: absent

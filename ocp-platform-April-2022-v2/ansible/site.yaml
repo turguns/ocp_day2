@@ -1,0 +1,228 @@
+---
+- name: Create a new VM for network services
+  hosts: localhost
+  vars_files:
+    - "{{ pull_secret_path }}"
+    - "{{ authorized_ssh_keys_path }}"
+    - "{{ vmare_cred_path }}"
+    - "{{ nexus_cred_path }}"
+
+  gather_facts: no
+  vars:
+    network_utility_vm_name: "{{ cluster_name }}-utility"
+    ignition_template: network-utility.ign.j2
+    cert: "{{ lookup('file', '{{ root_cert_path }}') }}"
+    ssh_private_key:  "{{ lookup('file', '{{ auth_private_key_path }}') }}"
+  tasks:
+    - include: tasks/auth-key.yaml
+    - include: tasks/install_network_services.yaml
+
+- name: Wait for utility to start
+  hosts: utility
+  vars:
+    cert: "{{ lookup('file', '{{ root_cert_path }}') }}" 
+  vars_files:
+    - "{{ pull_secret_path }}"
+    - "{{ authorized_ssh_keys_path }}"
+    - "{{ nexus_cred_path }}"
+
+
+  gather_facts: false
+  tasks:
+  - name: Wait for network utility machine to be reachable over network
+    wait_for_connection:
+      delay: 10
+      timeout: 600
+
+- name: Install Network Services
+  hosts: utility
+  vars:
+    cert: "{{ lookup('file', '{{ root_cert_path }}') }}"
+  vars_files:
+    - "{{ pull_secret_path }}"
+    - "{{ authorized_ssh_keys_path }}"
+    - "{{ nexus_cred_path }}"
+
+
+  gather_facts: true
+  become: yes
+  environment:
+    http_proxy: "{{ http_proxy | default('') }}"
+    https_proxy: "{{ http_proxy | default('') }}"
+    no_proxy: ".{{ domain_name }},.{{ cluster_name }}.{{ domain_name }},localhost,127.0.0.1"
+  tasks:
+# This task can be uncommented if cluster is provisioning via DevOps server
+#    - include: tasks/configure_utility_services_via_devops.yaml
+    - include: tasks/configure_utility_services.yaml
+
+
+- name: Create OpenShift VMs
+  hosts: localhost
+  vars:
+    cert: "{{ lookup('file', '{{ root_cert_path }}') }}"
+  vars_files:
+    - "{{ pull_secret_path }}"
+    - "{{ authorized_ssh_keys_path }}"
+    - "{{ vmare_cred_path }}"
+    - "{{ nexus_cred_path }}"
+
+  gather_facts: no
+  tasks:
+    - name: Set IP address facts
+      set_fact:
+        master_ip_addresses: "{{ master_ips.split(',') }}"
+        infra_ip_addresses: "{{ infra_ips.split(',') }}"
+        worker_ip_addresses: "{{ worker_ips.split(',') }}"
+        bootstrap_ip_addresses: "{{ bootstrap_ip.split(',') }}"
+        master_vm_fqdn: "{{ master_vm_names.split(',') }}"
+        infra_vm_fqdn: "{{ infra_vm_names.split(',') }}"
+        worker_vm_fqdn: "{{ worker_vm_names.split(',') }}"
+        bootstrap_vm_fqdn: "{{ bootstrap_vm_name.split(',') }}"
+    - include: tasks/create_openshift_vms.yaml
+
+- name: Configure Network Services
+  hosts: utility
+  vars:
+    cert: "{{ lookup('file', '{{ root_cert_path }}') }}"
+
+  vars_files:
+    - "{{ pull_secret_path }}"
+    - "{{ authorized_ssh_keys_path }}"
+    - "{{ nexus_cred_path }}"
+
+  gather_facts: true
+  become: yes
+  tasks:
+    - include: tasks/configure_network_services.yaml
+
+- name: Ensure haproxy container is running
+  hosts: utility
+  vars_files:
+    - "{{ pull_secret_path }}"
+    - "{{ authorized_ssh_keys_path }}"
+    - "{{ nexus_cred_path }}"
+
+
+  gather_facts: true
+  become: yes
+  vars:
+    cert: "{{ lookup('file', '{{ root_cert_path }}') }}"
+    container_state: running
+    container_name: haproxy
+    container_image: "{{ haproxy_image }}"
+    container_dir_config: /etc/haproxy
+    container_run_args: >-
+      --net host
+      --user root
+      -v "{{container_dir_config}}:{{container_dir_config}}:Z"
+      --hostname={{ ansible_fqdn }}
+  tasks:
+  - name: Ensure container state
+    import_role:
+      name: podman_container_systemd
+
+- name: Ensure httpd container is running
+  hosts: utility
+  vars_files:
+    - "{{ pull_secret_path }}"
+    - "{{ authorized_ssh_keys_path }}"
+    - "{{ nexus_cred_path }}"
+
+  gather_facts: true
+  become: yes
+  vars:
+    cert: "{{ lookup('file', '{{ root_cert_path }}') }}"
+    container_state: running
+    container_name: httpd
+    container_image: "{{ httpd_image }}"
+    container_dir_data: /var/www
+    container_run_args: >-
+      --net host
+      -v "{{container_dir_data}}:{{container_dir_data}}:Z"
+      --hostname={{ ansible_fqdn }}
+  tasks:
+    - include: tasks/ensure-http-running.yaml
+    - name: Ensure container state
+      import_role:
+        name: podman_container_systemd
+  
+- name: Create Installation Manifests and Prepare HTTP server
+  hosts: utility
+  vars_files:
+    - "{{ pull_secret_path }}"
+    - "{{ authorized_ssh_keys_path }}"
+    - "{{ vmare_cred_path }}"
+    - "{{ nexus_cred_path }}"
+
+
+  gather_facts: yes
+  vars:
+    cert: "{{ lookup('file', '{{ root_cert_path }}') }}"
+    master_ign_file: "{{ cluster_name }}/master.ign"
+    worker_ign_file: "{{ cluster_name }}/worker.ign"
+    bootstrap_ign_file: "{{ cluster_name }}/bootstrap.ign"
+    http_document_root: "/var/www/html/ignitions"
+    bootstrap_ignition_config_url: "http://{{ ansible_default_ipv4.address }}:{{ ocp.httpd_port }}/ignitions/{{ cluster_name }}_bootstrap.ign"
+  tasks:
+    - include: tasks/create_installation_manifests.yaml
+    - name: Fetch the ignition files to localhost
+      fetch:
+        src: "{{ item }}"
+        dest: "~/ignitions/{{ cluster_name }}/"
+        flat: yes
+      with_items:
+      - "{{ cluster_name }}/master.ign"
+      - "{{ cluster_name }}/worker.ign"
+      - "{{ cluster_name }}/bootstrap.ign"
+- hosts: localhost
+  vars_files:
+    - "{{ pull_secret_path }}"
+    - "{{ authorized_ssh_keys_path }}"
+    - "{{ vmare_cred_path }}"
+
+  gather_facts: false
+  vars:
+    cert: "{{ lookup('file', '{{ root_cert_path }}') }}"
+    network_utility_vm_name: "{{ cluster_name }}-utility"
+    master_ign_file: "~/ignitions/{{ cluster_name }}/master.ign"
+    worker_ign_file: "~/ignitions/{{ cluster_name }}/worker.ign"
+    bootstrap_ign_file: "~/ignitions/{{ cluster_name }}/bootstrap.ign"
+    bootstrap_ignition_config_url: "http://{{ network_utility_ip }}:{{ ocp.httpd_port }}/ignitions/{{cluster_name}}_bootstrap.ign"
+  tasks:
+    - include: tasks/start_openshift_installation.yaml
+
+- name: Wait for bootstrapping to start
+  hosts: bootstrap
+  vars:
+    cert: "{{ lookup('file', '{{ root_cert_path }}') }}"
+  vars_files:
+    - "{{ pull_secret_path }}"
+    - "{{ authorized_ssh_keys_path }}"
+    - "{{ nexus_cred_path }}"
+
+
+  gather_facts: false
+  tasks:
+  - name: Wait for bootstrap machine to be reachable over network
+    wait_for_connection:
+      delay: 60
+      timeout: 300
+
+- name: Wait for OpenShift installation to complete
+  hosts: utility
+  vars:
+    cert: "{{ lookup('file', '{{ root_cert_path }}') }}"
+  vars_files:
+    - "{{ pull_secret_path }}"
+    - "{{ authorized_ssh_keys_path }}"
+    - "{{ vmare_cred_path }}"
+    - "{{ nexus_cred_path }}"
+
+
+  gather_facts: false
+  environment:
+    KUBECONFIG: "{{ cluster_name }}/auth/kubeconfig"
+  tasks:
+    - include: tasks/wait_for_installation.yaml
+
+#- import_playbook: wait_for_installation.yaml

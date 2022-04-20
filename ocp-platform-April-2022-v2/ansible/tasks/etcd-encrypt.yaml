@@ -1,0 +1,2 @@
+- name: Encrypt etcd
+  shell: oc patch apiserver/cluster -p '{"spec":{"encryption":{"type":"aescbc"}}}' --type merge 

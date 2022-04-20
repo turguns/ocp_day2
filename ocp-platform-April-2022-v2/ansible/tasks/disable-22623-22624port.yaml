@@ -1,0 +1,29 @@
+---
+#- name: Generate mc yaml from template
+#  template:
+#    src: templates/iptables-mc-22623.j2
+#    dest: $HOME/iptables-mc-22623.yaml
+#
+#- name: Apply 22623 iptables rule
+#  shell: oc apply -f $HOME/iptables-mc-22623.yaml
+#
+#- name: Generate mc yaml from template
+#  template:
+#    src: templates/iptables-mc-22624.j2
+#    dest: $HOME/iptables-mc-22624.yaml
+#
+#- name: Apply 22624 iptables rule
+#  shell: oc apply -f $HOME/iptables-mc-22624.yaml
+
+- name: Apply 22623 iptables rule
+  k8s:
+    state: present
+    definition: "{{ lookup('template', 'iptables-mc-22624.j2') }}"
+    verify_ssl: no
+
+- name: Apply 22624 iptables rule
+  k8s:
+    state: present
+    definition: "{{ lookup('template', 'iptables-mc-22624.j2') }}"
+    verify_ssl: no
+

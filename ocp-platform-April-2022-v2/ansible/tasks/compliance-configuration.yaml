@@ -1,0 +1,13 @@
+- name: creating custom ScanSetting
+  k8s:
+   state: present
+   namespace: openshift-compliance
+   definition: "{{ lookup('template', 'compliance-custom-scansetting.yaml.j2') }}"
+   verify_ssl: no
+- name: creating ScanSettingBinding
+  k8s:
+   state: present
+   namespace: openshift-compliance
+   definition: "{{ lookup('template', 'compliance-scansettingbinding.yaml.j2') }}"
+   verify_ssl: no
+

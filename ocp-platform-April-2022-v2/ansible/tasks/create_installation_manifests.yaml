@@ -1,0 +1,47 @@
+  - name: Create new cluster's directory on network utility server
+    file:
+      path: "{{ cluster_name }}"
+      state: directory
+  - name: Create new cluster's directory on ansible control node
+    file:
+      path: "$HOME/ignitions/{{ cluster_name }}"
+      state: directory
+    delegate_to: localhost
+  - name: Generate install-config.yaml and put it into cluster's directory
+    template:
+      src: install-config.j2
+      dest: "{{ cluster_name }}/install-config.yaml"
+  - name: Backup install-config.yaml
+    copy:
+      src: "{{ cluster_name }}/install-config.yaml"
+      dest: install-config.yaml
+      remote_src: yes
+  - name: Create ignition configs of new cluster
+    command: openshift-install create ignition-configs --dir={{ cluster_name }}
+  - name: Copy bootstrap ignition file to http server
+    copy:
+      remote_src: yes
+      src: "{{ bootstrap_ign_file }}"
+      dest: "{{ http_document_root }}/{{ cluster_name }}_bootstrap.ign"
+    become: yes
+#  - name: Check that http server is serving bootstrap ignition file
+#    uri:
+#      url: "{{ bootstrap_ignition_config_url }}"
+#      return_content: no
+#      status_code: 200
+#    delegate_to: localhost
+  - name: check http server is serving bootstrap ignition file
+    shell: curl --write-out '%{http_code}' --silent --output /dev/null "{{ bootstrap_ignition_config_url }}"
+    register: httpcode
+    failed_when: httpcode.stdout | int != 200
+  - debug:
+      var: httpcode.stdout
+#  - name: Fetch the ignition files to localhost
+#    fetch:
+#      src: "{{ item }}"
+#      dest: "$HOME/ignitions/{{ cluster_name }}/"
+#      flat: yes
+#    with_items:
+#    - "{{ cluster_name }}/master.ign"
+#    - "{{ cluster_name }}/worker.ign"
+#    - "{{ cluster_name }}/bootstrap.ign"

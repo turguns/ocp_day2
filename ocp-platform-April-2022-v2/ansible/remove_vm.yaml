@@ -1,0 +1,53 @@
+---
+- name: REmove VM 
+  hosts: localhost
+  vars_files:
+    - "{{ vmare_cred_path }}"
+  gather_facts: false
+#  remote_user: core
+#  become: yes
+  tasks: 
+    - name: poweroff the  virtual machine
+      vmware_guest:
+        hostname: "{{ VMWARE_HOST }}"
+        username: "{{ VMWARE_USER }}"
+        password: "{{ VMWARE_PASSWORD }}"
+        validate_certs: no
+        datacenter: "{{ datacenter }}"
+        cluster: "{{ vcenter_cluster }}"
+        folder: "/{{ cluster_name }}"
+        name: "{{ item }}"
+        state: poweredoff
+      with_items:
+        - ocpl1-utility
+        - ocpie0l11011
+        - ocpie0l11022
+        - ocpie0l11031
+        - ocpie0l12011
+        - ocpie0l12022
+        - ocpie0l16011
+        - ocpie0l16022
+        - ocpie0l16031
+
+    - name: remove the  virtual machine
+      vmware_guest:
+        hostname: "{{ VMWARE_HOST }}"
+        username: "{{ VMWARE_USER }}"
+        password: "{{ VMWARE_PASSWORD }}"
+        validate_certs: no
+        datacenter: "{{ datacenter }}"
+        cluster: "{{ vcenter_cluster }}"
+        folder: "/{{ cluster_name }}"
+        name: "{{ item }}"
+        state: absent
+      with_items:
+        - ocpl1-utility
+        - ocpie0l11011
+        - ocpie0l11022
+        - ocpie0l11031
+        - ocpie0l12011
+        - ocpie0l12022
+        - ocpie0l16011
+        - ocpie0l16022
+        - ocpie0l16031
+

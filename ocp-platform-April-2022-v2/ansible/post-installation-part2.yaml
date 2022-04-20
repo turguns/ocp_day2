@@ -1,0 +1,66 @@
+---
+- hosts: localhost
+  vars:
+    ssh_private_key:  "{{ lookup('file', '{{ auth_private_key_path }}') }}"
+  vars_files:
+    - "{{ nexus_cred_path }}"
+  tasks:
+    - include: tasks/auth-key.yaml
+    - name: oc client tool
+      include: tasks/oc-client.yaml
+
+- hosts: "{{ network_utility_ip }}"
+  tasks:
+    - include: tasks/get_kubeadmin_cred.yaml
+
+- hosts: localhost
+  gather_facts: no
+  tasks:
+    - include: tasks/login-kubeadmin.yaml
+    - name: Check cluster status
+      include: tasks/check-cluster-n-vars.yaml
+
+- hosts: localhost
+  vars_files:
+    - "{{ pull_secret_path }}"
+    - "{{ alm.alm_username_password }}"
+  vars:
+    bindPassword: "{{ lookup('file', '{{ bindPassword_path }}') }}"
+    root_cert: "{{ lookup('file', '{{ root_cert_path }}') }}"
+    ansible_python_interpreter: /usr/bin/python3
+  tasks:
+    - include: tasks/install-operators.yaml
+    - name: waiting for operators to be on ready state
+      wait_for:
+        timeout: 300
+    - name: configuring openshift-authentication loglevel debug
+      include: tasks/openshift-authentication-loglevel-debug.yaml
+    - name: Configuring ClusterLogForwarder
+      include: tasks/clf-configuration.yaml
+    - name: configuring Compliance ScanSetting and ScanSettingBinding
+      include: tasks/compliance-configuration.yaml
+    - name: Configuring OMI
+      include: tasks/omi-configuration.yaml
+    - include: tasks/ingress-pod-replica.yaml
+    - include: tasks/update-session-timeout.yaml
+    - name: Create egress route
+      include: tasks/egress.yaml
+    - include: tasks/remove-kubeadmin.yaml
+#    - include: tasks/change_logo.yaml
+
+- hosts: "{{ network_utility_ip }}"
+  tasks:
+  - include: tasks/remove-kubeconfig.yaml
+
+- hosts: localhost
+  vars_files:
+    - "{{ pull_secret_path }}"
+    - "{{ alm.alm_username_password }}"
+  vars:
+    bindPassword: "{{ lookup('file', '{{ bindPassword_path }}') }}"
+    root_cert: "{{ lookup('file', '{{ root_cert_path }}') }}"
+    ansible_python_interpreter: /usr/bin/python3
+  tasks:
+    - include: tasks/remove-auth-key.yaml
+
+

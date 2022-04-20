@@ -1,0 +1,11 @@
+- name: Run cronjob to sync 
+  shell: oc create job -n openshift-authentication --from=cronjob/ldap-group-sync test-cron
+- pause:
+    seconds: 35
+- name: Delete job after sync
+  k8s:
+    kind: Job
+    name: test-cron
+    verify_ssl: no
+    namespace: openshift-authentication
+    state: absent

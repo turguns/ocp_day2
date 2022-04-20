@@ -1,0 +1,4 @@
+- debug:
+    msg: "this is {{ gitops.nexus_url }}/{{ gitops.image_name }}:{{ item.image_tag }} " 
+  loop: "{{ gitops.tags }}"
+

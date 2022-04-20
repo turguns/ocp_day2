@@ -1,0 +1,2 @@
+#!/bin/bash
+oc patch clusterrolebinding.rbac self-provisioners -p '{"subjects": null}'

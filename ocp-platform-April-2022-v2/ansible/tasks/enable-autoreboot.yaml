@@ -1,0 +1,4 @@
+- name: Enable Autoreboot
+  shell: oc patch --type=merge --patch='{"spec":{"paused":false}}' machineconfigpool/master; oc patch --type=merge --patch='{"spec":{"paused":false}}' machineconfigpool/worker
+  ignore_errors: yes
+-

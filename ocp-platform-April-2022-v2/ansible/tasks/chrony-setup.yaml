@@ -1,0 +1,29 @@
+- name: Generate config for chrony
+  template:
+    src: templates/chrony.conf.j2
+    dest: $HOME/chrony.conf
+
+- name: Generate base64 encoded chrony config
+  shell: cat $HOME/chrony.conf |base64 -w0
+  register: chrony_config
+
+- name: Display generated base64 encoded chrony config
+  debug:
+    msg: "{{ chrony_config.stdout }}"
+
+- name: Set fact for the chrony config
+  set_fact:
+    chrony_config: "{{ chrony_config.stdout }}"
+
+- name: Create machine config for chrony
+  template:
+    src: templates/chrony-mc.yaml.j2
+    dest: $HOME/chrony-mc-{{ role }}.yaml
+  vars:
+    role: "{{ item }}"
+  loop:
+    - master
+    - worker
+
+- name: Apply machine config
+  shell: oc apply -f $HOME/chrony-mc-master.yaml && oc apply -f $HOME/chrony-mc-worker.yaml

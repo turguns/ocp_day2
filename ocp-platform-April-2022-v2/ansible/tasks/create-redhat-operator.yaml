@@ -1,0 +1,68 @@
+#- name: Disable default catalogs
+#  shell: oc patch OperatorHub cluster --type json -p '[{"op": "add", "path": "/spec/disableAllDefaultSources", "value": true}]'
+
+- name: Ensure the operators folder is exist
+  file:
+    path: "/$HOME/operators"
+    state: directory
+- name: Delete old manifest folders
+  shell: rm -rf $HOME/operators/*
+
+- name: write to file pull secret as a json
+  shell: echo {{ pull_secret | to_nice_json }} > /$HOME/operators/pullsecret.json
+
+- name: generate image content source policy file
+  shell: cd /$HOME/operators/; oc adm catalog mirror {{ registry_fqdn }}/redhat/redhat-operator-index:v{{ ocp.openshift_major_version }} {{ registry_fqdn }}/olm2 -a  /$HOME/operators/pullsecret.json  --index-filter-by-os='linux/amd64' --manifests-only
+
+- name: correct the path for nexus proxy
+  shell: cat /$HOME/operators/manifests-redhat-operator-index*/imageContentSourcePolicy.yaml | grep -v {{ registry_fqdn }} | grep -v resource | grep -v selfLink | grep -v '\[*\]' | grep -v '\{*\}' | grep source > /$HOME/operators/redhat-operator-sources-only ; sed "h;s/^/  - mirrors:\n >/;p;x"  /$HOME/operators/redhat-operator-sources-only  > $HOME/operators/tempfile;
+
+- name: Replace default registries with nexus proxy
+  replace:
+    path: $HOME/operators/tempfile
+    regexp: "{{ item.regexp1 }}"
+    replace: "   - {{ registry_fqdn }}/"
+  with_items:
+    - regexp1: ">    source: [a-z].*.io/"
+    - regexp1: ">    source: [a-z].*.com/"
+
+- name: find manifest folder  path
+  shell: ls $HOME/operators | grep manifest
+  register:  manifestfolder
+- debug:
+    var: manifestfolder.stdout
+
+- name: Ensure  index  file exist
+  file:
+    path: $HOME/operators/redhat-operator-index-itergo.yaml
+    state: touch
+
+- name: Prepare image content source  file
+  blockinfile:
+    path: $HOME/operators/redhat-operator-index-itergo.yaml
+    block: |
+      apiVersion: operator.openshift.io/v1alpha1
+      kind: ImageContentSourcePolicy
+      metadata:
+         name: redhat-operator-index-itergo
+      spec:
+        repositoryDigestMirrors:
+
+- name: Append content of tempfile which includes correct path to the image content source file
+  shell: echo "">> $HOME/operators/redhat-operator-index-itergo.yaml; cat $HOME/operators/tempfile >> $HOME/operators/redhat-operator-index-itergo.yaml
+
+- name: Edit catalog file 1.assign name and correct the path
+  replace:
+    path: "$HOME/operators/{{ manifestfolder.stdout }}/{{ item.path }}"
+    regexp: "{{ item.regex }}"
+    replace: "{{ item.replace}}"
+  with_items:
+    - { path: 'catalogSource.yaml',regex: '  name: redhat-operator-index', replace: '  name: itergo-redhat-operator-index'}
+    - { path: 'catalogSource.yaml',regex: 'olm2/redhat-redhat-operator-index', replace: 'redhat/redhat-operator-index'}
+
+
+- name: Create redhat operator catalog
+  shell: oc apply -f $HOME/operators/{{ manifestfolder.stdout }}/catalogSource.yaml
+- name: Create imagecontent source policy
+  shell: oc apply -f $HOME/operators/redhat-operator-index-itergo.yaml
+

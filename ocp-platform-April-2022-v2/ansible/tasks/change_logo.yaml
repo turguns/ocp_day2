@@ -1,0 +1,25 @@
+- name: Create configmap 
+  shell: oc create configmap console-custom-logo --from-file files/ergo-logo-red.png -n openshift-config && oc get consoles.operator.openshift.io cluster -o yaml > $HOME/consoles-operator.yaml
+  ignore_errors: yes
+
+- name: Insert console operator file logo parameter
+  blockinfile:
+    path: $HOME/consoles-operator.yaml
+    marker: "markers"
+    insertafter: "^spec:"
+    block: |
+      markers
+        customization:
+          customLogoFile:
+            key: ergo-logo-red.png
+            name: console-custom-logo
+          customProductName: My Console
+
+- name: Remove markers
+  lineinfile:
+    path: $HOME/consoles-operator.yaml
+    state: absent
+    regexp: "markers"
+
+- name: Update console operator with logo parameter 
+  shell: oc apply -f $HOME/consoles-operator.yaml

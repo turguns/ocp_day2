@@ -1,0 +1,1 @@
+ansible-playbook generate_csr.yaml  -e @group_vars/hosts-onprem-<STAGE>-<CLUSTER-NAME>.yaml

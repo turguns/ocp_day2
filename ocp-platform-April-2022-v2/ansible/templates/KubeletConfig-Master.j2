@@ -1,0 +1,32 @@
+apiVersion: machineconfiguration.openshift.io/v1
+kind: KubeletConfig
+metadata:
+  name: customkubelet-master
+spec:
+  machineConfigPoolSelector:
+    matchLabels:
+      customkubelet: master
+  kubeletConfig:
+    eventRecordQPS: {{ ocp.eventRecordQPS }}
+    imageGCHighThresholdPercent: {{ ocp.imageGCHighThresholdPercent }}
+    imageGCLowThresholdPercent: {{ ocp.imageGCLowThresholdPercent }}
+    imageMinimumGCAge: {{ ocp.imageMinimumGCAge }}
+    evictionPressureTransitionPeriod: {{ ocp.evictionPressureTransitionPeriod }}
+    evictionHard:
+      imagefs.available: {{ ocp.evictionHard.imagefs_available }}
+      imagefs.inodesFree: {{ ocp.evictionHard.imagefs_inodesFree }}
+      memory.available: {{ ocp.evictionHard.memory_available }}
+      nodefs.available: {{ ocp.evictionHard.nodefs_available }}
+      nodefs.inodesFree: {{ ocp.evictionHard.nodefs_inodesFree }}
+    evictionSoft:
+      imagefs.available: {{ ocp.evictionSoft.imagefs_available }}
+      imagefs.inodesFree: {{ ocp.evictionSoft.imagefs_inodesFree }}
+      memory.available: {{ ocp.evictionSoft.memory_available }}
+      nodefs.available: {{ ocp.evictionSoft.nodefs_available }}
+      nodefs.inodesFree: {{ ocp.evictionSoft.nodefs_inodesFree }}
+    evictionSoftGracePeriod:
+      imagefs.available: {{ ocp.evictionSoftGracePeriod.imagefs_available }}
+      imagefs.inodesFree: {{ ocp.evictionSoftGracePeriod.imagefs_inodesFree }}
+      memory.available: {{ ocp.evictionSoftGracePeriod.memory_available }}
+      nodefs.available: {{ ocp.evictionSoftGracePeriod.nodefs_available }}
+      nodefs.inodesFree: {{ ocp.evictionSoftGracePeriod.nodefs_inodesFree }}

@@ -1,0 +1,37 @@
+---
+#ansible-playbook project-update-onboarding.yaml -e cluster=<CLUSTER-NAME>  -e @group_vars/tenant_onboarding/projects/<project-name>.yaml
+- hosts: localhost
+  gather_facts: yes
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
+    env: "{{ lookup('vars', cluster) }}"
+  tasks:
+
+  - name: template for quota
+    template:
+      src: templates/project-quota.j2
+      dest: "$HOME/project-update-quota-{{ item.project_name }}.yaml"
+    with_items:
+      - "{{ lookup('vars',cluster).projects }}"
+
+  - name: template for limitrange
+    template:
+      src: templates/project-limitrange.j2
+      dest: "$HOME/project-update-limitrange-{{ item.project_name }}.yaml"
+    with_items:
+      - "{{ lookup('vars',cluster).projects }}"
+
+  - name: Apply manifests
+    k8s:
+      state: present
+      definition: "{{ lookup('file', item) | from_yaml }}"
+      verify_ssl: no
+    with_fileglob:
+     - "~/project-update-*.yaml"
+
+  - name: remove files
+    file:
+      state: absent
+      path: "{{ item }}"
+    with_fileglob:
+     - "~/project-update-*.yaml"

@@ -1,0 +1,166 @@
+---
+- hosts: localhost
+  vars:
+    cert: "{{ lookup('file', '{{ root_cert_path }}') }}"
+  vars_files:
+    - "{{ pull_secret_path }}"
+    - "{{ authorized_ssh_keys_path }}"
+    - "{{ vmare_cred_path }}"
+  tasks:
+   - name: Creating new node 
+     vmware_guest:
+       hostname: "{{ VMWARE_HOST }}"
+       username: "{{ VMWARE_USER }}"
+       password: "{{ VMWARE_PASSWORD }}"
+       validate_certs: no
+       datacenter: "{{ datacenter }}"
+       cluster: "{{ vcenter_cluster }}"
+       folder: "{{ parent_folder }}/{{ cluster_name }}"
+       name: "{{ new_node_name }}"
+       template: "{{ ocp.rhcos_template }}"
+       state: poweredon
+       disk:
+       - size_gb: "{{ vm_rootdisk_size }}"
+         type: thick
+         datastore: "{{ datastore_cluster }}"
+       networks:
+       - name: "{{ vm_network }}"
+       hardware:
+         memory_mb: "{{ new_node_memory_mb }}"
+         num_cpus: "{{ new_node_cpu }}"
+       vapp_properties:
+       - id: "guestinfo.ignition.config.data"
+         value: "{{ ignition_file }}"
+       - id: "guestinfo.ignition.config.data.encoding"
+         value: "base64"
+       - id: "disk.EnableUUID"
+         value: "TRUE"
+       - id: "guestinfo.afterburn.initrd.network-kargs"
+#         value: "{{ ip_details }}"
+         value: "ip={{ip_address}}::{{network_utility_gateway}}:{{network_utility_netmask}}:{{new_node_name}}.{{cluster_name}}.{{domain_name}}::none nameserver={{network_utility_ip}}'"
+   - name: Gather VM
+     vmware_guest_info:
+        hostname: "{{ VMWARE_HOST }}"
+        username: "{{ VMWARE_USER }}"
+        password: "{{ VMWARE_PASSWORD }}"
+        validate_certs: no
+        datacenter: "{{ datacenter }}"
+        name: "{{ new_node_name }}"
+        schema: "vsphere"
+        properties: ["config.hardware.device"]
+     delegate_to: localhost
+     register: info
+   - name: write ´to file
+     lineinfile:
+        path: /tmp/macaddress-0.json
+        line: "{{ info }}"
+        create: yes
+   - set_fact:
+        output: "{{ lookup('file', '/tmp/macaddress-0.json') }}"
+   - shell: grep -oP "'macAddress'":" '([0-9A-Fa-f]{2}[":"-]){5}([0-9A-Fa-f]{2})'" /tmp/macaddress-0.json | awk '{ print $2}' | tr -d "'"
+     register: macinfo
+   - debug:
+        var: macinfo.stdout
+   - lineinfile:
+        path:  /tmp/macaddress-1.json
+        line: "{{ macinfo.stdout }}"
+        create: yes
+- hosts: utility
+  remote_user: core
+  become: yes
+  tasks:
+  - name: fetch file from utility vm
+    fetch:
+      src:  /etc/ethers
+      dest: /tmp/address.json
+      flat: yes
+  - shell: '> /var/lib/dnsmasq/dnsmasq.leases'
+- hosts: localhost
+  tasks:
+  - shell: cat /tmp/macaddress-1.json
+    register: vars1
+  - set_fact:
+     vars1: "{{ vars1.stdout }}"
+  - lineinfile:
+      path: /tmp/address.json
+      regexp: '{{ new_node_name }}'
+      line: '{{ vars1 }} {{ new_node_name }}'
+- hosts: utility
+  remote_user: core
+  become: yes
+  tasks:
+  - copy:
+     src: /tmp/address.json
+     dest: /etc/ethers
+     backup: yes
+  - lineinfile:
+     path: /etc/hosts
+#     line: '{{ ip_address }}  {{new_node_name}}.{{cluster_name}}.{{domain_name}}  {{new_node_name}}'
+     line: '{{ ip_address }}  {{new_node_name}}  {{new_node_name}}'
+     backup: yes
+  - lineinfile:
+     path: /etc/dnsmasq.conf
+     line: 'dhcp-host={{new_node_name}}'
+  - service:
+     name: dnsmasq
+     state: restarted
+- hosts: localhost
+  ignore_errors: yes
+  tasks:
+   - name: approve csr
+     wait_for:
+      timeout: 10
+   - shell: 'oc get csr -o name | xargs oc adm certificate approve'
+   - name: approve csr
+     wait_for:
+      timeout: 10
+   - shell: 'oc get csr -o name | xargs oc adm certificate approve'
+     register: result
+   - debug: var=result
+   - wait_for:
+      timeout: 10
+#- hosts: "{{ new_node_name }}.{{ cluster_name }}.{{ domain_name }}"
+#  remote_user: core
+#  become: yes
+#  tasks:
+#  - name: dns update
+#    include: tasks/dns-update.yaml
+- hosts: "{{ new_node_name }}.{{ cluster_name }}.{{ domain_name }}"
+  remote_user: core
+  become: yes
+  tasks:
+  - name: updating dns ip details
+    lineinfile:
+      path: /etc/resolv.conf
+      line: "{{item}}"
+    with_items:
+      - 'nameserver {{dns1}}'
+      - 'nameserver {{dns2}}'
+#- hosts: localhost
+#  vars:
+#    ansible_python_interpreter: /usr/bin/python3
+#  tasks:
+#  - name: restarting openshift-dns pods
+#   shell: oc get po -owide -n openshift-dns | grep "{{ new_node_name }}.{{ cluster_name }}.{{ domain_name }}" |awk '{print $1}'
+#   register: dnspod
+#  - debug:
+#      msg: "{{dnspod.stdout}}"
+#  - k8s:
+#     state: absent
+#     api_version: v1
+#     kind: Pod
+#     verify_ssl: no
+#     namespace: openshift-dns
+#     name: "{{ dnspod.stdout }}"
+#  - name: restarting openshift-sdn pods
+#    shell: oc get po -owide -n openshift-sdn | grep "{{ new_node_name }}.{{ cluster_name }}.{{ domain_name }}" |awk '{print $1}'
+#    register: sdnpod
+#  - debug:
+#     msg: "{{sdnpod.stdout}}"
+#  - k8s:
+#     state: absent
+#     api_version: v1
+#     kind: Pod
+#     verify_ssl: no
+#     namespace: openshift-sdn
+#     name: "{{ sdnpod.stdout }}"

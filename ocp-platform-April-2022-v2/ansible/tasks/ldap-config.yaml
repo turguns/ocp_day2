@@ -1,0 +1,26 @@
+---
+- name: Encrypt bindPassword
+  shell: echo -n {{ bindPassword }} | base64
+  register: bindPassword_encrypt
+
+
+- set_fact:
+    bindPassword_encrypted: "{{ bindPassword_encrypt.stdout }}"
+- name: Create LDAP config file
+  k8s:
+    state: present
+    definition: "{{ lookup('template', 'ldap-config.yaml.j2') }}"
+    verify_ssl: no
+
+
+- name: Create OAUTH config file
+  k8s:
+    state: present
+    definition: "{{ lookup('template', 'oauth-config.yaml.j2') }}"
+    verify_ssl: no
+
+- name: Create LDAP secret file
+  k8s:
+    state: present
+    definition: "{{ lookup('template', 'ldap-secret.yaml.j2') }}"
+    verify_ssl: no 

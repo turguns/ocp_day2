@@ -1,0 +1,82 @@
+---
+- hosts: localhost
+  vars_files:
+    - "{{ technical_user }}"
+    - "{{ pull_secret_path }}"
+    - "{{ nexus_cred_path }}"
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
+  tasks:
+  - name: oc client tool download
+    include: tasks/oc-client.yaml
+  - name: Login to cluster
+    include: tasks/login-ldap.yaml
+
+  - name: check if ocp release image exist
+    shell: oc get is -n default | grep ocp-release
+    ignore_errors: yes
+    register: exists
+
+  - name: delete any ocp-related images
+    shell: oc -n default delete is ocp-release
+    when: exists.stdout == "1"
+
+  - name: import release image
+    shell: oc -n default import-image {{ registry_fqdn }}/openshift-release-dev/ocp-release:{{ ocp.openshift_major_version }}.{{ ocp.openshift_minor_version }}-{{ ocp.architecture }} --confirm
+    register: result
+  - debug:
+     msg: "{{result}}"
+
+  - name: Get name of imported image
+    shell: oc -n default get is | grep {{ ocp.openshift_major_version }}.{{ ocp.openshift_minor_version }} | awk '{print $1}'
+    register: image_name_release
+  - debug: 
+      msg: "{{ image_name_release.stdout }}"
+  - name: get Algo ID
+    shell: oc -n default describe is {{ image_name_release.stdout }}| grep -o  "sha256"
+    register: result_algo
+  - set_fact:
+      DIGEST_ALGO: "{{result_algo.stdout}}"
+
+  - debug: 
+      msg: "the digest algo is :   {{DIGEST_ALGO}}"
+
+  - name: get algo encoded digest ID
+    shell: oc -n default describe is {{ image_name_release.stdout }}  | grep -o  "sha256.*" |cut -f2- -d':'
+    register: result_algo_encoded
+  - set_fact:
+      DIGEST_ALGO_ENCODED: "{{result_algo_encoded.stdout}}"
+  - debug:
+      msg: "the digest algo is :  {{ DIGEST_ALGO_ENCODED }}"
+
+  - name: Download signature
+    get_url:
+      url: "{{ raw_proxy_url }}/pub/openshift-v4/signatures/openshift/release/{{DIGEST_ALGO}}={{DIGEST_ALGO_ENCODED}}/signature-1"
+      dest: $HOME
+      username: '{{ nexus_user }}'
+      password: '{{ nexus_password }}'
+      validate_certs: no
+
+  - name: Convert signature to base64
+    shell: base64 $HOME/signature-1 -w0
+    register: result_signature
+  - set_fact:
+      SIGNATURE_BASE64: "{{result_signature.stdout}}"
+  - debug:
+      msg: "the signature is {{ SIGNATURE_BASE64 }}"
+  - name: Set clusterversion 
+    shell: oc patch clusterversion version --type="merge" -p '{"spec":{"channel":"stable-{{ ocp.openshift_major_version }}"}}'
+
+  - name: Creating
+    k8s:
+     state: present
+     definition: "{{ lookup('template', 'templates/cluster-upgrade-configmap.j2') }}"
+     verify_ssl: no
+  - name: running cluster upgrade script
+    shell: oc adm upgrade --allow-explicit-upgrade --to-image {{mirror_registry}}@{{DIGEST_ALGO}}:{{DIGEST_ALGO_ENCODED}} --allow-upgrade-with-warnings
+#    shell: echo "{{mirror_registry}}@{{DIGEST_ALGO}}:{{DIGEST_ALGO_ENCODED}}"
+    register: result
+  - debug:
+      msg: "{{result}}"
+  - name: delete image stream from cluster
+    shell: oc -n default delete is $(oc get is -n default | grep {{ ocp.openshift_major_version }}.{{ ocp.openshift_minor_version }}  | awk '{print $1}')

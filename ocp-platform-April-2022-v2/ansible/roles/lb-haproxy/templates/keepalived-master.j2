@@ -1,0 +1,33 @@
+vrrp_script chk_haproxy {
+
+  script "killall -0 haproxy" # check the haproxy process
+
+  interval 2 # every 2 seconds
+
+  weight 2 # add 2 points if OK
+
+}
+
+vrrp_instance haproxy01 {
+
+  interface {{interface_name}} # interface to monitor
+
+  state MASTER # MASTER on haproxy1, BACKUP on haproxy2
+
+  virtual_router_id {{virtual_router_id}}
+
+  priority 101 # 101 on haproxy1, 100 on haproxy2
+
+  virtual_ipaddress {
+
+    {{vip_ip}}/24 # virtual ip address
+
+  }
+
+  track_script {
+
+    chk_haproxy
+
+  }
+
+}

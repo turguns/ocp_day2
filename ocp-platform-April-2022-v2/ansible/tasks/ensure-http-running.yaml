@@ -1,0 +1,6 @@
+- name: Ensure httpd document root exists
+  file:
+    path: "/var/www/html/ignitions"
+    state: directory
+    recurse: yes
+    mode: 0755

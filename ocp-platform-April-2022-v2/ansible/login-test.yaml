@@ -1,0 +1,38 @@
+---
+- hosts: localhost
+  gather_facts: no
+  vars_files:
+    - "{{ technical_user }}"
+    - "{{ pull_secret_path }}"
+    - "{{ nexus_cred_path }}"
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
+  tasks:
+  - name: oc client tool download
+    include: tasks/oc-client.yaml
+  - name: Login to cluster
+    include: tasks/login-ldap.yaml
+
+- hosts: localhost
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
+  tasks:
+    - name: Getting node details
+      k8s_info:
+        kind: node
+        verify_ssl: no
+      register: nodes
+
+    - name: Set the variable for node details
+      set_fact:
+        node_names: "{{ nodes | json_query(query) }}"
+      vars:
+        query: "resources[].status.addresses[?type=='Hostname'].address[]"
+
+    - name: Display node details
+      debug:
+        msg: "{{ node_names }}"
+    - name: Check the openshift SDN
+      include: tasks/check-sdn.yml
+      with_items:
+        - "{{ node_names }}"

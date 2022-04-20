@@ -1,0 +1,107 @@
+
+satellite:
+  repositories:
+#  - ITERGO_prd-epel_repo-epel-latest-el-7-x86_64
+  - ITERGO_prd-itergo_3rd_party_repo-itergo_standard_3rd_party-latest-el-7-x86_64
+  - ITERGO_prd-itergo_3rd_party_repo-itergo_standard_3rd_party-latest-rhel-7-x86_64
+  - rhel-7-server-extras-rpms
+  - rhel-7-server-optional-rpms
+  - rhel-7-server-rpms
+  - rhel-7-server-satellite-tools-*-rpms
+  - rhel-7-server-supplementary-rpms
+  - rhel-server-rhscl-7-rpms
+#Openshift Cluster details
+ocp:
+#  rhcos_template: rhcos-4.7.7-x86_64-vmware.x86_64
+  openshift_major_version: 4.8
+  openshift_minor_version: 26
+  architecture: x86_64
+#  installer_file: openshift-install-linux-4.8.26.tar.gz
+#  installer_file_location: /data/tools/openshift-install-linux-4.8.26.tar.gz
+#  oc_client_file_location: /data/tools/openshift-client-linux-4.8.26.tar.gz
+#  oc_client_file: openshift-client-linux-4.8.26.tar.gz
+  ###### NETWORK UTILITY
+  httpd_port: 8080
+  console_timeout: 21600
+  operators:
+    - name: cluster-logging
+      channel: stable-5.3
+      namespace: openshift-logging
+    - name: compliance-operator
+      channel: release-0.1
+      namespace: openshift-compliance
+ #   - name: openshift-gitops-operator
+ #     channel: stable
+ #     namespace: openshift-operators
+#KubeLetConfig CRD Refer  https://jira.itergo.com/browse/OCP-519
+  containerlogmaxfiles: 5
+  containerlogmaxsize: "100Mi"
+  eventRecordQPS: 5
+  evictionPressureTransitionPeriod: "0s"
+  imageMinimumGCAge: "5m"
+  imageGCHighThresholdPercent: "80"
+  imageGCLowThresholdPercent: "75"
+
+  evictionSoft:
+     memory_available: "500Mi"
+     nodefs_available: "10%"
+     nodefs_inodesFree: "5%"
+     imagefs_available: "15%"
+     imagefs_inodesFree: "10%"
+
+  evictionHard:
+     memory_available: "200Mi"
+     nodefs_available: "5%"
+     nodefs_inodesFree: "4%"
+     imagefs_available: "10%"
+     imagefs_inodesFree: "5%"
+
+  evictionSoftGracePeriod:
+    memory_available: "1m30s"
+    nodefs_available: "1m30s"
+    nodefs_inodesFree: "1m30s"
+    imagefs_available: "1m30s"
+    imagefs_inodesFree: "1m30s"
+
+#CLM configuration vars
+  clm:
+    endpoint: 10.6.113.134
+    port: 20444
+
+# Fluentd configurations for log rotation 
+  fluentD: 
+    ResourceMemory: 1500Mi
+    RequestMemory: 736Mi
+    RequestCPU: 200m 
+ 
+ # Service account for OMI user for scraping
+  omi:
+    service_account: lc-ocp-omi 
+
+#HaProxy and KeepAlived configuration variables
+haproxy:
+  ports:
+    - 22623
+    - 6443
+    - 443
+    - 80
+  services: 
+    - http
+    - https
+
+# Timestamp 
+date: "{{ ansible_date_time.year }}-{{ ansible_date_time.month }}-{{ ansible_date_time.day }}"
+time: "{{ ansible_date_time.hour }}:{{ ansible_date_time.minute }}:{{ ansible_date_time.second }}"
+
+#Gitops
+gitops:
+  namespace: ocp-gitops
+  pull_secret_name: container-dvit.services
+  nexus_url: container-dvit.services.eden/oscp
+  image_name: ergo-gitops-deployer
+  fix_image_tag: 2021-10
+  tags:
+    - image_tag: 2022-01
+    - image_tag: 2022-02
+    - image_tag: 2022-03
+

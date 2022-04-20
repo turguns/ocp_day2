@@ -1,0 +1,13 @@
+---
+- hosts: localhost
+  gather_facts: no
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
+    env: "{{ lookup('vars', cluster) }}"
+  tasks:
+  - name: Create Project
+    include: tasks/project-create-onboarding.yaml
+  - name: Whitelising
+    include: tasks/update-whitelist.yaml
+  - name: rolebinding
+    include: tasks/rolebindings.yaml

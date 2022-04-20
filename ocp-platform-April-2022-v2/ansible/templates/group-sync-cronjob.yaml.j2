@@ -1,0 +1,54 @@
+kind: CronJob
+apiVersion: batch/v1beta1
+metadata:
+  name: ldap-group-sync
+  namespace: openshift-authentication
+spec:
+  schedule: "{{ ldap_sync_schedule }}"
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 3
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: ldap-group-sync
+            image: {{ ldap_sync_cli }} 
+            command:
+            - "/bin/bash"
+            - "-c"
+            - "oc adm groups sync
+              --confirm
+              --sync-config=/etc/config/ldap-group-sync.yaml
+              --whitelist=/etc/config/whitelist/ldap-group-whitelist.txt"
+            volumeMounts:
+            - mountPath: /etc/config
+              name: ldap-sync-volume
+            - mountPath: /etc/config/certs
+              name: ldap-group-sync-ca
+            - mountPath: /etc/config/whitelist
+              name: ldap-group-sync-whitelist-volume
+          volumes:
+          - secret:
+              items:
+              - key: ldap-sync.yml
+                path: ldap-group-sync.yaml
+              secretName: ldap-group-sync-config
+            name: ldap-sync-volume
+          - configMap:
+              items:
+              - key: ca.crt
+                path: ca.crt
+              name: ldap-group-sync-ca
+            name: ldap-group-sync-ca
+          - configMap:
+              items:
+              - key: ldap-group-sync-whitelist.txt
+                path: ldap-group-whitelist.txt
+              name: ldap-group-sync-whitelist
+            name: ldap-group-sync-whitelist-volume
+          restartPolicy: OnFailure
+          terminationGracePeriodSeconds: 30
+          activeDeadlineSeconds: 18000
+          serviceAccountName: ldap-group-sync

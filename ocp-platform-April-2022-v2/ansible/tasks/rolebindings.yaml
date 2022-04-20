@@ -1,0 +1,49 @@
+- name: template for admin
+  template:
+    src: templates/rolebindings.j2
+    dest: "$HOME/rolebinding-template-{{ item.adgroups.admin }}.yaml"
+  vars:
+    rolebindings: admin
+    group_name: "{{ item.adgroups.admin }}"
+  with_items:
+    - "{{ lookup('vars',cluster).projects }}"
+  when: item.adgroups.admin is defined
+
+
+- name: template for edit
+  template:
+    src: templates/rolebindings.j2
+    dest: "$HOME/rolebinding-template-{{ item.adgroups.edit }}.yaml"
+  vars:
+    rolebindings: edit
+    group_name: "{{ item.adgroups.edit }}"
+  with_items:
+    - "{{ lookup('vars',cluster).projects }}"
+  when: item.adgroups.edit is defined
+
+- name: template for view
+  template:
+    src: templates/rolebindings.j2
+    dest: "$HOME/rolebinding-template-{{ item.adgroups.view }}.yaml"
+  vars:
+    rolebindings: view
+    group_name: "{{ item.adgroups.view }}"
+  with_items:
+    - "{{ lookup('vars',cluster).projects }}"
+  when: item.adgroups.view is defined
+
+- name: assigning roles
+  k8s:
+    state: present
+    definition: "{{ lookup('file', item) | from_yaml }}"
+    verify_ssl: no
+  with_fileglob:
+   - "~/rolebinding-template-*.yaml"
+
+- name: remove files
+  file:
+    state: absent
+    path: "{{ item }}"
+  with_fileglob:
+   - "~/rolebinding-template-*.yaml"
+

@@ -1,0 +1,26 @@
+Variable AND Execution steeps details for cluster upgrade
+--------------------------------------
+1) OCP_RELEASE_NUMBER: <release_version> [Example: 4.7.15 OR 4.7.20 OR 4.8.0 OR 4.8.2]
+
+2) ARCHITECTURE: <server_architecture>   [Example: X86_64 OR any]
+
+3) DIGEST: <Get the release image digest from Quay> [Example: DIGEST="$(oc adm release info quay.io/openshift-release-dev/ocp-release:${OCP_RELEASE_NUMBER}-${ARCHITECTURE} | sed -n 's/Pull From: .*@//p')"] OR pull it manually from quay.io
+
+4) DIGEST_ALGO: <Set the digest algorithm> [Example: sha256]
+
+5) DIGEST_ENCODED: <Set the digest signature> [Example: 0e82d17ababc79b10c10c5186920232810aeccbccf2a74c691487090a2c98ebc]
+
+6) SIGNATURE_BASE64: <Get the image signature from mirror.openshift.com website> [Example: SIGNATURE_BASE64=$(curl -s "https://mirror.openshift.com/pub/openshift-v4/signatures/openshift/release/${DIGEST_ALGO}=${DIGEST_ENCODED}/signature-1" | base64 -w0 && echo)] OR pullt it manually from mirror.openshift.com
+
+7) Create the ConfigMap using template [Example: template/uster-upgrade-onfigmap.j2]
+
+8) Apply ConfigMap using k8s module [Example: cluster-upgrade.yaml]
+
+9) Upgrade the cluster any Minor or Major version [Example: cluster-upgrade.yaml]
+
+
+cluster upgrade playbook
+-----------------------
+$oc login clustername
+
+$ansible-playbook cluster-upgrade.yaml -e @group_vars/hosts-onprem-<STAGE>-<CLUSTER-NAME>.yaml --ask-vault-pass

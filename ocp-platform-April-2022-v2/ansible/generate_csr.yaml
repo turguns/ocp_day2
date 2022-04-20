@@ -1,0 +1,10 @@
+---
+- hosts: localhost
+  vars_prompt:
+    - name: vault_password
+      prompt: "Enter the vault password to encrypt the Cert keys:"
+      private: yes
+
+  roles:
+    - generate_CSR 
+

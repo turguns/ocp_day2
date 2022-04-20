@@ -1,0 +1,26 @@
+#
+##Post install for OCP L1
+ansible-playbook post-installation-part1.yaml -i inventories/hosts-onprem-eden-ocpl1.yaml -e @group_vars/hosts-onprem-eden-ocpl1.yaml --ask-vault-pass
+ AFTER PART1 wait until all node Ready state. Then execute PART2.
+ansible-playbook post-installation-part2.yaml -i inventories/hosts-onprem-eden-ocpl1.yaml -e @group_vars/hosts-onprem-eden-ocpl1.yaml --ask-vault-pass
+
+##Post install for OCP D1
+ansible-playbook post-installation-part1.yaml -i inventories/hosts-onprem-eden-ocpd1.yaml -e @group_vars/hosts-onprem-eden-ocpd1.yaml --ask-vault-pass
+ AFTER PART1 wait until all node Ready state. Then execute PART2
+ansible-playbook post-installation-part2.yaml -i inventories/hosts-onprem-eden-ocpd1.yaml -e @group_vars/hosts-onprem-eden-ocpd1.yaml --ask-vault-pass
+
+####Post install for OCP F1
+ansible-playbook post-installation-part1.yaml -i inventories/hosts-onprem-eden-ocpf1.yaml -e @group_vars/hosts-onprem-eden-ocpf1.yaml --ask-vault-pass
+ AFTER PART1 wait until all node Ready state. Then execute PART2
+ansible-playbook post-installation-part2.yaml -i inventories/hosts-onprem-eden-ocpf1.yaml -e @group_vars/hosts-onprem-eden-ocpf1.yaml --ask-vault-pass
+
+###Post install for OCP A1
+ansible-playbook post-installation-part1.yaml -i inventories/hosts-onprem-ergodev-ocpa1.yaml -e @group_vars/hosts-onprem-ergodev-ocpa1.yaml --ask-vault-pass
+ AFTER PART1 wait until all node Ready state. Then execute PART2
+ansible-playbook post-installation-part2.yaml -i inventories/hosts-onprem-ergodev-ocpa1.yaml -e @group_vars/hosts-onprem-ergodev-ocpa1.yaml --ask-vault-pass
+
+###Post install for OCP P1
+ansible-playbook post-installation-part1.yaml -i inventories/hosts-onprem-ergo-ocpp1.yaml -e @group_vars/hosts-onprem-ergo-ocpp1.yaml --ask-vault-pass
+ AFTER PART1 wait until all node Ready state. Then execute PART2
+ansible-playbook post-installation-part2.yaml -i inventories/hosts-onprem-ergo-ocpp1.yaml -e @group_vars/hosts-onprem-ergo-ocpp1.yaml --ask-vault-pass
+

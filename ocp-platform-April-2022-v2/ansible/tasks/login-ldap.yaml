@@ -1,0 +1,16 @@
+- name: login
+  shell: oc login -u "{{ technical_username }}" -p "{{ technical_password }}" --server={{api_url}} --insecure-skip-tls-verify=true
+  no_log: true
+  register: results3
+
+- name: output "oc login command"
+  debug:
+    msg: "{{ results3.stdout }}"
+
+- name: check login status
+  shell: oc whoami;
+  register: results2
+
+- name: output "oc whoami command"
+  debug:
+    msg: "{{ results2.stdout }}"

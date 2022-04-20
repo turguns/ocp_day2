@@ -1,0 +1,17 @@
+- name: Fluentd pods configuration and resources allocation
+  k8s:
+    state: present
+    definition: "{{ lookup('template', 'fluentd.yaml.j2') }}"
+    verify_ssl: no
+
+- name: Creating secret for ALM
+  k8s:
+    state: present
+    definition: "{{ lookup('template', 'alm-secret.yaml.j2') }}"
+    verify_ssl: no
+
+- name: Creating ClusterLogForwarder instance
+  k8s:
+    state: present
+    definition: "{{ lookup('template', 'clusterlogforwarder-crd.yaml.j2') }}"
+    verify_ssl: no

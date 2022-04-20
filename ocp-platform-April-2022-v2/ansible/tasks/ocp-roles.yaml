@@ -1,0 +1,18 @@
+- name: Create admin role
+  k8s:
+    state: present
+    definition: "{{ lookup('template', 'ocp-admin.yaml.j2') }}"
+    verify_ssl: no
+
+- name: Create edit role
+  k8s:
+    state: present
+    definition: "{{ lookup('template', 'ocp-edit.yaml.j2') }}"
+    verify_ssl: no
+
+- name: Create view role
+  k8s:
+    state: present
+    definition: "{{ lookup('template', 'ocp-view.yaml.j2') }}"
+    verify_ssl: no
+

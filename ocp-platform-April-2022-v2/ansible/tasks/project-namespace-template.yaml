@@ -1,0 +1,28 @@
+---
+- name: Create backup folder
+  file:
+    path: /$HOME/project-config-backup
+    state: directory
+
+- name: Backup Current state of apps and api
+  shell: oc get project.config.openshift.io/cluster  -o yaml > /$HOME/project-config-backup/project.config-$(date "+%Y.%m.%d-%H.%M.%S").yaml;
+- name: Create project template
+  k8s:
+    state: present
+    definition: "{{ lookup('template', 'project-template.j2') }}"
+    verify_ssl: no
+
+- name: Set project template project config
+  shell:  oc patch project.config.openshift.io/cluster  --type=merge --patch='{"spec"{{':'}}{"projectRequestTemplate"{{':'}}{"name"{{':'}}"project-request"}}}'
+
+#https://access.redhat.com/documentation/en-us/openshift_container_platform/4.6/html/networking/network-policy
+- name: Create default namespace
+  k8s:
+    state: present
+    definition: "{{ lookup('template', 'default_namespace.j2') }}"
+    verify_ssl: no
+
+#- name: Set label network policy for default project
+#  shell: oc label namespace default 'network.openshift.io/policy-group=ingress'
+#  ignore_errors: yes
+#

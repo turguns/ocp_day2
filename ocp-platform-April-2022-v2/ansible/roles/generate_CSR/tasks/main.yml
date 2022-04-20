@@ -1,0 +1,51 @@
+---
+- name: set path for CSR 
+  set_fact:
+    csr_path: /$HOME/csr/{{ cluster_name }}
+- name: Ensure CSR folder is exist
+  file:
+    path: "{{ csr_path }}"
+    state: directory
+
+- name: Copy and merge certs to file
+  template:
+    src: "{{ item.templates }}"
+    dest: "{{ item.destn}}"
+  with_items:
+    - {templates: 'api.j2', destn: '{{ csr_path }}/cert_api.{{ cluster_name }}.{{ domain_name }}.txt'}
+    - {templates: 'apps.j2', destn: '{{ csr_path }}/cert_apps.{{ cluster_name }}.{{ domain_name }}.txt'}
+
+###Instead of openss_csr file prefered to use shell. With this module possible generate csr from scratch.But through config file getting an issue.This case is on  https://github.com/ansible/ansible/issues/44828 
+#- name: generate csr
+#  openssl_csr:
+#    path: "{{ csr_path }}/api.{{ cluster_name }}.{{ domain_name }}.csr"
+#    privatekey_path: "{{ csr_path }}/api.{{ cluster_name }}.{{ domain_name }}.key"
+#    config_file: "{{ csr_path }}/cert_api.{{ cluster_name }}.{{ domain_name }}.txt"
+
+- name: generate csr for apps wildcard
+  shell: openssl req -newkey rsa:2048 -nodes -keyout {{ csr_path }}/apps.{{ cluster_name }}.{{ domain_name }}.key -out {{ csr_path }}/apps.{{ cluster_name }}.{{ domain_name }}.csr -config {{ csr_path }}/cert_apps.{{ cluster_name }}.{{ domain_name }}.txt
+
+- name: generate csr for api
+  shell: openssl req -newkey rsa:2048 -nodes -keyout {{ csr_path }}/api.{{ cluster_name }}.{{ domain_name }}.key -out {{ csr_path }}/api.{{ cluster_name }}.{{ domain_name }}.csr -config {{ csr_path }}/cert_api.{{ cluster_name }}.{{ domain_name }}.txt
+
+###
+- name: Temporary write vault to file
+  copy:
+    content: '{{ vault_password }}'
+    dest: "{{ csr_path }}/vaultfile"
+- name: encrypt keys
+  shell: ansible-vault encrypt "{{ item }}" --vault-password-file "{{ csr_path }}/vaultfile"
+  with_items:
+    - '{{ csr_path }}/api.{{ cluster_name }}.{{ domain_name }}.key'
+    - '{{ csr_path }}/apps.{{ cluster_name }}.{{ domain_name }}.key'
+- name: Remove the files
+  file:
+    path: "{{ item }}"
+    state: absent
+  with_items:
+    - "{{ csr_path }}/vaultfile"
+    - "{{ csr_path }}/cert_api.{{ cluster_name }}.{{ domain_name }}.txt"
+    - "{{ csr_path }}/cert_apps.{{ cluster_name }}.{{ domain_name }}.txt"
+- name: inform path
+  debug:
+    msg: "you can find  the generated CSR's  under this path: {{ csr_path }}"

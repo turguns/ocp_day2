@@ -1,0 +1,23 @@
+kind: LDAPSyncConfig
+apiVersion: v1
+url: "{{ ldap_sync_url }}"
+bindDN: {{ bindDN }}
+bindPassword: '{{ bindPassword }}'
+ca: /etc/config/certs/ca.crt
+insecure: false
+augmentedActiveDirectory:
+      groupsQuery:
+          baseDN: {{ groups_baseDN }}
+          scope: sub
+          derefAliases: never
+          pageSize: 0
+      groupNameAttributes: [ sAMAccountName ]
+      groupUIDAttribute: dn
+      groupMembershipAttributes: [ "memberOf:1.2.840.113556.1.4.1941:" ]
+      usersQuery:
+          baseDN: {{ users_baseDN }}
+          scope: sub
+          filter: (objectClass=*)
+          derefAliases: never
+          pageSize: 0
+      userNameAttributes: [ sAMAccountName ]

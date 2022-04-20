@@ -1,0 +1,18 @@
+apiVersion: compliance.openshift.io/v1alpha1
+kind: ScanSetting
+metadata:
+  name: custom-scansetting-dynamicpvc
+  namespace: openshift-compliance
+rawResultStorage:
+  storageClassName: thick
+  rotation: 5
+  size: 20Gi
+roles:
+- worker
+- master
+- infra
+scanTolerations:
+- effect: NoSchedule
+  key: node-role.kubernetes.io/master
+  operator: Exists
+schedule: 0 0 * * 5

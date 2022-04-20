@@ -1,0 +1,57 @@
+#  - name: Create a VM folder on vCenter for new OpenShift cluster
+#    vcenter_folder:
+#      validate_certs: no
+#      datacenter: "{{ datacenter }}"
+#      folder_name: "{{ cluster_name }}"
+#      folder_type: vm
+#      state: present
+#
+  - name: Generate static network configuration of network-utility VM
+    set_fact:
+      network_config: |
+        TYPE=Ethernet
+        BOOTPROTO=none
+        NAME=ens192
+        DEVICE=ens192
+        ONBOOT=yes
+        IPADDR={{ network_utility_ip }}
+        NETMASK={{ network_utility_netmask }}
+        GATEWAY={{ network_utility_gateway }}
+        DOMAIN={{ cluster_name }}.{{ domain_name }}
+        DNS1={{ network_utility_ip }}
+        DNS2={{ network_utility_dns_server }}
+
+  - name: Create network utility vm
+    vmware_guest:
+      hostname: "{{ VMWARE_HOST }}"
+      username: "{{ VMWARE_USER }}"
+      password: "{{ VMWARE_PASSWORD }}"
+      validate_certs: no
+      datacenter: "{{ datacenter }}"
+      cluster: "{{ vcenter_cluster }}"
+      folder: "{{ parent_folder }}/{{ cluster_name }}"
+      name: "{{ network_utility_vm_name }}"
+      template: "{{ rhcos_template }}"
+      state: poweredon
+      disk:
+      - size_gb: "{{ vm_rootdisk_size }}"
+        type: thick
+        datastore: "{{ datastore_cluster }}"
+      networks: 
+      - name: "{{ vm_network }}"
+      hardware:
+        memory_mb: 4096
+        num_cpus: 2
+      vapp_properties:
+      - id: "guestinfo.ignition.config.data"
+        value: "{{ lookup('template', ignition_template ) | to_nice_json(indent=2) | b64encode }}"
+      - id: "guestinfo.ignition.config.data.encoding"
+        value: base64
+    register: deploy
+
+  - name: Add network services VM into Ansible's run-time inventories
+    add_host:
+      hostname: "{{ network_utility_vm_name }}"
+      groups: utility
+      ansible_host: "{{ network_utility_ip }}"
+      ansible_user: core

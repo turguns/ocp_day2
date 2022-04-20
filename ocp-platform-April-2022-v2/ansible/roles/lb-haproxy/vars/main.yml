@@ -1,0 +1,22 @@
+---
+# vars file for lb-haproxy
+packages:
+ - haproxy
+ - keepalived
+
+firewall_services:
+ - firewalld
+
+haproxy_services:
+ - https
+ - http
+
+haproxy_ports:
+ - 22623
+ - 6443
+ - 443
+ - 80
+
+services:
+ - haproxy
+ - keepalived

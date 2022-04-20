@@ -1,0 +1,12 @@
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: openshift-authentication-ldap-group-sync
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: openshift-authentication-ldap-group-sync
+subjects:
+- kind: ServiceAccount
+  name: ldap-group-sync
+  namespace: openshift-authentication

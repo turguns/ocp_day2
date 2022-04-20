@@ -1,0 +1,4 @@
+- name: Delete  ssh directory
+  file:
+    path: $HOME/.ssh
+    state: absent

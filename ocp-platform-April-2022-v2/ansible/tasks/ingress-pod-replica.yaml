@@ -1,0 +1,3 @@
+#https://access.redhat.com/solutions/5393521 
+- name: increase ingres pod replica to 3
+  shell: oc patch -n openshift-ingress-operator ingresscontroller/default --patch '{"spec"{{':'}}{"replicas"{{':'}} 3}}' --type=merge

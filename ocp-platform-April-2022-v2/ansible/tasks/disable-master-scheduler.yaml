@@ -1,0 +1,4 @@
+- name: Disable Master scheduler
+  shell: oc patch scheduler cluster -p '{"spec":{"mastersSchedulable":false}}'  --type=merge
+
+ 

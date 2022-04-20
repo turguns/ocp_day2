@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: egress-routes
+data:
+  destination: |
+{{ egress_destination | indent( width=4, indentfirst=True) }}

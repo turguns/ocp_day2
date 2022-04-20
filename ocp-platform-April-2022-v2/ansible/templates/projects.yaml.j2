@@ -1,0 +1,16 @@
+apiVersion: v1
+items:
+{% for vars in ocp.operators %} 
+- apiVersion: project.openshift.io/v1
+  kind: Project
+  metadata:
+    name: {{vars.namespace}}
+  spec:
+    finalizers:
+    - kubernetes
+{% endfor %}
+
+kind: List
+metadata:
+  resourceVersion: ""
+  selfLink: ""

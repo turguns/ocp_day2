@@ -1,0 +1,34 @@
+- name: Creating monitoring user service account
+  k8s:
+    name: "{{ ocp.omi.service_account }}"
+    state: present
+    kind: ServiceAccount
+    namespace: openshift-monitoring
+    api_version: v1
+    verify_ssl: no  
+
+- name: Add view permission to service account
+  shell: oc adm policy add-cluster-role-to-user view -z "{{ ocp.omi.service_account }}" -n openshift-monitoring 
+
+- name: Add cluster-monitoring label to cluster-logging namespace to gather metrics of fluentd
+  shell: oc label namespace openshift-logging openshift.io/cluster-monitoring=true
+  ignore_errors: yes
+
+- name: Get the pods in the Openshift logging namespace
+  k8s_info:
+    kind: Pod
+    label_selectors:
+      - component = fluentd 
+    namespace: openshift-logging
+    verify_ssl: no
+  register: pod_list
+ 
+- name: Restart Fluentd pods
+  k8s:
+    state: absent
+    api_version: v1
+    kind: Pod
+    verify_ssl: no
+    namespace: openshift-logging
+    name: "{{ item }}"
+  loop: "{{ pod_list | json_query('resources[*].metadata.name') }}" 

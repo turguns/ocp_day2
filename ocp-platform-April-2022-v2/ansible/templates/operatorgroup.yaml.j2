@@ -1,0 +1,17 @@
+apiVersion: v1
+items:
+{% for vars in ocp.operators %}
+- apiVersion: operators.coreos.com/v1
+  kind: OperatorGroup
+  metadata:
+    name: {{vars.name}}
+    namespace: {{vars.namespace}}
+  spec:
+    targetNamespaces:
+    - {{vars.namespace}}
+{% endfor %}
+
+kind: List
+metadata:
+  resourceVersion: ""
+  selfLink: ""

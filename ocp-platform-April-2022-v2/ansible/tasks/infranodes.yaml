@@ -1,0 +1,10 @@
+- name: Create config for Infra node
+  k8s:
+    state: present
+    definition: "{{ lookup('template', 'infra-mcp.j2') }}"
+    verify_ssl: no
+
+- name: labeling infra node
+  shell: oc label node {{ item |lower }}.{{ cluster_name }}.{{ domain_name }} node-role.kubernetes.io/infra= ; oc label node {{ item |lower }}.{{ cluster_name }}.{{ domain_name }}  node-role.kubernetes.io/worker- 
+  with_items:
+    - "{{ infra_vm_fqdn }}"

@@ -1,0 +1,24 @@
+Variable details.
+----------------
+Its available on ~//ansible/group_vars/hosts-onprem-<domain>.yaml
+
+#Replacing or scale up new node variable details
+replace_node_name: 'ocpie0l12022'  			##mention the node name. which you want to replace or re-provisioning.
+ip_address: '10.2.29.125'				##mention the new node IP-addr. [this field is not required if you are replacing the node]
+node_memory_mb: '16384'					##mention the memory in MB [for both new node or replace node ]
+node_cpu: '4'						##mention the cpu [for both new node or replace node ]
+old_ignition_file: './files/old_worker.ign'		##update the ingition file ./files/ for worker or master [old-*.ign == replacing node ]
+
+#Additional activity for scale up new node.
+1) add new hostname inside of ./inventory/hosts-onprem-<domain>.yaml file
+2) add new hostname and ip-address inside of /etc/hosts on DevOps machine
+ 
+#Repacing unhealthy node and Scaleup new node
+ansible-playbook replace-node.yaml -e @group_vars/hosts-onprem-<domain>.yaml -i inventories/hosts-onprem-<domain>.yaml --ask-vault-pass 
+
+$vault password
+
+
+
+
+

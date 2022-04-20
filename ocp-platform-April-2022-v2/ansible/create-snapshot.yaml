@@ -1,0 +1,65 @@
+---
+- hosts: localhost
+  tasks:
+  - name: Include vmware credentials
+    include_vars:
+      file: secrets/eden_lab/eden_vmware_cred.yaml
+
+  - name: vCenter Login
+    uri:
+      url: "https://{{VMWARE_HOST}}/rest/com/vmware/cis/session"
+      force_basic_auth: yes
+      method: POST
+      user: "{{VMWARE_USER}}"
+      password: "{{VMWARE_PASSWORD}}"
+      status_code: 200
+      validate_certs: no
+    register: login
+
+  - name: Get hosts from vCenter
+    uri:
+      url: "https://{{VMWARE_HOST}}/rest/vcenter/host"
+      force_basic_auth: yes
+      validate_certs: no
+      headers:
+        Cookie: "{{login.set_cookie}}"
+    register: vchosts
+
+  - name: Poweroff the VM
+    vmware_guest_powerstate:
+      hostname: "{{ VMWARE_HOST }}"
+      username: "{{ VMWARE_USER }}"
+      password: "{{ VMWARE_PASSWORD }}"
+      folder: /"{{ datacenter }}"/"{{ vmware_cluster }}"
+      name: "{{ vm_name }}"
+      state: powered-off
+      validate_certs: no
+    delegate_to: localhost
+    register: deploy
+
+  - name: snapshots
+    vmware_guest_snapshot:
+        datacenter: "{{ datacenter }}"
+        state: present
+        username: "{{VMWARE_USER}}"
+        quiesce: false
+        hostname: "{{VMWARE_HOST}}"
+        snapshot_name: "{{ vm_name }}-{{ date }}-{{ time }}"
+        memory_dump: false
+        name: "{{ vm_name }}"
+        folder: /"{{ datacenter }}"/"{{ vmware_cluster }}"
+        password: "{{VMWARE_PASSWORD}}"
+        validate_certs: no
+        port: 443
+    with_items: "{{vchosts.json.value}}"
+
+  - name: Poweron the VM
+    vmware_guest_powerstate:
+      hostname: "{{ VMWARE_HOST }}"
+      username: "{{ VMWARE_USER }}"
+      password: "{{ VMWARE_PASSWORD }}"
+      folder: /"{{ datacenter }}"/"{{ vmware_cluster }}"
+      name: "{{ vm_name }}"
+      state: powered-on
+      validate_certs: no
+    delegate_to: localhost

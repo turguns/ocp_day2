@@ -1,0 +1,15 @@
+- apiVersion: v1
+  kind: ResourceQuota
+  metadata:
+    name: {{ item.project_name  }}-quota
+    namespace: "{{ item.project_name  }}"
+  spec:
+    hard:
+     cpu: "{{ item.quota_cpu }}"
+     memory: "{{ item.quota_memory }}"
+     pods: "{{ item.quota_pods}}"
+     configmaps: "{{ item.quota_configmaps }}"
+     persistentvolumeclaims: "{{ item.quota_persistentvolumeclaims }}"
+     replicationcontrollers: "{{ item.quota_replicationcontrollers }}"
+     requests.storage: "{{ item.quota_requests_storage }}"
+     services: "{{ item.quota_services }}"

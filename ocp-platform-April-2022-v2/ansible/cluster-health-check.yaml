@@ -1,0 +1,15 @@
+---
+- hosts: localhost
+  vars_files:
+    - "{{ technical_user }}"
+    - "{{ nexus_cred_path }}"
+  tasks:
+  - name: oc client tools downloading 
+    include: tasks/oc-client.yaml
+  - name: login to ocp cluster
+    shell: oc login -u "{{ technical_username }}" -p "{{ technical_password }}" "{{ api_url }}"  --insecure-skip-tls-verify=true
+  - name: cluster health check report
+    shell: sh tasks/health-check.sh
+    register: output
+  - debug:
+      msg: "{{ output.stdout_lines }}"

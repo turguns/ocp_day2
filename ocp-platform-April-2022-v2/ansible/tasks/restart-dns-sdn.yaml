@@ -1,0 +1,21 @@
+#- name: get node list
+#  k8s_info:
+#    kind: node
+#    verify_ssl: no
+#  register: nodes
+#
+#- name: Set the node names
+#  set_fact:
+#    node_names: "{{ nodes | json_query(query) }}"
+#  vars:
+#    query: "resources[].status.addresses[?type=='Hostname'].address[]"
+
+#- name: Display node names
+#  debug:
+#    msg: "{{ node_names }}"
+- name: Restart sdn and dns pods
+  include_tasks: tasks/reboot_pod.yml
+#  with_items:
+#    - "{{ node_names }}"
+- pause:
+    seconds: 30

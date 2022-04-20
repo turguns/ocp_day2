@@ -1,0 +1,18 @@
+---
+- name: Create cloud-provider to correct the folder
+  k8s:
+    state: present
+    definition: "{{ lookup('template', 'cloud-provider-cm.j2') }}"
+    verify_ssl: no
+
+- name: Create vsphere_sc_thin file to remove default label
+  k8s:
+    state: present
+    definition: "{{ lookup('template', 'vsphere_sc_thin.j2') }}"
+    verify_ssl: no
+
+- name: Create vsphere_sc_thick storage class
+  k8s:
+    state: present
+    definition: "{{ lookup('template', 'vsphere_sc_thick.j2') }}"
+    verify_ssl: no

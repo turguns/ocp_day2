@@ -1,0 +1,22 @@
+- name: Replace a domain
+  lineinfile:
+    path: /etc/sysconfig/network-scripts/ifcfg-ens192
+    regexp: 'DOMAIN'
+    line: DOMAIN={{ domainname }}
+
+- name: Replace a DNS
+  lineinfile:
+    path: /etc/sysconfig/network-scripts/ifcfg-ens192
+    regexp: 'DNS1'
+    line: DNS1={{ dns1 }}
+
+- name: Replace a DNS
+  lineinfile:
+    path: /etc/sysconfig/network-scripts/ifcfg-ens192
+    regexp: 'DNS2'
+    line: DNS2={{ dns2 }}
+- name: Restart networkmanager
+  service:
+    name: NetworkManager
+    state: restarted
+    enabled: yes

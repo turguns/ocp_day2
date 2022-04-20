@@ -1,0 +1,60 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  annotations:
+    cronjob.kubernetes.io/instantiate: manual
+  name: ldap-group-sync-immediate
+  namespace: openshift-authentication
+spec:
+  template:
+    metadata:
+      creationTimestamp: null
+    spec:
+      activeDeadlineSeconds: 18000
+      containers:
+      - command:
+        - /bin/bash
+        - -c
+        - oc adm groups sync --confirm --sync-config=/etc/config/ldap-group-sync.yaml
+          --whitelist=/etc/config/whitelist/ldap-group-whitelist.txt
+        image: {{ ldap_sync_cli }}
+        imagePullPolicy: Always
+        name: ldap-group-sync
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+        volumeMounts:
+        - mountPath: /etc/config
+          name: ldap-sync-volume
+        - mountPath: /etc/config/certs
+          name: ldap-group-sync-ca
+        - mountPath: /etc/config/whitelist
+          name: ldap-group-sync-whitelist-volume
+      dnsPolicy: ClusterFirst
+      restartPolicy: OnFailure
+      schedulerName: default-scheduler
+      securityContext: {}
+      serviceAccount: ldap-group-sync
+      serviceAccountName: ldap-group-sync
+      terminationGracePeriodSeconds: 30
+      volumes:
+      - name: ldap-sync-volume
+        secret:
+          defaultMode: 420
+          items:
+          - key: ldap-sync.yml
+            path: ldap-group-sync.yaml
+          secretName: ldap-group-sync-config
+      - configMap:
+          defaultMode: 420
+          items:
+          - key: ca.crt
+            path: ca.crt
+          name: ldap-group-sync-ca
+        name: ldap-group-sync-ca
+      - configMap:
+          defaultMode: 420
+          items:
+          - key: ldap-group-sync-whitelist.txt
+            path: ldap-group-whitelist.txt
+          name: ldap-group-sync-whitelist
+        name: ldap-group-sync-whitelist-volume

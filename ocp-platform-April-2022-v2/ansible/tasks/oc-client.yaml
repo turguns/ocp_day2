@@ -1,0 +1,23 @@
+- debug:
+    msg: '{{ nexus_user }}'
+#- name: Download OpenShift installer
+#  get_url:
+#    url: "{{ ocp.oc_client_file_location }}"
+#    dest: "$HOME"
+#    mode: 0755
+#    validate_certs: no
+- name: Download openshift client
+  get_url:
+    url: "{{ installer_artifacts_url }}/{{ ocp.openshift_major_version }}.{{ ocp.openshift_minor_version }}/openshift-client-linux-{{ ocp.openshift_major_version }}.{{ ocp.openshift_minor_version }}.tar.gz"
+    dest: $HOME
+    username: '{{ nexus_user }}'
+    password: '{{ nexus_password }}'
+    mode: 0755
+    validate_certs: no
+
+- name: Extract Openshift client
+  unarchive:
+    src: "$HOME/openshift-client-linux-{{ ocp.openshift_major_version }}.{{ ocp.openshift_minor_version }}.tar.gz"
+    dest: $HOME
+    creates: $HOME/oc
+    remote_src: yes

@@ -1,0 +1,51 @@
+_meta:
+  hostvars:
+    10.58.63.113:
+       ansible_host: OCPIEBD11011.ocpd2.os.ergo.com
+    10.58.63.114:
+       ansible_host: OCPIEBD11022.ocpd2.os.ergo.com
+    10.58.63.115:
+       ansible_host: OCPIEBD11031.ocpd2.os.ergo.com
+    10.58.63.116:
+       ansible_host: OCPIEBD16011.ocpd2.os.ergo.com
+    110.58.63.117:
+       ansible_host: OCPIEBD16022.ocpd2.os.ergo.com
+    10.58.63.118:
+       ansible_host: OCPIEBD16031.ocpd2.os.ergo.com
+    10.58.63.119:
+       ansible_host: OCPIEBD12011.ocpd2.os.ergo.com
+    10.58.63.120:
+       ansible_host: OCPIEBD12022.ocpd2.os.ergo.com
+    10.58.63.121:
+       ansible_host: OCPIEBD12031.ocpd2.os.ergo.com          
+all:
+  children:
+    haproxy:
+      children:
+        haproxy-master:
+          hosts:
+            OCPIEBD04011.lindmzn.eden:
+        haproxy-slave:
+          hosts:
+            OCPIEBD04022.lindmzn.eden:
+    devops:
+      hosts: 
+        OCPIEB000013.lindmzn.eden:
+    monitoring:
+      hosts:
+        OCPIE0P05013.linux.eden:
+    ocp:
+      hosts:
+        10.58.63.113:
+        10.58.63.114:
+        10.58.63.115:
+        10.58.63.116:
+        10.58.63.117:
+        10.58.63.118:
+        10.58.63.119:
+        10.58.63.120:
+        10.58.63.121:
+    utility:
+      hosts:
+        10.58.63.112:
+          ansible_user: core

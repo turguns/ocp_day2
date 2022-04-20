@@ -1,0 +1,48 @@
+_meta:
+  hostvars:
+    10.2.29.120:
+       ansible_host: ocpie0l11011.ocpl1.services.eden
+    10.2.29.121:
+       ansible_host: ocpie0l11022.ocpl1.services.eden
+    10.2.29.122:
+       ansible_host: ocpie0l11031.ocpl1.services.eden
+    10.2.29.124:
+       ansible_host: ocpie0l12011.ocpl1.services.eden
+    10.2.29.125:
+       ansible_host: ocpie0l12022.ocpl1.services.eden
+    10.2.29.123:
+       ansible_host: ocpie0l16011.ocpl1.services.eden
+    10.2.29.169:
+       ansible_host: ocpie0l16022.ocpl1.services.eden
+    10.2.29.176:
+       ansible_host: ocpie0l16031.ocpl1.services.eden
+all:
+  children:
+    haproxy:
+      children:
+        haproxy-master:
+          hosts:
+            OCPIE0L04011.linux.eden:
+        haproxy-slave:
+          hosts:
+            OCPIE0L04022.linux.eden:
+    devops:
+      hosts:
+        ocpie0000013.linux.eden:
+    monitoring:
+      hosts:
+        OCPIE0L05011.linux.eden:
+    ocp:
+      hosts:
+        10.2.29.120:
+        10.2.29.121:
+        10.2.29.122:
+        10.2.29.124:
+        10.2.29.125:
+        10.2.29.123:
+        10.2.29.169:
+        10.2.29.176:
+    utility:
+      hosts:
+        10.2.29.175:
+          ansible_user: core

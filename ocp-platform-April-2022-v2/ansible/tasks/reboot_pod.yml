@@ -1,0 +1,42 @@
+- name: Get the pods in the Openshift DNS namespace
+  k8s_info:
+    kind: Pod
+    namespace: openshift-dns
+    verify_ssl: no
+  register: pod_list
+
+- name: Print pod names
+  debug:
+    msg: "pod_list: {{ pod_list | json_query('resources[*].metadata.name')  }} "
+
+- name: Restart DNS pods
+  k8s:
+    state: absent
+    api_version: v1
+    kind: Pod
+    verify_ssl: no
+    namespace: openshift-dns
+    name: "{{ item }}"
+  loop: "{{ pod_list | json_query('resources[*].metadata.name') }}"
+
+- name: Get the pods in the Openshift SDN namespace
+  k8s_info:
+    kind: Pod
+    namespace: openshift-sdn
+    verify_ssl: no
+  register: pod_list
+
+- name: Print pod names
+  debug:
+    msg: "pod_list: {{ pod_list | json_query('resources[*].metadata.name')  }} "
+
+- name: Restart SDN pods
+  k8s:
+    state: absent
+    api_version: v1
+    kind: Pod
+    verify_ssl: no
+    namespace: openshift-sdn
+    name: "{{ item }}"
+  loop: "{{ pod_list | json_query('resources[*].metadata.name') }}"
+

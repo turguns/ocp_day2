@@ -1,0 +1,2 @@
+
+ansible-playbook cluster-health-check.yaml  -e @group_vars/hosts-onprem-<domain>.yaml --ask-vault-pass

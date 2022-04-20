@@ -1,0 +1,35 @@
+- name: Create gitops namespace for images
+  k8s:
+    state: present
+    verify_ssl: no
+    definition:
+       kind: Namespace
+       apiVersion: v1
+       metadata:
+         name: "{{ gitops.namespace }}"
+- name: Create pull secret
+  k8s:
+    state: present
+    verify_ssl: no
+    definition:
+       kind: Secret
+       apiVersion: v1
+       metadata:
+         name: "{{ gitops.pull_secret_name }}"
+         namespace: "{{ gitops.namespace }}"
+       data:
+         .dockerconfigjson: >-
+           {{ pull_secret_gitops | b64encode }}
+       type: kubernetes.io/dockerconfigjson
+- name: pull secret  link default
+  shell: oc project "{{ gitops.namespace }}" ; oc secrets link default "{{ gitops.pull_secret_name }}" --for=pull
+
+- debug:
+    msg: "these are gitops images:  {{ gitops.nexus_url }}/{{ gitops.image_name }}:{{ item.image_tag }} "
+  loop: "{{ gitops.tags }}"
+
+- name: Import gitops deployer image to OCP 
+  shell: oc project "{{ gitops.namespace }}"; oc import-image {{ gitops.nexus_url }}/{{ gitops.image_name }}:{{ gitops.fix_image_tag }} --confirm
+- name: Tag gitops deployer image
+  shell: oc project "{{ gitops.namespace }}"; oc tag  {{ gitops.nexus_url }}/{{ gitops.image_name }}:{{ item.image_tag }} {{ gitops.image_name }}:{{ item.image_tag }}
+  loop: "{{ gitops.tags }}"

@@ -1,0 +1,2 @@
+- name: Update session timeout
+  shell: oc patch oauthclient console -p "{ \"accessTokenInactivityTimeoutSeconds\"":" {{ ocp.console_timeout }}}"

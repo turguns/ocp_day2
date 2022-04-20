@@ -1,0 +1,53 @@
+- name: Wait for bootstrap complete
+  command: openshift-install --dir={{ cluster_name }} wait-for bootstrap-complete
+  register: result
+- debug: var=result
+- name: Remove bootstrap vm
+  vmware_guest:
+    hostname: "{{ VMWARE_HOST }}"
+    username: "{{ VMWARE_USER }}"
+    password: "{{ VMWARE_PASSWORD }}"
+    validate_certs: no
+    uuid: "{{ hostvars[groups['bootstrap'][0]]['vmware_uuid'] }}"
+    state: absent
+    force: yes
+  delegate_to: localhost
+- name: Approve node CSRs
+  approve_csr:
+    nodes: "{{ groups.master|length + groups.worker|length }}"
+    max_time: 600
+  register: result
+  ignore_errors: yes
+- debug: var=result
+#- name: Wait for image registry crd to become available
+#  command: oc wait --for=condition=Degraded configs.imageregistry.operator.openshift.io --all --timeout=60s
+#  register: result
+#  until: result.rc == 0
+#  retries: 25
+#  delay: 60
+#  ignore_errors: yes
+#- name: Change image registry status
+#  command:  oc apply -f files/image-registry-managedstate.yaml
+
+- name: Pause for 20  minutes for Operators deployment
+  pause:
+    minutes: 20
+- name: Restart openshift-ingress pods
+  command: oc delete --all pods -n openshift-ingress
+  ignore_errors: yes
+- name: Approve node CSRs
+  approve_csr:
+    nodes: "{{ groups.master|length + groups.worker|length }}"
+    max_time: 1
+  register: result
+  ignore_errors: yes
+
+- name: Configure storage for the image registry
+  command: oc patch configs.imageregistry.operator.openshift.io cluster --type merge --patch '{"spec":{"storage":{"emptyDir":{}}}}'
+
+- name: Wait for installation complete
+  command: openshift-install --dir={{ cluster_name }} wait-for install-complete
+  register: result
+- debug: var=result
+
+    

@@ -1,0 +1,174 @@
+domain_name: os.ergo.com
+cluster_name: ocpl2
+VMWARE_HOST: esxte00900.servers.ergodev
+datacenter: TLN
+datastore: TLN-C2-SC-SK3-N6fd
+datastore_cluster: LDSC-TE0-C7-SC-SK3
+vmware_cluster: TLN-C2-SC
+vcenter_cluster: TLN-C2-SC
+#rhcos_template: "rhcos-4.7.7-x86_64-vmware.x86_64-{{ datacenter }}"
+rhcos_template: "rhcos-4.8.14-x86_64-vmware.x86_64-{{ datacenter }}"
+vm_network: "dvPG-VM-EDEN-10.58.63.0-TLN-01"
+parent_folder: "/TLN/vm/EDEN/Openshift Container Platform (OCP)"
+vmare_cred_path: "secrets/eden_lab_bz/eden_vmware_cred.yaml"
+vm_rootdisk_size: 120
+machine_cidr: "10.58.63.0/24"
+network_utility_ip: 10.58.63.101
+bootstrap_ip: 10.58.63.100
+master_ips: 10.58.63.102,10.58.63.103,10.58.63.104
+infra_ips: 10.58.63.105,10.58.63.106,10.58.63.107
+worker_ips: 10.58.63.108,10.58.63.109,10.58.63.110
+network_utility_netmask: 255.255.255.0
+network_utility_gateway: 10.58.63.1
+network_utility_dns_server: "{{ dns1 }}"
+bootstrap_vm_name: "{{ cluster_name }}-bootstrap"
+master_vm_names: "OCPIEBL11011,OCPIEBL11022,OCPIEBL11031"
+infra_vm_names: "OCPIEBL16011,OCPIEBL16022,OCPIEBL16031"
+worker_vm_names: "OCPIEBL12011,OCPIEBL12022,OCPIEBL12023"
+pull_secret_path: "secrets/eden_lab_bz/pull_secret_{{ cluster_name }}.yaml"
+authorized_ssh_keys_path: "secrets/eden_lab_bz/LC_OCP_OPS_D2_ssh_keys.yaml"
+auth_private_key_path: "secrets/eden_lab_bz/LC_OCP_OPS_D2_ssh_private_keys.yaml"
+registry_fqdn: container-proxy.services.eden
+mirror_registry: "{{ registry_fqdn }}/openshift-release-dev/ocp-release"
+mirror_registry_dev: "{{ registry_fqdn }}/openshift-release-dev/ocp-v4.0-art-dev"
+haproxy_image: "{{ registry_fqdn }}/haproxytech/haproxy:latest"
+httpd_image: "{{ registry_fqdn }}/rhel8/httpd-24:latest"
+cluster_network: 10.128.0.0/14
+host_prefix: 23
+service_network: 172.30.0.0/16
+master_vm_memory: 16384
+worker_vm_memory: 16384
+infra_vm_memory: 16384
+master_vm_cpus: 4
+worker_vm_cpus: 4
+infra_vm_cpus: 4
+domainname: lindmzn.eden
+dns1: 10.55.238.22
+dns2: 10.55.238.23
+api_url: "https://api.{{ cluster_name }}.{{ domain_name }}:6443"
+custom_url: "console.apps.{{ cluster_name }}.{{ domain_name }}"
+ntpserver1: server 10.55.238.151 iburst
+ntpserver2: server 10.55.238.141 iburst
+# LDAP setup
+bindDN: "LC_OCP_LDAP"
+ldap_url: "ldaps://corp.eden:636/DC=CORP,DC=EDEN?sAMAccountName"
+bindPassword_path: "secrets/eden_lab_bz/bindpassword.yaml"
+# LDAP Group Sync Cronjob
+#
+#Temporary
+ldap_sync_url: "ldaps://corp.eden:636"
+groups_baseDN: "OU=Groups,OU=.Common,OU=IR,DC=corp,DC=eden"
+users_baseDN: "DC=corp,DC=eden"
+whitelist_groups: |
+      CN=GFE_OCP_L2_CLUSTER_ADMIN,OU=Groups,OU=.Common,OU=IR,DC=corp,DC=eden
+      CN=GFE_OCP_L2_CLUSTER_VIEW,OU=Groups,OU=.Common,OU=IR,DC=corp,DC=eden
+      CN=GFE_OCP_D2_TEST_ADMIN,OU=Groups,OU=.Common,OU=IR,DC=corp,DC=eden
+      CN=GFE_OCP_D2_TEST_EDIT,OU=Groups,OU=.Common,OU=IR,DC=corp,DC=eden
+      CN=GFE_OCP_D2_TEST_VIEW,OU=Groups,OU=.Common,OU=IR,DC=corp,DC=eden
+ldap_sync_schedule: "*/15 * * * *"
+ldap_sync_cli: "{{ registry_fqdn }}/openshift4/ose-cli:latest"
+cluster_admin_group: GFE_OCP_L2_CLUSTER_ADMIN
+cluster_reader_group: GFE_OCP_L2_CLUSTER_VIEW
+#
+##Certificates
+root_cert_path: "certificates/CAs/root_ca_eden.crt"
+intermediate_cert_path: "certificates/CAs/sub_ca_eden.cer"
+api_cert_path: "certificates/{{ cluster_name }}/api.{{ cluster_name }}.{{ domain_name }}.csr.cer"
+apps_cert_path: "certificates/{{ cluster_name }}/apps.{{ cluster_name }}.{{ domain_name }}.csr.cer"
+api_cert_key_path: "certificates/{{ cluster_name }}/api.{{ cluster_name }}.{{ domain_name }}.key"
+apps_cert_key_path: "certificates/{{ cluster_name }}/apps.{{ cluster_name }}.{{ domain_name }}.key"
+quota_cpu: "5"
+quota_memory: 30Gi
+quota_pods: "100"
+quota_configmaps: "20"
+quota_persistentvolumeclaims: "20"
+quota_replicationcontrollers: "80"
+quota_requests_storage: 50Gi
+quota_services: "30"
+container_max_memory: 2Gi
+container_min_memory: 128Mi
+container_max_cpu: 4Gi
+container_min_cpu: 100m
+container_default_cpu: 200m
+container_default_memory: 512Mi
+container_defaultRequest_cpu: 1m
+container_defaultRequest_memory: 256Mi
+pod_max_memory: 8Gi
+pod_min_memory: 6Mi
+pod_max_cpu: 2000m
+pod_min_cpu: 1m
+vsphere_disk_format: zeroedthick
+vsphere_sc_name: thick
+
+##HaProxy variables
+bootstrap:
+ - name: ocpl2-bootstrap
+   ip: 10.58.63.100
+controlplane:
+ - name: OCPIEBL11011.ocpl2.os.ergo.com
+   ip: 10.58.63.102
+ - name: OCPIEBL11022.ocpl2.os.ergo.com
+   ip: 10.58.63.103
+ - name: OCPIEBL11031.ocpl2.os.ergo.com
+   ip: 10.58.63.104
+compute:
+ - name: OCPIEBL12011.ocpl2.os.ergo.com
+   ip: 10.58.63.108
+ - name: OCPIEBL12022.ocpl2.os.ergo.com
+   ip: 10.58.63.109
+ - name: OCPIEBL12023.ocpl2.os.ergo.com
+   ip: 10.58.63.110
+infra:
+ - name: OCPIEBL16011.ocpl2.os.ergo.com
+   ip: 10.58.63.105
+ - name: OCPIEBL16022.ocpl2.os.ergo.com
+   ip: 10.58.63.106
+ - name: OCPIEBL16031.ocpl2.os.ergo.com
+   ip: 10.58.63.107
+
+vip_ip: 10.58.3.90 
+interface_name: 'ens192'
+virtual_router_id: '121'
+
+#Replace unhealthy node or create new node
+replace_node_name: 'new-worker'
+ip_address: ''
+node_memory_mb: '16384'
+node_cpu: '4'
+old_ignition_file: './files/old_worker.ign'
+
+#ClusterLogForwarder Configuration for CLM/ALM
+#
+#ClusterLogForwarder Configuration for CLM/ALM
+alm:
+  alm_ca_bundle_cert: "{{lookup ('file', 'certificates/ocpl2/alm-ca-bundle-cert')}}"
+  alm_username_password: "secrets/eden_lab_bz/alm-elk-username-password.yaml"
+  alm_endpoint: 10.2.5.49
+  alm_port: 9200
+  label: ocpl2
+  namespace: demo
+
+# Cluster upgrade vars
+raw_proxy_url: https://nexus.services.eden/repository/raw-proxy
+#Cluster health check variable
+technical_user: 'secrets/eden_lab_bz/LC_OCP_OPS_D2.yaml'
+installer_artifacts_url: '{{ raw_proxy_url }}/pub/openshift-v4/clients/ocp'
+nexus_cred_path: 'secrets/eden_lab_bz/LC_NXRM_OSCP_D_001.yaml'
+
+# Egress router
+source:
+  egress_ip1: 10.58.63.150
+  egress_ip2: 10.58.63.149
+  egress_gateway: 10.2.29.1
+egress_destination: |
+      25 tcp 10.2.27.67 25
+      26 tcp 10.2.27.68 25
+egress_service_ports: |
+  - name: egress-smtp
+    port: 25
+    protocol: TCP
+    targetPort: 25
+  - name: egress-smtp2
+    port: 26
+    protocol: TCP
+

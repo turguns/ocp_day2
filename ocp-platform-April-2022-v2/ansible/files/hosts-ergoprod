@@ -1,0 +1,14 @@
+127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4
+::1         localhost localhost.localdomain localhost6 localhost6.localdomain6
+10.4.127.72 ocppe0p11011.ocpp1.services.ergo ocppe0p11011
+10.4.127.73 ocppe0p11022.ocpp1.services.ergo ocppe0p11022
+10.4.127.74 ocppe0p11031.ocpp1.services.ergo ocppe0p11031
+10.4.127.78 ocppe0p12011.ocpp1.services.ergo ocppe0p12011
+10.4.127.79 ocppe0p12022.ocpp1.services.ergo ocppe0p12022
+10.4.127.80 ocppe0p12031.ocpp1.services.ergo ocppe0p12031
+10.4.127.81 ocppe0p12042.ocpp1.services.ergo ocppe0p12042
+10.4.127.82 ocppe0p12051.ocpp1.services.ergo ocppe0p12051
+10.4.127.83 ocppe0p12062.ocpp1.services.ergo ocppe0p12062
+10.4.127.75 ocppe0p16011.ocpp1.services.ergo ocppe0p16011
+10.4.127.76 ocppe0p16022.ocpp1.services.ergo ocppe0p16022
+10.4.127.77 ocppe0p16031.ocpp1.services.ergo ocppe0p16031

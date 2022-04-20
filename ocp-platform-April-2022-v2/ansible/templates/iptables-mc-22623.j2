@@ -1,0 +1,33 @@
+apiVersion: machineconfiguration.openshift.io/v1
+kind: MachineConfig
+metadata:
+  labels:
+    machineconfiguration.openshift.io/role: master
+  name: 99-master-disable-22623-for-external-network
+spec:
+  config:
+    ignition:
+      config: {}
+      security:
+        tls: {}
+      timeouts: {}
+      version: 3.2.0
+    networkd: {}
+    passwd: {}
+    storage: {}
+    systemd:
+      units:
+      - contents: |
+             [Unit]
+             Description=disable-22623-for-external-network
+             After=network-online.target
+
+             [Service]
+             Type=oneshot
+             ExecStart=/bin/sh -c '/sbin/iptables -A INPUT -p tcp  -s {{ machine_cidr }} --dport 22623 -j ACCEPT && /sbin/iptables -A INPUT -p tcp -s 0.0.0.0/0 --dport 22623 -j REJECT'
+                         
+             [Install]
+             WantedBy=multi-user.target
+        enabled: true
+        name: disable-22623port-for-external-network.service
+  osImageURL: ''

@@ -1,0 +1,19 @@
+- name: label the worker MachineConfigPoll
+  shell: oc label machineconfigpool worker customkubelet=worker
+  ignore_errors: yes
+
+- name: label the master MachineConfigPoll
+  shell: oc label machineconfigpool master customkubelet=master
+  ignore_errors: yes
+
+- name: creating Kubeletconfig for worker
+  k8s:
+    state: present
+    definition: "{{ lookup('template', '../templates/KubeletConfig-Worker.j2') }}"
+    verify_ssl: no
+
+- name: creating Kubeletconfig for master
+  k8s:
+    state: present
+    definition: "{{ lookup('template', '../templates/KubeletConfig-Master.j2') }}"
+    verify_ssl: no

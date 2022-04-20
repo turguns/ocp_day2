@@ -1,0 +1,1 @@
+ansible-playbook emergency-access.yaml -i inventories/hosts-onprem-<DOMAIN>-<CLUSTER>.yaml -e days=2 -e @group_vars/hosts-onprem-<DOMAIN>-<CLUSTER>.yaml --ask-vault-pass

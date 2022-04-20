@@ -1,0 +1,13 @@
+- set_fact:
+    custom_url_var: "api.{{ cluster_name }}.{{ domain_name }}"
+- name: get url of current cluster
+  shell: oc whoami --show-server  |sed 's/https\?:\/\///'
+  register: cluster_url
+- debug: var=cluster_url.stdout
+- name: check
+  fail:
+    msg: Login to cluster and/or  Use proper cluster's variable
+  when:
+    custom_url_var | string not in cluster_url.stdout
+- debug:
+    msg: "Check Completed. Status passed"

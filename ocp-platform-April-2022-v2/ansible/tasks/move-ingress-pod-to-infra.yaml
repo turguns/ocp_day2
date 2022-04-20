@@ -1,0 +1,3 @@
+- name: Move ingress router to infra node
+  shell: oc patch -n openshift-ingress-operator ingresscontroller/default -p '{"spec":{"nodePlacement":{"nodeSelector":{"matchLabels":{"node-role.kubernetes.io/infra":""}}}}}' --type=merge
+ 

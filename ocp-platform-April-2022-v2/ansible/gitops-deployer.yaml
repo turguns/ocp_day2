@@ -1,0 +1,10 @@
+- hosts: localhost
+  gather_facts: no
+  vars_files:
+    - "{{ pull_secret_gitops_path }}"
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
+  tasks:
+    - name: Create namespace and pull secret
+      include: tasks/gitops-ocp.yaml
+

@@ -1,0 +1,6 @@
+- name: Change image registry status
+  k8s:
+    state: present
+    definition: "{{ lookup('template', 'image-registry-managedstate.yaml.j2') }}"
+    verify_ssl: no
+

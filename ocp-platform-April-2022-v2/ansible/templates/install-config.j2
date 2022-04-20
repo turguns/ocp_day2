@@ -1,0 +1,52 @@
+apiVersion: v1
+baseDomain: {{ domain_name }}
+compute:
+- hyperthreading: Enabled
+  name: worker
+  replicas: 0
+controlPlane:
+  hyperthreading: Enabled
+  name: master
+  replicas: {{ groups.master|length }}
+metadata:
+  name: {{ cluster_name }}
+networking:
+  clusterNetworks:
+  - cidr: {{ cluster_network }}
+    hostPrefix: {{ host_prefix }}
+  machineNetwork:
+  - cidr: {{ machine_cidr }}
+  networkType: OpenShiftSDN
+  serviceNetwork: 
+  - {{ service_network }}
+platform:
+  vsphere:
+    vcenter: "{{ VMWARE_HOST }}"
+    username: {{ VMWARE_USER }}
+    password: {{ VMWARE_PASSWORD }}
+    datacenter: {{ datacenter }}
+    defaultDatastore: {{ datastore }}
+pullSecret: '{{ pull_secret }}'
+sshKey: '{{ authorized_ssh_keys }}'
+{% if http_proxy is defined and http_proxy|length %}
+{% set net_mask = ansible_default_ipv4.network + "/" + ansible_default_ipv4.netmask  %}
+proxy:
+  httpProxy: {{ http_proxy }}
+  httpsProxy: {{ http_proxy }}
+  noProxy: .{{ domain_name }},.{{ cluster_name }}.{{ domain_name }},{{ net_mask | ipaddr('net') }},localhost,127.0.0.1
+{% endif %}
+{% if additional_trust_bundle is defined and additional_trust_bundle|length %}
+additionalTrustBundle: |
+  {{ additional_trust_bundle | indent(2) }}
+{% endif %}
+{% if mirror_registry is defined and mirror_registry|length %}
+additionalTrustBundle: |
+{{ cert | indent( width=2, indentfirst=True) }}
+imageContentSources:
+- mirrors:
+  - {{ mirror_registry }}
+  source: quay.io/openshift-release-dev/ocp-release
+- mirrors:
+  - {{ mirror_registry_dev }}
+  source: quay.io/openshift-release-dev/ocp-v4.0-art-dev
+{% endif %}

@@ -1,0 +1,20 @@
+# extraVars: patching="os"
+# Example:
+# Executing for patching LAB Haproxy
+
+# NOTE: ExtraVars can be given excluding rhel_version as well.
+
+- hosts: all
+  gather_facts: yes
+  vars:
+    haproxy:
+      systemd:
+        service_name: haproxy
+    keepalive:
+      systemd:
+        service_name: keepalived
+  tasks:
+    - include_role:
+        name: patching
+      when:
+        - patching == "os"

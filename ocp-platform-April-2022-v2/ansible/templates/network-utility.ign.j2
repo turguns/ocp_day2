@@ -1,0 +1,86 @@
+{
+    "ignition": {
+        "config": {
+
+        },
+        "timeouts": {
+
+        },
+        "version": "3.1.0"
+    },
+    "networkd": {
+
+    },
+    "passwd": {
+        "users": [
+            {
+                "name": "core",
+                "passwordHash":"$6$xUUcQw4U$DFjMIYXodG0Px5h6Ghq2.r62qH7bkAG6YXhuaEiDDx3Hu9CptgstMZMNpVU23Kv3WkCzaFYkXhm3NcyYktSjg.",
+                "sshAuthorizedKeys": [
+                    "{{ authorized_ssh_keys }}"
+                ]
+            }
+        ]
+    },
+    "storage": {
+        "files": [
+            {
+                "filesystem": "root",
+                "path": "/root/.docker/config.json",
+                "user": {
+                    "name": "root"
+                },
+                "contents": {
+                    "source": "data:text/plain;charset=utf-8;base64,{{ pull_secret | b64encode }}",
+                    "verification": {
+                        
+                    }
+                },
+                "mode": 384
+            },
+            {
+                "filesystem": "root",
+                "group": {
+
+                },
+                "path": "/etc/hostname",
+                "user": {
+
+                },
+                "contents": {
+                    "source": "data:text/plain;charset=utf-8;base64,{{ [network_utility_vm_name, cluster_name, domain_name] | join('.') | b64encode }}",
+                    "verification": {
+
+                    }
+                },
+                "mode": 420
+            },
+            {
+                "filesystem": "root",
+                "group": {
+
+                },
+                "path": "/etc/sysconfig/network-scripts/ifcfg-ens192",
+                "user": {
+
+                },
+                "contents": {
+                    "source": "data:text/plain;charset=utf-8;base64,{{ network_config | b64encode }}",
+                    "verification": {
+
+                    }
+                },
+                "mode": 420
+            }
+        ]
+    },
+    "systemd": {
+        "units": [
+            {
+                "contents": "[Unit]\nConditionFirstBoot=yes\n[Service]\nType=idle\nExecStart=/sbin/reboot\n[Install]\nWantedBy=multi-user.target\n",
+                "enabled": true,
+                "name": "restart.service"
+            }
+        ]
+    }
+}

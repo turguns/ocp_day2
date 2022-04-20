@@ -1,0 +1,54 @@
+apiVersion: "logging.openshift.io/v1"
+kind: ClusterLogForwarder
+metadata:
+  name: instance
+  namespace: openshift-logging
+spec:
+  inputs:
+  - application:
+      selector:
+        matchLabels:
+          aopFormat: json
+    name: json-applogs
+  - application:
+      selector:
+        matchLabels:
+          aopFormat: plain
+    name: plain-applogs
+  outputs:
+  - name: clm
+    type: syslog
+    url: 'tcp://{{ocp.clm.endpoint}}:{{ocp.clm.port}}'
+  - elasticsearch:
+      structuredTypeKey: kubernetes.labels.aopIndex
+      structuredTypeName: undefined
+    name: aop
+    secret:
+      name: alm-secret
+    type: elasticsearch
+    url: 'https://{{alm.alm_endpoint}}:{{alm.alm_port}}'
+  pipelines:
+  - inputRefs:
+    - infrastructure
+    - application
+    - audit
+    labels:
+      clusterId: "{{alm.label}}"
+    name: all-to-clm
+    outputRefs:
+    - clm
+  - inputRefs:
+    - json-applogs
+    labels:
+      clusterId: "{{alm.label}}"
+    name: json-applogs-to-aop
+    outputRefs:
+    - aop
+    parse: json
+  - inputRefs:
+    - plain-applogs
+    labels:
+      clusterId: "{{alm.label}}"
+    name: plain-applogs-to-aop
+    outputRefs:
+    - aop

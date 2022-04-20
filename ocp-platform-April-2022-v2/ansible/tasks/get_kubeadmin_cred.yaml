@@ -1,0 +1,10 @@
+    - name: get content of remote file
+      slurp:
+        src: "/var/home/core/{{cluster_name}}/auth/kubeadmin-password"
+      register: pass_encoded
+
+    - name: set pass by decoding
+      set_fact:
+        KUBEADMIN_PASSWORD: "{{pass_encoded.content | b64decode}}"
+#    - debug:
+#        msg: "content of remote file  {{KUBEADMIN_PASSWORD}}"

@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: release-image-{{ ocp.openshift_major_version }}.{{ ocp.openshift_minor_version }}
+  namespace: openshift-config-managed
+  labels:
+    release.openshift.io/verification-signatures: ""
+binaryData:
+  {{DIGEST_ALGO}}-{{DIGEST_ALGO_ENCODED}}: {{SIGNATURE_BASE64}}

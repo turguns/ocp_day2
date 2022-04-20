@@ -1,0 +1,133 @@
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  labels:
+    egress: egress-routers
+    egress-affinity: one
+    name: egress-router-one
+    app: egress
+  namespace: ocp-egress
+  name: egress-router-one
+spec:
+  replicas: 1
+  selector:
+    egress: egress-routers
+    egress-affinity: one
+    name: egress-router-one
+  template:
+    metadata:
+      annotations:
+        pod.network.openshift.io/assign-macvlan: "true"
+      labels:
+        egress: egress-routers
+        egress-affinity: one
+        name: egress-router-one
+      name: egress-router-one
+    spec:
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+              - key: egress-affinity
+                operator: In
+                values:
+                - two
+            topologyKey: kubernetes.io/hostname
+      containers:
+      - env:
+        - name: EGRESS_SOURCE
+          value: {{ source.egress_ip1 }}
+        - name: EGRESS_GATEWAY
+          value: {{ source.egress_gateway }}
+        - name: EGRESS_DESTINATION
+          valueFrom:
+            configMapKeyRef:
+              key: destination
+              name: egress-routes
+        resources:
+          limits:
+            memory: 300Mi
+          requests:
+            cpu: 300m
+            memory: 200Mi
+        image: "{{ registry_fqdn }}/openshift4/ose-egress-router"
+        imagePullPolicy: Always
+        name: egress-router
+        resources: {}
+        securityContext:
+          privileged: true
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      serviceAccount: egress
+      serviceAccountName: egress
+      priorityClassName: cluster-egress
+---
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  labels:
+    egress: egress-routers
+    egress-affinity: two
+    name: egress-router-two
+    app: egress
+  namespace: ocp-egress
+  name: egress-router-two
+spec:
+  replicas: 1
+  selector:
+    egress: egress-routers
+    egress-affinity: two
+    name: egress-router-two
+  template:
+    metadata:
+      annotations:
+        pod.network.openshift.io/assign-macvlan: "true"
+      labels:
+        egress: egress-routers
+        egress-affinity: two
+        name: egress-router-two
+      name: egress-router-two
+    spec:
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+              - key: egress-affinity
+                operator: In
+                values:
+                - one
+            topologyKey: kubernetes.io/hostname
+      containers:
+      - env:
+        - name: EGRESS_SOURCE
+          value: {{ source.egress_ip2 }}
+        - name: EGRESS_GATEWAY
+          value: {{ source.egress_gateway }}
+        - name: EGRESS_DESTINATION
+          valueFrom:
+            configMapKeyRef:
+              key: destination
+              name: egress-routes
+        resources:
+          limits:
+            memory: 300Mi
+          requests:
+            cpu: 300m
+            memory: 200Mi
+        image: "{{ registry_fqdn }}/openshift4/ose-egress-router"
+        imagePullPolicy: Always
+        name: egress-router
+        resources: {}
+        securityContext:
+          privileged: true
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      serviceAccount: egress
+      serviceAccountName: egress
+      priorityClassName: cluster-egress

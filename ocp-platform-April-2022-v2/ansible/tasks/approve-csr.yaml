@@ -1,0 +1,6 @@
+- name: approve csr
+  shell: oc get csr -o name | xargs oc adm certificate approve
+  register: result
+  ignore_errors: yes
+- debug: var=result
+ 

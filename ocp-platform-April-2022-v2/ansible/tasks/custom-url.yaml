@@ -1,0 +1,3 @@
+- name: Change web portal's default url
+  shell: oc patch route console -n openshift-console -p '{"spec":{"host":"{{ custom_url }}"}},{"status":{"host":"{{ custom_url }}"}}'
+  ignore_errors: yes

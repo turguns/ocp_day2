@@ -1,0 +1,1 @@
+ansible-playbook remove_vm.yaml -e @group_vars/hosts-onprem-eden-ocpl1.yaml --ask-vault-pass

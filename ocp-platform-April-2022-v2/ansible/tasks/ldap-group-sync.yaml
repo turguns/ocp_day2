@@ -1,0 +1,58 @@
+---
+- name: Create temporary ldap group sync directory
+  file:
+    path: /$HOME/ldap-group-sync
+    state: directory
+
+#- name: Decrypt bindPassword
+#  shell: echo {{ bindPassword }} |base64 --decode
+#  register: bindPassword_decrypted
+#- set_fact:
+#    bindPassword_decrypted: "{{ bindPassword_decrypted.stdout }}"
+
+- name: Copy LDAP group sync config
+  template:
+    src: group_sync.yaml.j2
+    dest: $HOME/ldap-group-sync/group_sync_config.yaml
+
+- name: Generate base64 encoded LDAP group sync config
+  shell: cat $HOME/ldap-group-sync/group_sync_config.yaml |base64 -w0
+  register: group_sync_config
+- set_fact:
+    ldap_sync_config: "{{ group_sync_config.stdout }}"
+
+- name: Create group sync secret
+  k8s:
+    state: present
+    definition: "{{ lookup('template', 'group_sync_secret.yaml.j2') }}"
+    verify_ssl: no
+
+- name: Create group whitelist
+  k8s:
+    state: present
+    definition: "{{ lookup('template', 'whitelist-groups-cm.yaml.j2') }}"
+    verify_ssl: no
+
+- name: Create group sync ca
+  k8s:
+    state: present
+    definition: "{{ lookup('template', 'group-sync-ca-cm.yml.j2') }}"
+    verify_ssl: no
+
+- name: Create group sync cronjob
+  k8s:
+    state: present
+    definition: "{{ lookup('template', 'group-sync-cronjob.yaml.j2') }}"
+    verify_ssl: no
+
+- name: Copy group sync cluster role, rolebinding and service account files
+  copy:
+    src: "{{ item }}"
+    dest: $HOME/ldap-group-sync/
+  loop:
+    - group-sync-clusterrolebinding.yaml
+    - group-sync-clusterrole.yaml
+    - group-sync-sa.yaml
+
+- name: Apply LDAP group sync manifests
+  shell: oc apply -f $HOME/ldap-group-sync/group-sync-clusterrole.yaml -f $HOME/ldap-group-sync/group-sync-clusterrolebinding.yaml -f $HOME/ldap-group-sync/group-sync-sa.yaml

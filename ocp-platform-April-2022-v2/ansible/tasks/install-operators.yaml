@@ -1,0 +1,10 @@
+---
+- name: Deploy operators
+  k8s:
+   verify_ssl: no
+   state: present
+   definition: "{{ lookup('template', item) }}"
+  loop:
+   - ../templates/projects.yaml.j2
+   - ../templates/operatorgroup.yaml.j2
+   - ../templates/subscription.yaml.j2

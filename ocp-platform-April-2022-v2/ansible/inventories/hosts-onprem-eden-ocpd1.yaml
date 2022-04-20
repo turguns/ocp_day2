@@ -1,0 +1,31 @@
+all:
+  children:
+    haproxy:
+      children:
+        haproxy-master:
+          hosts:
+            OCPIE0D04011.linux.eden: 
+        haproxy-slave:
+          hosts:
+            OCPIE0D04022.linux.eden: 
+    monitoring:
+      hosts:
+        OCPIE0D05022.linux.eden: 
+    ocp:
+      hosts:
+        ocpie0d11011.ocpd1.services.eden: 
+        ocpie0d11022.ocpd1.services.eden: 
+        ocpie0d11031.ocpd1.services.eden: 
+        ocpie0d12011.ocpd1.services.eden: 
+        ocpie0d12022.ocpd1.services.eden: 
+        ocpie0d12031.ocpd1.services.eden: 
+        ocpie0d12042.ocpd1.services.eden: 
+        ocpie0d12051.ocpd1.services.eden: 
+        ocpie0d12062.ocpd1.services.eden: 
+        ocpie0d16011.ocpd1.services.eden: 
+        ocpie0d16022.ocpd1.services.eden: 
+        ocpie0d16031.ocpd1.services.eden:
+    utility:
+      hosts:
+        10.2.29.174:
+          ansible_user: core

@@ -1,0 +1,10 @@
+- name: Check the openshift SDN
+  shell: oc get pods -n openshift-sdn -o wide | egrep -e "*{{ item }}" | egrep -v "*controller*|*ovs*" | awk '{print $2}'
+  register: status
+- debug:
+    msg: "The output is {{ status.rc }}"
+- name: Status of sdn
+  fail:
+    msg: "The SDN pod  {{ item }} is NOT Running {{ status.stdout }}"
+  when: "status.stdout != '2/2'"
+

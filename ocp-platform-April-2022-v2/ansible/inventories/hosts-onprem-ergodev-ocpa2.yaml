@@ -1,0 +1,52 @@
+_meta:
+  hostvars:
+    10.58.127.102:
+       ansible_host: OCPTEBA11011.ocpa2.services.ergo.com
+    10.58.127.103:
+       ansible_host: OCPTEBA11022.ocpa2.services.ergo.com
+    10.58.127.104:
+       ansible_host: OCPTEBA11031.ocpa2.services.ergo.com
+    10.58.127.105:
+       ansible_host: OCPTEBA16011.ocpa2.services.ergo.com
+    10.58.127.106:
+       ansible_host: OCPTEBA16022.ocpa2.services.ergo.com
+    10.58.127.107:
+       ansible_host: OCPTEBA16031.ocpa2.services.ergo.com
+    10.58.127.108:
+       ansible_host: OCPTEBA12011.ocpa2.services.ergo.com
+    10.58.127.109:
+       ansible_host: OCPTEBA12022.ocpa2.services.ergo.com
+    10.58.127.110:
+       ansible_host: OCPTEBA12031.ocpa2.services.ergo.com
+           
+all:
+  children:
+    haproxy:
+      children:
+        haproxy-master:
+          hosts:
+            OCPTEBF04011.lindmzn.ergodev:
+        haproxy-slave:
+          hosts:
+            OCPTEBF04022.lindmzn.ergodev:
+    devops:
+      hosts: 
+        OCPTEB000013.lindmzn.ergodev:
+    monitoring:
+      hosts:
+        OCPTE0P05013.linux.ergodev:
+    ocp:
+      hosts:
+        10.58.127.102:
+        10.58.127.103:
+        10.58.127.104:
+        10.58.127.105:
+        10.58.127.106:
+        10.58.127.107:
+        10.58.127.108:
+        10.58.127.109:
+        10.58.127.110:
+    utility:
+      hosts:
+        10.58.127.101:
+          ansible_user: core

@@ -1,0 +1,14 @@
+- hosts: localhost
+#  vars_files:
+#    - "{{ pull_secret_path }}"
+#    - "{{ alm.alm_username_password }}"
+  vars:
+#    bindPassword: "{{ lookup('file', '{{ bindPassword_path }}') }}"
+#    root_cert: "{{ lookup('file', '{{ root_cert_path }}') }}"
+    ansible_python_interpreter: /usr/bin/python3
+
+  tasks:
+#  - name: configuring CRD for KubeletConfig
+#    include: tasks/kubeletconfig.yaml
+  - name: Reconfigure egress 
+    include: tasks/egress.yaml

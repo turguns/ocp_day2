@@ -1,0 +1,37 @@
+- name: Create bootstrap vm
+  include_tasks: tasks/create_vm.yaml
+  vars:
+    cpus: "{{ master_vm_cpus }}"
+    memory: "{{ master_vm_memory }}"
+    node_role: bootstrap
+  with_together:
+    - "{{ bootstrap_ip_addresses }}"
+    - "{{ bootstrap_vm_fqdn }}"
+- name: Create master vms
+  include_tasks: tasks/create_vm.yaml
+  vars:
+    cpus: "{{ master_vm_cpus }}"
+    memory: "{{ master_vm_memory }}"
+    node_role: master
+  with_together:
+    - "{{ master_ip_addresses }}"
+    - "{{ master_vm_fqdn }}"
+- name: Create worker vms
+  include_tasks: tasks/create_vm.yaml
+  vars:
+    cpus: "{{ worker_vm_cpus }}"
+    memory: "{{ worker_vm_memory }}"
+    node_role: worker
+  with_together:
+    - "{{ worker_ip_addresses }}"
+    - "{{ worker_vm_fqdn }}"
+
+- name: Create infra vms
+  include_tasks: tasks/create_vm.yaml
+  vars:
+    cpus: "{{ infra_vm_cpus }}"
+    memory: "{{ infra_vm_memory }}"
+    node_role: worker
+  with_together:
+    - "{{ infra_ip_addresses }}"
+    - "{{ infra_vm_fqdn }}"

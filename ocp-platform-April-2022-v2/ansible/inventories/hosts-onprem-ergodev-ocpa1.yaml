@@ -1,0 +1,35 @@
+all:
+  children:
+    haproxy:
+      children:
+        haproxy-master:
+          hosts:
+            OCPTE0A04011.linux.ergodev: 
+        haproxy-slave:
+          hosts:
+            OCPTE0A04022.linux.ergodev: 
+    devops:
+      hosts:
+        ocpte0000013.linux.ergodev: 
+    monitoring:
+      hosts:
+        OCPTE0A05011.linux.ergodev: 
+    ocp:
+      hosts:
+        OCPTE0A11011.ocpa1.services.ergodev: 
+        OCPTE0A11022.ocpa1.services.ergodev: 
+        OCPTE0A11031.ocpa1.services.ergodev: 
+        OCPTE0A12011.ocpa1.services.ergodev: 
+        OCPTE0A12022.ocpa1.services.ergodev: 
+        OCPTE0A12031.ocpa1.services.ergodev: 
+        OCPTE0A12042.ocpa1.services.ergodev: 
+        OCPTE0A12051.ocpa1.services.ergodev: 
+        OCPTE0A12062.ocpa1.services.ergodev: 
+        OCPTE0A16011.ocpa1.services.ergodev: 
+        OCPTE0A16022.ocpa1.services.ergodev: 
+        OCPTE0A16031.ocpa1.services.ergodev: 
+    utility:
+      hosts:
+        10.4.154.96:
+          ansible_user: core
+
